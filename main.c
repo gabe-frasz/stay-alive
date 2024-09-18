@@ -17,6 +17,7 @@ typedef struct {
 
 int main() {
   must_init(al_init(), "allegro");
+  must_init(al_init_primitives_addon(), "primitives");
   must_init(al_install_keyboard(), "keyboard");
   must_init(al_install_mouse(), "mouse");
 
@@ -40,7 +41,7 @@ int main() {
 
   float player_x = 100, player_y = 100, objective_x = 1100, objective_y = 600;
   bool is_inside_objective = false;
-  char *msg;
+  char *msg = "";
   int bg_color[3] = {0, 0, 0}, text_color[3] = {255, 255, 255},
       game_challenge = 0;
   item items[4] = {{.x = 20,
@@ -67,7 +68,7 @@ int main() {
                     .correct_x = 800,
                     .correct_y = 150,
                     .id = 4}};
-  int selected_item;
+  int selected_item = 0;
 
   al_start_timer(timer);
   while (1) {
