@@ -64,7 +64,8 @@ int main() {
     bool redraw = true;
     ALLEGRO_EVENT event;
 
-    float player_x = DISPLAY_WIDTH/2.0, player_y = DISPLAY_HEIGHT/2.0, map_x = -1000, map_y = -1000;
+    float player_x = DISPLAY_WIDTH/2.0, player_y = DISPLAY_HEIGHT/2.0, map_x = 0, map_y = 0;
+    float cycle_timer;
 
     al_start_timer(timer);
     while (1) {
@@ -75,9 +76,10 @@ int main() {
               redraw = true;
             break;
         case ALLEGRO_EVENT_KEY_CHAR:
-            float cycle_timer = ((float)al_get_timer_count(timer)/FPS - al_get_timer_count(timer)/FPS) * FPS;
-        
-            if (event.keyboard.keycode == ALLEGRO_KEY_UP) {
+            cycle_timer = ((float)al_get_timer_count(timer)/FPS - al_get_timer_count(timer)/FPS) * FPS;
+            
+            switch (event.keyboard.keycode) {
+            case ALLEGRO_KEY_UP:
                 map_y += 5;
                 if (cycle_timer >= 0 && cycle_timer <= 7.5 || cycle_timer >= 15 && cycle_timer <= 22.5) {
                     character = char_back_img;
@@ -88,8 +90,8 @@ int main() {
                 if (cycle_timer > 22.5 && cycle_timer <= 30) {
                     character = char_walk2_back_img;
                 }
-            }
-            if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) {
+                break;
+            case ALLEGRO_KEY_DOWN:
                 map_y -= 5;
                 if (cycle_timer >= 0 && cycle_timer <= 7.5 || cycle_timer >= 15 && cycle_timer <= 22.5) {
                     character = char_front_img;
@@ -100,8 +102,8 @@ int main() {
                 if (cycle_timer > 22.5 && cycle_timer <= 30) {
                     character = char_walk2_front_img;
                 }
-            }
-            if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) {
+                break;
+            case ALLEGRO_KEY_LEFT:
                 map_x += 5;
                 if (cycle_timer >= 0 && cycle_timer <= 7.5 || cycle_timer >= 15 && cycle_timer <= 22.5) {
                     character = char_left_img;
@@ -112,8 +114,8 @@ int main() {
                 if (cycle_timer > 22.5 && cycle_timer <= 30) {
                     character = char_walk2_left_img;
                 }
-            }
-            if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
+                break;
+            case ALLEGRO_KEY_RIGHT:
                 map_x -= 5;
                 if (cycle_timer >= 0 && cycle_timer <= 7.5 || cycle_timer >= 15 && cycle_timer <= 22.5) {
                     character = char_right_img;
@@ -124,6 +126,23 @@ int main() {
                 if (cycle_timer > 22.5 && cycle_timer <= 30) {
                     character = char_walk2_right_img;
                 }
+                break;
+            }
+            break;
+        case ALLEGRO_EVENT_KEY_UP:
+            switch (event.keyboard.keycode) {
+            case ALLEGRO_KEY_UP:
+                character = char_back_img;
+                break;
+            case ALLEGRO_KEY_DOWN:
+                character = char_front_img;
+                break;
+            case ALLEGRO_KEY_LEFT:
+                character = char_left_img;
+                break;
+            case ALLEGRO_KEY_RIGHT:
+                character = char_right_img;
+                break;
             }
             break;
         case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
