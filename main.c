@@ -3,6 +3,8 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/display.h>
+#include <allegro5/events.h>
+#include <allegro5/keycodes.h>
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -15,6 +17,8 @@ const int MAP_SIZE = 2250;
 const int PLAYER_WIDTH = 100;
 const int PLAYER_HEIGHT = 125;
 const int PLAYER_SPEED = 5;
+const int BUTTON_WIDTH = 200;
+const int BUTTON_HEIGHT = 50;
 
 typedef struct {
     ALLEGRO_BITMAP* front[CHAR_SPRITES_LENGTH]; // o index 0 é o sprite do personagem parado,
@@ -30,15 +34,27 @@ typedef struct {
 } Images;
 
 typedef struct {
+    float x, y;
+} Coordinate;
+
+enum Game_State {
+    MENU,
+    OPEN_MAP,
+    CHALLENGE
+};
+
+typedef struct {
     ALLEGRO_TIMER* timer;
     ALLEGRO_EVENT_QUEUE* queue;
     ALLEGRO_DISPLAY* disp;
     ALLEGRO_FONT* font;
     ALLEGRO_EVENT event;
     Images imgs;
-    float player_x, player_y, map_x, map_y;
-    bool redraw;
-    int challenge_counter, life_counter, hunger_counter;
+    Coordinate player, map;
+    float challenges_area[5][2];
+    int challenge_index, life_counter, hunger_counter;
+    enum Game_State state;
+    bool redraw, done;
 } Context;
 
 void init_context(Context* ctx);
@@ -56,23 +72,52 @@ int main() {
 
         switch (ctx.event.type) {
         case ALLEGRO_EVENT_TIMER:
+              if (ctx.state == OPEN_MAP) {
+                  if (ctx.player.y <= 0) {
+                      if (ctx.player.x >= ctx.challenges_area[ctx.challenge_index][0] &&
+                          ctx.player.x <= ctx.challenges_area[ctx.challenge_index][1])
+                          ctx.state = CHALLENGE;
+                  }
+              }
               ctx.redraw = true;
             break;
         case ALLEGRO_EVENT_KEY_CHAR:
-            handle_camera_movement(&ctx.event, &ctx.player_x, &ctx.player_y, &ctx.map_x, &ctx.map_y);
+            handle_camera_movement(&ctx.event, &ctx.player.x, &ctx.player.y, &ctx.map.x, &ctx.map.y);
             handle_character_sprite_change(&ctx.event, ctx.timer, &ctx.imgs); 
             break;
         case ALLEGRO_EVENT_KEY_UP:
             handle_character_sprite_change(&ctx.event, ctx.timer, &ctx.imgs);
             break;
+        case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
+            if (ctx.state == MENU) {
+                if (ctx.event.mouse.x > 500 && ctx.event.mouse.y > 500 && ctx.event.mouse.x < 700 && ctx.event.mouse.y < 550)
+                    ctx.state = OPEN_MAP;
+            }
+            break;
+        case ALLEGRO_EVENT_DISPLAY_CLOSE:
+            ctx.done = true;
+            break;
         }
 
-        if (ctx.event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) break;
+        if (ctx.done) break;
 
         if (ctx.redraw && al_is_event_queue_empty(ctx.queue)) {
-            al_clear_to_color(al_map_rgb(0, 0, 0));
-            al_draw_bitmap(ctx.imgs.map, ctx.map_x, ctx.map_y, 0);
-            al_draw_bitmap(ctx.imgs.char_sprites.current, ctx.player_x, ctx.player_y, 0);
+            switch (ctx.state) {
+            case MENU:
+                al_clear_to_color(al_map_rgb(0, 0, 0));
+                al_draw_text(ctx.font, al_map_rgb(255, 255, 255), 500, 200, 0, "Stay Alive");
+                al_draw_filled_rectangle(500, 500, 500 + BUTTON_WIDTH, 500 + BUTTON_HEIGHT, al_map_rgb(255, 0, 0));
+                al_draw_text(ctx.font, al_map_rgb(255, 255, 255), 500, 500, 0, "Jogar");
+                break;
+            case OPEN_MAP:
+                al_clear_to_color(al_map_rgb(0, 0, 0));
+                al_draw_bitmap(ctx.imgs.map, ctx.map.x, ctx.map.y, 0);
+                al_draw_bitmap(ctx.imgs.char_sprites.current, ctx.player.x, ctx.player.y, 0);
+                break;
+            case CHALLENGE:
+                al_clear_to_color(al_map_rgb(0, 0, 0));
+                break;
+            }
 
             al_flip_display();
             ctx.redraw = false;
@@ -146,14 +191,23 @@ void init_context(Context* ctx) {
     load_images(&ctx->imgs);
     ctx->imgs.char_sprites.current = ctx->imgs.char_sprites.front[0];
 
-    ctx->player_x = DISPLAY_WIDTH/2.0 - PLAYER_WIDTH/2;
-    ctx->player_y = DISPLAY_HEIGHT/2.0 - PLAYER_HEIGHT/2;
-    ctx->map_x = -850;
-    ctx->map_y = -1225;
+    ctx->player.x = DISPLAY_WIDTH/2.0 - PLAYER_WIDTH/2;
+    ctx->player.y = DISPLAY_HEIGHT/2.0 - PLAYER_HEIGHT/2;
+    ctx->map.x = -850;
+    ctx->map.y = -1225;
+
+    for (int i = 0; i < 5; i++) {
+        ctx->challenges_area[i][0] = DISPLAY_WIDTH/5.0 * i;
+        ctx->challenges_area[i][1] = ctx->challenges_area[i][0] + DISPLAY_WIDTH/5.0;
+    }
+
+    ctx->challenge_index = 0; // 0 até 4
+    ctx->life_counter = 3; // 3 até 0
+    ctx->hunger_counter = 3; // 3 até 0
+    ctx->state = MENU;
+
     ctx->redraw = true;
-    ctx->challenge_counter = 0;
-    ctx->life_counter = 3;
-    ctx->hunger_counter = 3;
+    ctx->done = false;
 }
 
 void free_context(Context* ctx) {
@@ -180,18 +234,22 @@ void handle_camera_movement(ALLEGRO_EVENT* event, float* player_x, float* player
 
     switch (event->keyboard.keycode) {
     case ALLEGRO_KEY_UP:
+    case ALLEGRO_KEY_W:
         if (*map_y < 0 && is_player_y_centered) *map_y += PLAYER_SPEED;
         else if (*player_y >= *map_y) *player_y -= PLAYER_SPEED;
         break;
     case ALLEGRO_KEY_DOWN:
+    case ALLEGRO_KEY_S:
         if (*map_y + MAP_SIZE > DISPLAY_HEIGHT && is_player_y_centered) *map_y -= PLAYER_SPEED;
         else if (*player_y + PLAYER_HEIGHT <= *map_y + MAP_SIZE) *player_y += PLAYER_SPEED;
         break;
     case ALLEGRO_KEY_LEFT:
+    case ALLEGRO_KEY_A:
         if (*map_x < 0 && is_player_x_centered) *map_x += PLAYER_SPEED;
         else if (*player_x >= *map_x) *player_x -= PLAYER_SPEED;
         break;
     case ALLEGRO_KEY_RIGHT:
+    case ALLEGRO_KEY_D:
         if (*map_x + MAP_SIZE > DISPLAY_WIDTH && is_player_x_centered) *map_x -= PLAYER_SPEED;
         else if (*player_x + PLAYER_WIDTH <= *map_x + MAP_SIZE) *player_x += PLAYER_SPEED;
         break;
@@ -212,21 +270,25 @@ void handle_character_sprite_change(ALLEGRO_EVENT* event, ALLEGRO_TIMER* timer, 
 
     switch (event->keyboard.keycode) {
     case ALLEGRO_KEY_UP:
+    case ALLEGRO_KEY_W:
         if (is_two_quarters) imgs->char_sprites.current = imgs->char_sprites.back[1];
         if (is_four_quarters) imgs->char_sprites.current = imgs->char_sprites.back[2];
         if (is_one_quarter || is_three_quarters || is_player_standing) imgs->char_sprites.current = imgs->char_sprites.back[0];
         break;
     case ALLEGRO_KEY_DOWN:
+    case ALLEGRO_KEY_S:
         if (is_two_quarters) imgs->char_sprites.current = imgs->char_sprites.front[1];
         if (is_four_quarters) imgs->char_sprites.current = imgs->char_sprites.front[2];
         if (is_one_quarter || is_three_quarters || is_player_standing) imgs->char_sprites.current = imgs->char_sprites.front[0];
         break;
     case ALLEGRO_KEY_LEFT:
+    case ALLEGRO_KEY_A:
         if (is_two_quarters) imgs->char_sprites.current = imgs->char_sprites.left[1];
         if (is_four_quarters) imgs->char_sprites.current = imgs->char_sprites.left[2];
         if (is_one_quarter || is_three_quarters || is_player_standing) imgs->char_sprites.current = imgs->char_sprites.left[0];
         break;
     case ALLEGRO_KEY_RIGHT:
+    case ALLEGRO_KEY_D:
         if (is_two_quarters) imgs->char_sprites.current = imgs->char_sprites.right[1];
         if (is_four_quarters) imgs->char_sprites.current = imgs->char_sprites.right[2];
         if (is_one_quarter || is_three_quarters || is_player_standing) imgs->char_sprites.current = imgs->char_sprites.right[0];
