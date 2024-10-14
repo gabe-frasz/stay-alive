@@ -59,11 +59,21 @@ typedef struct {
 
 void init_context(Context* ctx);
 void free_context(Context* ctx);
-void handle_camera_movement(ALLEGRO_EVENT* event, float* player_x, float* player_y, float* map_x, float* map_y);
-void handle_character_sprite_change(ALLEGRO_EVENT* event, ALLEGRO_TIMER* timer, Images* imgs);
+void handle_camera_movement(Context* ctx);
+void handle_character_sprite_change(Context* ctx);
+void handle_movement(Context* ctx) {
+    handle_camera_movement(ctx);
+    handle_character_sprite_change(ctx);
+}
 
 int main() {
     Context ctx;
+    void (*actions[3][4])(Context*) = { // 3 estados (Game_State), 4 eventos (ALLEGRO_EVENT_...)
+        {NULL, NULL, NULL, NULL}, // MENU
+        {NULL, handle_movement, handle_character_sprite_change, NULL}, // OPEN_MAP
+        {NULL, NULL, NULL, NULL}, // CHALLENGE
+    };
+    int event = 0;
     init_context(&ctx);
 
     al_start_timer(ctx.timer);
@@ -71,33 +81,38 @@ int main() {
         al_wait_for_event(ctx.queue, &ctx.event);
 
         switch (ctx.event.type) {
-        case ALLEGRO_EVENT_TIMER:
-              if (ctx.state == OPEN_MAP) {
-                  if (ctx.player.y <= 0) {
-                      if (ctx.player.x >= ctx.challenges_area[ctx.challenge_index][0] &&
-                          ctx.player.x <= ctx.challenges_area[ctx.challenge_index][1])
-                          ctx.state = CHALLENGE;
-                  }
-              }
-              ctx.redraw = true;
-            break;
-        case ALLEGRO_EVENT_KEY_CHAR:
-            handle_camera_movement(&ctx.event, &ctx.player.x, &ctx.player.y, &ctx.map.x, &ctx.map.y);
-            handle_character_sprite_change(&ctx.event, ctx.timer, &ctx.imgs); 
-            break;
-        case ALLEGRO_EVENT_KEY_UP:
-            handle_character_sprite_change(&ctx.event, ctx.timer, &ctx.imgs);
-            break;
-        case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
-            if (ctx.state == MENU) {
-                if (ctx.event.mouse.x > 500 && ctx.event.mouse.y > 500 && ctx.event.mouse.x < 700 && ctx.event.mouse.y < 550)
-                    ctx.state = OPEN_MAP;
-            }
-            break;
         case ALLEGRO_EVENT_DISPLAY_CLOSE:
             ctx.done = true;
             break;
+        case ALLEGRO_EVENT_TIMER:
+            if (ctx.state == OPEN_MAP) {
+                if (ctx.player.y <= 0) {
+                    if (ctx.player.x >= ctx.challenges_area[ctx.challenge_index][0] &&
+                        ctx.player.x <= ctx.challenges_area[ctx.challenge_index][1])
+                        ctx.state = CHALLENGE;
+                }
+            }
+            event = 0;
+            ctx.redraw = true;
+            break;
+        case ALLEGRO_EVENT_KEY_CHAR:
+            handle_movement(&ctx);
+            event = 1;
+            break;
+        case ALLEGRO_EVENT_KEY_UP:
+            handle_character_sprite_change(&ctx);
+            event = 2;
+            break;
+        case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
+            if (ctx.state == MENU) {
+                if (ctx.event.mouse.x > 500 && ctx.event.mouse.y > 500 && ctx.event.mouse.x < 500 + BUTTON_WIDTH && ctx.event.mouse.y < 500 + BUTTON_HEIGHT)
+                    ctx.state = OPEN_MAP;
+            }
+            event = 3;
+            break;
         }
+        printf("State: %d, Event: %d\n", ctx.state, event);
+        // if (actions[ctx.state][event]) actions[ctx.state][event](&ctx);
 
         if (ctx.done) break;
 
@@ -140,29 +155,29 @@ void load_images(Images* imgs) {
     imgs->map = al_load_bitmap("images/map.jpg");
     must_init(imgs->map, "map image");
     imgs->char_sprites.front[0] = al_load_bitmap("images/parado_frente.png");
-    must_init(imgs->char_sprites.front[0], "imgs.char_sprites.current front image");
+    must_init(imgs->char_sprites.front[0], "char front image");
     imgs->char_sprites.front[1] = al_load_bitmap("images/andando_frente1.png");
-    must_init(imgs->char_sprites.front[1], "imgs.char_sprites.current walking 1 front image");
+    must_init(imgs->char_sprites.front[1], "char walking 1 front image");
     imgs->char_sprites.front[2] = al_load_bitmap("images/andando_frente2.png");
-    must_init(imgs->char_sprites.front[2], "imgs.char_sprites.current walking 2 front image");
+    must_init(imgs->char_sprites.front[2], "char walking 2 front image");
     imgs->char_sprites.back[0] = al_load_bitmap("images/parado_tras.png");
-    must_init(imgs->char_sprites.back[0], "imgs.char_sprites.current back image");
+    must_init(imgs->char_sprites.back[0], "char back image");
     imgs->char_sprites.back[1] = al_load_bitmap("images/andando_tras1.png");
-    must_init(imgs->char_sprites.back[1], "imgs.char_sprites.current walking 1 back image");
+    must_init(imgs->char_sprites.back[1], "char walking 1 back image");
     imgs->char_sprites.back[2] = al_load_bitmap("images/andando_tras2.png");
-    must_init(imgs->char_sprites.back[2], "imgs.char_sprites.current walking 2 back image");
+    must_init(imgs->char_sprites.back[2], "char walking 2 back image");
     imgs->char_sprites.left[0] = al_load_bitmap("images/parado_esquerda.png");
-    must_init(imgs->char_sprites.left[0], "imgs.char_sprites.current left image");
+    must_init(imgs->char_sprites.left[0], "char left image");
     imgs->char_sprites.left[1] = al_load_bitmap("images/andando_esquerda1.png");
-    must_init(imgs->char_sprites.left[1], "imgs.char_sprites.current walking 1 left image");
+    must_init(imgs->char_sprites.left[1], "char walking 1 left image");
     imgs->char_sprites.left[2] = al_load_bitmap("images/andando_esquerda2.png");
-    must_init(imgs->char_sprites.left[2], "imgs.char_sprites.current walking 2 left image");
+    must_init(imgs->char_sprites.left[2], "char walking 2 left image");
     imgs->char_sprites.right[0] = al_load_bitmap("images/parado_direita.png");
-    must_init(imgs->char_sprites.right[0], "imgs.char_sprites.current right image");
+    must_init(imgs->char_sprites.right[0], "char right image");
     imgs->char_sprites.right[1] = al_load_bitmap("images/andando_direita1.png");
-    must_init(imgs->char_sprites.right[1], "imgs.char_sprites.current walking 1 right image");
+    must_init(imgs->char_sprites.right[1], "char walking 1 right image");
     imgs->char_sprites.right[2] = al_load_bitmap("images/andando_direita2.png");
-    must_init(imgs->char_sprites.right[2], "imgs.char_sprites.current walking 2 right image");
+    must_init(imgs->char_sprites.right[2], "char walking 2 right image");
 }
 
 void init_context(Context* ctx) {
@@ -228,37 +243,37 @@ void free_context(Context* ctx) {
     al_uninstall_mouse();
 }
 
-void handle_camera_movement(ALLEGRO_EVENT* event, float* player_x, float* player_y, float* map_x, float* map_y) {
-    bool is_player_y_centered = *player_y == (DISPLAY_HEIGHT/2.0 - PLAYER_HEIGHT/2);
-    bool is_player_x_centered = *player_x == (DISPLAY_WIDTH/2.0 - PLAYER_WIDTH/2);
+void handle_camera_movement(Context* ctx) {
+    bool is_player_y_centered = ctx->player.y == (DISPLAY_HEIGHT/2.0 - PLAYER_HEIGHT/2);
+    bool is_player_x_centered = ctx->player.x == (DISPLAY_WIDTH/2.0 - PLAYER_WIDTH/2);
 
-    switch (event->keyboard.keycode) {
+    switch (ctx->event.keyboard.keycode) {
     case ALLEGRO_KEY_UP:
     case ALLEGRO_KEY_W:
-        if (*map_y < 0 && is_player_y_centered) *map_y += PLAYER_SPEED;
-        else if (*player_y >= *map_y) *player_y -= PLAYER_SPEED;
+        if (ctx->map.y < 0 && is_player_y_centered) ctx->map.y += PLAYER_SPEED;
+        else if (ctx->player.y >= ctx->map.y) ctx->player.y -= PLAYER_SPEED;
         break;
     case ALLEGRO_KEY_DOWN:
     case ALLEGRO_KEY_S:
-        if (*map_y + MAP_SIZE > DISPLAY_HEIGHT && is_player_y_centered) *map_y -= PLAYER_SPEED;
-        else if (*player_y + PLAYER_HEIGHT <= *map_y + MAP_SIZE) *player_y += PLAYER_SPEED;
+        if (ctx->map.y + MAP_SIZE > DISPLAY_HEIGHT && is_player_y_centered) ctx->map.y -= PLAYER_SPEED;
+        else if (ctx->player.y + PLAYER_HEIGHT <= ctx->map.y + MAP_SIZE) ctx->player.y += PLAYER_SPEED;
         break;
     case ALLEGRO_KEY_LEFT:
     case ALLEGRO_KEY_A:
-        if (*map_x < 0 && is_player_x_centered) *map_x += PLAYER_SPEED;
-        else if (*player_x >= *map_x) *player_x -= PLAYER_SPEED;
+        if (ctx->map.x < 0 && is_player_x_centered) ctx->map.x += PLAYER_SPEED;
+        else if (ctx->player.x >= ctx->map.x) ctx->player.x -= PLAYER_SPEED;
         break;
     case ALLEGRO_KEY_RIGHT:
     case ALLEGRO_KEY_D:
-        if (*map_x + MAP_SIZE > DISPLAY_WIDTH && is_player_x_centered) *map_x -= PLAYER_SPEED;
-        else if (*player_x + PLAYER_WIDTH <= *map_x + MAP_SIZE) *player_x += PLAYER_SPEED;
+        if (ctx->map.x + MAP_SIZE > DISPLAY_WIDTH && is_player_x_centered) ctx->map.x -= PLAYER_SPEED;
+        else if (ctx->player.x + PLAYER_WIDTH <= ctx->map.x + MAP_SIZE) ctx->player.x += PLAYER_SPEED;
         break;
     }
 }
 
-void handle_character_sprite_change(ALLEGRO_EVENT* event, ALLEGRO_TIMER* timer, Images* imgs) {
+void handle_character_sprite_change(Context* ctx) {
     // Calcula o frame atual do jogo (0-29)
-    float cyclic_timer = al_get_timer_count(timer) % FPS;
+    float cyclic_timer = al_get_timer_count(ctx->timer) % FPS;
 
     // Divide o timer em quatro partes
     bool is_one_quarter = cyclic_timer >= 0 && cyclic_timer <= 7.5;
@@ -266,32 +281,34 @@ void handle_character_sprite_change(ALLEGRO_EVENT* event, ALLEGRO_TIMER* timer, 
     bool is_three_quarters = cyclic_timer > 15 && cyclic_timer <= 22.5;
     bool is_four_quarters = cyclic_timer > 22.5 && cyclic_timer <= 30;
 
-    bool is_player_standing = event->type == ALLEGRO_EVENT_KEY_UP;
+    bool is_player_standing = ctx->event.type == ALLEGRO_EVENT_KEY_UP;
 
-    switch (event->keyboard.keycode) {
+    ALLEGRO_BITMAP* current;
+    switch (ctx->event.keyboard.keycode) {
     case ALLEGRO_KEY_UP:
     case ALLEGRO_KEY_W:
-        if (is_two_quarters) imgs->char_sprites.current = imgs->char_sprites.back[1];
-        if (is_four_quarters) imgs->char_sprites.current = imgs->char_sprites.back[2];
-        if (is_one_quarter || is_three_quarters || is_player_standing) imgs->char_sprites.current = imgs->char_sprites.back[0];
+        if (is_two_quarters) current = ctx->imgs.char_sprites.back[1];
+        if (is_four_quarters) current = ctx->imgs.char_sprites.back[2];
+        if (is_one_quarter || is_three_quarters || is_player_standing) current = ctx->imgs.char_sprites.back[0];
         break;
     case ALLEGRO_KEY_DOWN:
     case ALLEGRO_KEY_S:
-        if (is_two_quarters) imgs->char_sprites.current = imgs->char_sprites.front[1];
-        if (is_four_quarters) imgs->char_sprites.current = imgs->char_sprites.front[2];
-        if (is_one_quarter || is_three_quarters || is_player_standing) imgs->char_sprites.current = imgs->char_sprites.front[0];
+        if (is_two_quarters) current = ctx->imgs.char_sprites.front[1];
+        if (is_four_quarters) current = ctx->imgs.char_sprites.front[2];
+        if (is_one_quarter || is_three_quarters || is_player_standing) current = ctx->imgs.char_sprites.front[0];
         break;
     case ALLEGRO_KEY_LEFT:
     case ALLEGRO_KEY_A:
-        if (is_two_quarters) imgs->char_sprites.current = imgs->char_sprites.left[1];
-        if (is_four_quarters) imgs->char_sprites.current = imgs->char_sprites.left[2];
-        if (is_one_quarter || is_three_quarters || is_player_standing) imgs->char_sprites.current = imgs->char_sprites.left[0];
+        if (is_two_quarters) current = ctx->imgs.char_sprites.left[1];
+        if (is_four_quarters) current = ctx->imgs.char_sprites.left[2];
+        if (is_one_quarter || is_three_quarters || is_player_standing) current = ctx->imgs.char_sprites.left[0];
         break;
     case ALLEGRO_KEY_RIGHT:
     case ALLEGRO_KEY_D:
-        if (is_two_quarters) imgs->char_sprites.current = imgs->char_sprites.right[1];
-        if (is_four_quarters) imgs->char_sprites.current = imgs->char_sprites.right[2];
-        if (is_one_quarter || is_three_quarters || is_player_standing) imgs->char_sprites.current = imgs->char_sprites.right[0];
+        if (is_two_quarters) current = ctx->imgs.char_sprites.right[1];
+        if (is_four_quarters) current = ctx->imgs.char_sprites.right[2];
+        if (is_one_quarter || is_three_quarters || is_player_standing) current = ctx->imgs.char_sprites.right[0];
         break;
     } 
+    ctx->imgs.char_sprites.current = current;
 }
