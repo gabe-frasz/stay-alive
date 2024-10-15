@@ -2,9 +2,6 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
-#include <allegro5/display.h>
-#include <allegro5/events.h>
-#include <allegro5/keycodes.h>
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -59,21 +56,15 @@ typedef struct {
 
 void init_context(Context* ctx);
 void free_context(Context* ctx);
-void handle_camera_movement(Context* ctx);
-void handle_character_sprite_change(Context* ctx);
+void move_camera(Context* ctx);
+void change_character_sprite(Context* ctx);
 void handle_movement(Context* ctx) {
-    handle_camera_movement(ctx);
-    handle_character_sprite_change(ctx);
+    move_camera(ctx);
+    change_character_sprite(ctx);
 }
 
 int main() {
     Context ctx;
-    void (*actions[3][4])(Context*) = { // 3 estados (Game_State), 4 eventos (ALLEGRO_EVENT_...)
-        {NULL, NULL, NULL, NULL}, // MENU
-        {NULL, handle_movement, handle_character_sprite_change, NULL}, // OPEN_MAP
-        {NULL, NULL, NULL, NULL}, // CHALLENGE
-    };
-    int event = 0;
     init_context(&ctx);
 
     al_start_timer(ctx.timer);
@@ -92,26 +83,42 @@ int main() {
                         ctx.state = CHALLENGE;
                 }
             }
-            event = 0;
             ctx.redraw = true;
             break;
         case ALLEGRO_EVENT_KEY_CHAR:
             handle_movement(&ctx);
-            event = 1;
             break;
         case ALLEGRO_EVENT_KEY_UP:
-            handle_character_sprite_change(&ctx);
-            event = 2;
+            change_character_sprite(&ctx);
             break;
         case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
             if (ctx.state == MENU) {
-                if (ctx.event.mouse.x > 500 && ctx.event.mouse.y > 500 && ctx.event.mouse.x < 500 + BUTTON_WIDTH && ctx.event.mouse.y < 500 + BUTTON_HEIGHT)
+                if (ctx.event.mouse.x > 500 && ctx.event.mouse.y > 500 &&
+                    ctx.event.mouse.x < 500 + BUTTON_WIDTH && ctx.event.mouse.y < 500 + BUTTON_HEIGHT)
                     ctx.state = OPEN_MAP;
             }
-            event = 3;
+            break;
+        case ALLEGRO_EVENT_KEY_DOWN:
+            if (ctx.state == CHALLENGE) {
+                if (ctx.event.keyboard.keycode == ALLEGRO_KEY_0) {
+                    ctx.life_counter--;
+                    ctx.hunger_counter--;
+                    
+                    ctx.imgs.char_sprites.current = ctx.imgs.char_sprites.front[0];
+                    ctx.player.y += 50;
+
+                    ctx.challenge_index++;
+                    ctx.state = OPEN_MAP;
+                }
+                if (ctx.event.keyboard.keycode == ALLEGRO_KEY_1) {
+                    ctx.challenge_index++;
+                    ctx.state = OPEN_MAP;
+                }
+            }
+            if (ctx.event.keyboard.keycode == ALLEGRO_KEY_N)
+                ctx.state = CHALLENGE;
             break;
         }
-        printf("State: %d, Event: %d\n", ctx.state, event);
         // if (actions[ctx.state][event]) actions[ctx.state][event](&ctx);
 
         if (ctx.done) break;
@@ -130,7 +137,20 @@ int main() {
                 al_draw_bitmap(ctx.imgs.char_sprites.current, ctx.player.x, ctx.player.y, 0);
                 break;
             case CHALLENGE:
-                al_clear_to_color(al_map_rgb(0, 0, 0));
+                if (ctx.challenge_index == 0)
+                    al_clear_to_color(al_map_rgb(0, 0, 0));
+                if (ctx.challenge_index == 1)
+                    al_clear_to_color(al_map_rgb(255, 0, 0));
+                if (ctx.challenge_index == 2)
+                    al_clear_to_color(al_map_rgb(0, 255, 0));
+                if (ctx.challenge_index == 3)
+                    al_clear_to_color(al_map_rgb(0, 0, 255));
+                if (ctx.challenge_index == 4)
+                    al_clear_to_color(al_map_rgb(100, 100, 100));
+                
+                char msg[10];
+                sprintf(msg, "Desafio %d", ctx.challenge_index + 1);
+                al_draw_text(ctx.font, al_map_rgb(255, 255, 255), 0, 0, 0, msg);
                 break;
             }
 
@@ -243,7 +263,7 @@ void free_context(Context* ctx) {
     al_uninstall_mouse();
 }
 
-void handle_camera_movement(Context* ctx) {
+void move_camera(Context* ctx) {
     bool is_player_y_centered = ctx->player.y == (DISPLAY_HEIGHT/2.0 - PLAYER_HEIGHT/2);
     bool is_player_x_centered = ctx->player.x == (DISPLAY_WIDTH/2.0 - PLAYER_WIDTH/2);
 
@@ -271,7 +291,7 @@ void handle_camera_movement(Context* ctx) {
     }
 }
 
-void handle_character_sprite_change(Context* ctx) {
+void change_character_sprite(Context* ctx) {
     // Calcula o frame atual do jogo (0-29)
     float cyclic_timer = al_get_timer_count(ctx->timer) % FPS;
 
@@ -283,7 +303,7 @@ void handle_character_sprite_change(Context* ctx) {
 
     bool is_player_standing = ctx->event.type == ALLEGRO_EVENT_KEY_UP;
 
-    ALLEGRO_BITMAP* current;
+    ALLEGRO_BITMAP* current = ctx->imgs.char_sprites.current;
     switch (ctx->event.keyboard.keycode) {
     case ALLEGRO_KEY_UP:
     case ALLEGRO_KEY_W:
