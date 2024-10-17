@@ -11,11 +11,14 @@ const int FPS = 30;
 const int DISPLAY_WIDTH = 1280;
 const int DISPLAY_HEIGHT = 720;
 const int MAP_SIZE = 2336;
+const int INITIAL_MAP_X = -320;
+const int INITIAL_MAP_Y = -90;
 const int PLAYER_WIDTH = 100;
 const int PLAYER_HEIGHT = 125;
 const int PLAYER_SPEED = 5;
 const int BUTTON_WIDTH = 200;
 const int BUTTON_HEIGHT = 50;
+const int HEART_WIDTH = 220;
 
 typedef struct {
     ALLEGRO_BITMAP* front[CHAR_SPRITES_LENGTH]; // o index 0 é o sprite do personagem parado,
@@ -28,6 +31,7 @@ typedef struct {
 typedef struct {
     ALLEGRO_BITMAP* map;
     Character_Sprites char_sprites;
+    ALLEGRO_BITMAP* hearts[2];
 } Images;
 
 typedef struct {
@@ -37,7 +41,8 @@ typedef struct {
 enum Game_State {
     MENU,
     OPEN_MAP,
-    CHALLENGE
+    CHALLENGE,
+    GAME_OVER
 };
 
 typedef struct {
@@ -48,7 +53,6 @@ typedef struct {
     ALLEGRO_EVENT event;
     Images imgs;
     Coordinate player, map;
-    float challenges_area[5][2];
     int challenge_index, life_counter, hunger_counter;
     enum Game_State state;
     bool redraw, done;
@@ -62,64 +66,41 @@ void handle_movement(Context* ctx) {
     move_camera(ctx);
     change_character_sprite(ctx);
 }
+void finish_challenge(bool success, Context* ctx);
+int get_event_index(ALLEGRO_EVENT_TYPE event_type);
 
 int main() {
     Context ctx;
     init_context(&ctx);
+    void (*actions[4][5])(Context*) = {
+        {NULL, NULL, NULL, NULL, NULL}, // MENU
+        {NULL, handle_movement, change_character_sprite, NULL, NULL}, // OPEN_MAP
+        {NULL, NULL, NULL, NULL, NULL}, // CHALLENGE
+        {NULL, NULL, NULL, NULL, NULL}  // GAME_OVER
+    };
 
     al_start_timer(ctx.timer);
     while (1) {
         al_wait_for_event(ctx.queue, &ctx.event);
 
-        switch (ctx.event.type) {
-        case ALLEGRO_EVENT_DISPLAY_CLOSE:
-            ctx.done = true;
-            break;
-        case ALLEGRO_EVENT_TIMER:
-            if (ctx.state == OPEN_MAP) {
-                if (ctx.player.y <= 0) {
-                    if (ctx.player.x >= ctx.challenges_area[ctx.challenge_index][0] &&
-                        ctx.player.x <= ctx.challenges_area[ctx.challenge_index][1])
-                        ctx.state = CHALLENGE;
-                }
-            }
-            ctx.redraw = true;
-            break;
-        case ALLEGRO_EVENT_KEY_CHAR:
-            handle_movement(&ctx);
-            break;
-        case ALLEGRO_EVENT_KEY_UP:
-            change_character_sprite(&ctx);
-            break;
-        case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
-            if (ctx.state == MENU) {
-                if (ctx.event.mouse.x > 500 && ctx.event.mouse.y > 500 &&
-                    ctx.event.mouse.x < 500 + BUTTON_WIDTH && ctx.event.mouse.y < 500 + BUTTON_HEIGHT)
-                    ctx.state = OPEN_MAP;
-            }
-            break;
-        case ALLEGRO_EVENT_KEY_DOWN:
-            if (ctx.state == CHALLENGE) {
-                if (ctx.event.keyboard.keycode == ALLEGRO_KEY_0) {
-                    ctx.life_counter--;
-                    ctx.hunger_counter--;
-                    
-                    ctx.imgs.char_sprites.current = ctx.imgs.char_sprites.front[0];
-                    ctx.player.y += 50;
+        if (ctx.event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) ctx.done = true;
+        if (ctx.event.type == ALLEGRO_EVENT_TIMER) ctx.redraw = true;
 
-                    ctx.challenge_index++;
-                    ctx.state = OPEN_MAP;
-                }
-                if (ctx.event.keyboard.keycode == ALLEGRO_KEY_1) {
-                    ctx.challenge_index++;
-                    ctx.state = OPEN_MAP;
-                }
-            }
-            if (ctx.event.keyboard.keycode == ALLEGRO_KEY_N)
-                ctx.state = CHALLENGE;
-            break;
+        if (ctx.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+            if (ctx.state == MENU && ctx.event.mouse.x > 500 && ctx.event.mouse.y > 500 &&
+                ctx.event.mouse.x < 500 + BUTTON_WIDTH && ctx.event.mouse.y < 500 + BUTTON_HEIGHT)
+                ctx.state = OPEN_MAP;
         }
-        // if (actions[ctx.state][event]) actions[ctx.state][event](&ctx);
+        if (ctx.event.type == ALLEGRO_EVENT_KEY_DOWN) {
+            if (ctx.state == CHALLENGE && ctx.challenge_index <= 4) {
+                if (ctx.event.keyboard.keycode == ALLEGRO_KEY_0) finish_challenge(false, &ctx);
+                if (ctx.event.keyboard.keycode == ALLEGRO_KEY_1) finish_challenge(true, &ctx);
+            }
+            if (ctx.state == OPEN_MAP && ctx.event.keyboard.keycode == ALLEGRO_KEY_N) ctx.state = CHALLENGE;
+        }
+
+        int event_index = get_event_index(ctx.event.type);
+        if (actions[ctx.state][event_index]) actions[ctx.state][event_index](&ctx);
 
         if (ctx.done) break;
 
@@ -135,6 +116,10 @@ int main() {
                 al_clear_to_color(al_map_rgb(0, 0, 0));
                 al_draw_bitmap(ctx.imgs.map, ctx.map.x, ctx.map.y, 0);
                 al_draw_bitmap(ctx.imgs.char_sprites.current, ctx.player.x, ctx.player.y, 0);
+                for (int i = 2; i >= 0; i--) {
+                    if (ctx.life_counter <= i) continue;
+                    al_draw_bitmap(ctx.imgs.hearts[0], 5 + i * HEART_WIDTH, 5, 0);
+                }
                 break;
             case CHALLENGE:
                 if (ctx.challenge_index == 0) {
@@ -147,7 +132,7 @@ int main() {
                 }
                 if (ctx.challenge_index == 2) {
                     al_clear_to_color(al_map_rgb(0, 255, 0));
-                al_draw_text(ctx.font, al_map_rgb(255, 255, 255), 0, 0, 0, "Desafio 3");
+                    al_draw_text(ctx.font, al_map_rgb(255, 255, 255), 0, 0, 0, "Desafio 3");
                 }
                 if (ctx.challenge_index == 3) {
                     al_clear_to_color(al_map_rgb(0, 0, 255));
@@ -160,6 +145,10 @@ int main() {
                 char msg[10] = "";
                 //sprintf(msg, "Desafio %d", ctx.challenge_index + 1);
                 //al_draw_text(ctx.font, al_map_rgb(255, 255, 255), 0, 0, 0, msg);
+                break;
+            case GAME_OVER:
+                al_clear_to_color(al_map_rgb(0, 0, 0));
+                al_draw_text(ctx.font, al_map_rgb(255, 255, 255), 0, 0, 0, "Fim de jogo");
                 break;
             }
 
@@ -207,6 +196,8 @@ void load_images(Images* imgs) {
     must_init(imgs->char_sprites.right[1], "char walking 1 right image");
     imgs->char_sprites.right[2] = al_load_bitmap("images/andando_direita2.png");
     must_init(imgs->char_sprites.right[2], "char walking 2 right image");
+    imgs->hearts[0] = al_load_bitmap("images/heart.png");
+    must_init(imgs->hearts[0], "heart image");
 }
 
 void init_context(Context* ctx) {
@@ -237,13 +228,8 @@ void init_context(Context* ctx) {
 
     ctx->player.x = DISPLAY_WIDTH/2.0 - PLAYER_WIDTH/2;
     ctx->player.y = DISPLAY_HEIGHT/2.0 - PLAYER_HEIGHT/2;
-    ctx->map.x = -850;
-    ctx->map.y = -1225;
-
-    for (int i = 0; i < 5; i++) {
-        ctx->challenges_area[i][0] = DISPLAY_WIDTH/5.0 * i;
-        ctx->challenges_area[i][1] = ctx->challenges_area[i][0] + DISPLAY_WIDTH/5.0;
-    }
+    ctx->map.x = INITIAL_MAP_X;
+    ctx->map.y = INITIAL_MAP_Y;
 
     ctx->challenge_index = 0; // 0 até 4
     ctx->life_counter = 3; // 3 até 0
@@ -256,6 +242,8 @@ void init_context(Context* ctx) {
 
 void free_context(Context* ctx) {
     al_destroy_bitmap(ctx->imgs.map);
+    al_destroy_bitmap(ctx->imgs.hearts[0]);
+    al_destroy_bitmap(ctx->imgs.hearts[1]);
 
     for (int i = 0; i < CHAR_SPRITES_LENGTH; i++) {
         al_destroy_bitmap(ctx->imgs.char_sprites.front[i]);
@@ -340,4 +328,57 @@ void change_character_sprite(Context* ctx) {
         break;
     } 
     ctx->imgs.char_sprites.current = current;
+}
+
+void finish_challenge(bool success, Context* ctx) {
+    if (!success) {
+        ctx->life_counter--;
+    }
+
+    if (ctx->hunger_counter == 0) {
+        ctx->life_counter--;
+    }
+
+    if (ctx->life_counter <= 0) {
+        ctx->state = GAME_OVER;
+        return;
+    }
+
+    bool player_got_food = success && (ctx->challenge_index == 0 || ctx->challenge_index == 2);
+    if (player_got_food) {
+      ctx->hunger_counter = 3;
+    } else if (ctx->hunger_counter > 0) {
+        ctx->hunger_counter--;
+    }
+
+    if (ctx->challenge_index <= 3) {
+        ctx->challenge_index++;
+    }
+
+    ctx->state = OPEN_MAP;
+    printf("life: %d; hunger: %d; c index: %d\n", ctx->life_counter, ctx->hunger_counter, ctx->challenge_index);
+}
+
+int get_event_index(ALLEGRO_EVENT_TYPE event_type) {
+    int index = 0;
+
+    switch (event_type) {
+    case ALLEGRO_EVENT_TIMER:
+        index = 0;
+        break;
+    case ALLEGRO_EVENT_KEY_CHAR:
+        index = 1;
+        break;
+    case ALLEGRO_EVENT_KEY_UP:
+        index = 2;
+        break;
+    case ALLEGRO_EVENT_KEY_DOWN:
+        index = 3;
+        break;
+    case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+        index = 4;
+        break;
+    }
+    
+    return index;
 }
