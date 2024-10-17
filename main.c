@@ -10,7 +10,7 @@
 const int FPS = 30;
 const int DISPLAY_WIDTH = 1280;
 const int DISPLAY_HEIGHT = 720;
-const int MAP_SIZE = 2250;
+const int MAP_SIZE = 2336;
 const int PLAYER_WIDTH = 100;
 const int PLAYER_HEIGHT = 125;
 const int PLAYER_SPEED = 5;
@@ -137,20 +137,29 @@ int main() {
                 al_draw_bitmap(ctx.imgs.char_sprites.current, ctx.player.x, ctx.player.y, 0);
                 break;
             case CHALLENGE:
-                if (ctx.challenge_index == 0)
+                if (ctx.challenge_index == 0) {
                     al_clear_to_color(al_map_rgb(0, 0, 0));
-                if (ctx.challenge_index == 1)
+                    al_draw_text(ctx.font, al_map_rgb(255, 255, 255), 0, 0, 0, "Desafio 1");
+                }
+                if (ctx.challenge_index == 1) {
                     al_clear_to_color(al_map_rgb(255, 0, 0));
-                if (ctx.challenge_index == 2)
+                    al_draw_text(ctx.font, al_map_rgb(255, 255, 255), 0, 0, 0, "Desafio 2");
+                }
+                if (ctx.challenge_index == 2) {
                     al_clear_to_color(al_map_rgb(0, 255, 0));
-                if (ctx.challenge_index == 3)
+                al_draw_text(ctx.font, al_map_rgb(255, 255, 255), 0, 0, 0, "Desafio 3");
+                }
+                if (ctx.challenge_index == 3) {
                     al_clear_to_color(al_map_rgb(0, 0, 255));
-                if (ctx.challenge_index == 4)
+                    al_draw_text(ctx.font, al_map_rgb(255, 255, 255), 0, 0, 0, "Desafio 4");
+                }
+                if (ctx.challenge_index == 4) {
                     al_clear_to_color(al_map_rgb(100, 100, 100));
-                
-                char msg[10];
-                sprintf(msg, "Desafio %d", ctx.challenge_index + 1);
-                al_draw_text(ctx.font, al_map_rgb(255, 255, 255), 0, 0, 0, msg);
+                    al_draw_text(ctx.font, al_map_rgb(255, 255, 255), 0, 0, 0, "Desafio 5");
+                }
+                char msg[10] = "";
+                //sprintf(msg, "Desafio %d", ctx.challenge_index + 1);
+                //al_draw_text(ctx.font, al_map_rgb(255, 255, 255), 0, 0, 0, msg);
                 break;
             }
 
@@ -172,7 +181,7 @@ void must_init(bool test, char* description) {
 }
 
 void load_images(Images* imgs) {
-    imgs->map = al_load_bitmap("images/map.jpg");
+    imgs->map = al_load_bitmap("images/map.png");
     must_init(imgs->map, "map image");
     imgs->char_sprites.front[0] = al_load_bitmap("images/parado_frente.png");
     must_init(imgs->char_sprites.front[0], "char front image");
