@@ -46,8 +46,18 @@ int main() {
                 al_draw_bitmap(ctx.imgs.map, ctx.map.x, ctx.map.y, 0);
                 al_draw_bitmap(ctx.imgs.char_sprites.current, ctx.player.x, ctx.player.y, 0);
                 for (int i = 2; i >= 0; i--) {
-                    if (ctx.life_counter > i) al_draw_bitmap(ctx.imgs.heart_filled, 5 + i * HEART_WIDTH, 5, 0);
-                    if (ctx.hunger_counter > i) al_draw_bitmap(ctx.imgs.hunger_filled, 5 + i * HUNGER_WIDTH, 300, 0);
+                    if (ctx.life_counter > i) {
+                        al_draw_bitmap(ctx.imgs.heart_filled, 5 + i * HEART_WIDTH, 5, 0);
+                    }
+                    else {
+                        al_draw_bitmap(ctx.imgs.heart_empty, 5 + i * HEART_WIDTH, 5, 0);
+                    }
+                    if (ctx.hunger_counter > i) {
+                        al_draw_bitmap(ctx.imgs.hunger_filled, 5 + i * HUNGER_WIDTH, HEART_HEIGHT + 15, 0);
+                    }
+                    else {
+                        al_draw_bitmap(ctx.imgs.hunger_empty, 5 + i * HUNGER_WIDTH, HEART_HEIGHT + 15, 0);
+                    }
                 }
                 break;
             case CHALLENGE:

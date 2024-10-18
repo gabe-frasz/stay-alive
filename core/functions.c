@@ -41,11 +41,11 @@ void load_images(Images* imgs) {
     must_init(imgs->char_sprites.right[1], "char walking 1 right image");
     imgs->char_sprites.right[2] = al_load_bitmap("images/andando_direita2.png");
     must_init(imgs->char_sprites.right[2], "char walking 2 right image");
-    imgs->heart_empty = al_load_bitmap("images/heart.png");
+    imgs->heart_empty = al_load_bitmap("images/heart_empty.png");
     must_init(imgs->heart_empty, "heart empty image");
     imgs->heart_filled = al_load_bitmap("images/heart.png");
     must_init(imgs->heart_filled, "heart filled image");
-    imgs->hunger_empty = al_load_bitmap("images/hunger.png");
+    imgs->hunger_empty = al_load_bitmap("images/hunger_empty.png");
     must_init(imgs->hunger_empty, "hunger empty image");
     imgs->hunger_filled = al_load_bitmap("images/hunger.png");
     must_init(imgs->hunger_filled, "hunger filled image");
