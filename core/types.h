@@ -25,6 +25,10 @@ typedef struct {
     float x, y;
 } Coordinate;
 
+typedef struct {
+    float x1, x2, y1, y2;
+} Challenge_Area;
+
 enum Game_State {
     MENU,
     OPEN_MAP,
@@ -40,6 +44,7 @@ typedef struct {
     ALLEGRO_EVENT event;
     Images imgs;
     Coordinate player, map;
+    Challenge_Area challenges_areas[5];
     int challenge_index, life_counter, hunger_counter;
     enum Game_State state;
     bool redraw, done;

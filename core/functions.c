@@ -81,6 +81,29 @@ void init_context(Context* ctx) {
     ctx->player.y = DISPLAY_HEIGHT/2.0 - PLAYER_HEIGHT/2;
     ctx->map.x = INITIAL_MAP_X;
     ctx->map.y = INITIAL_MAP_Y;
+
+    ctx->challenges_areas[0].x1 = 1000;
+    ctx->challenges_areas[0].x2 = 1200;
+    ctx->challenges_areas[0].y1 = 0;
+    ctx->challenges_areas[0].y2 = 0;
+    ctx->challenges_areas[1].x1 = 1280;
+    ctx->challenges_areas[1].x2 = 1280;
+    ctx->challenges_areas[1].y1 = 300;
+    ctx->challenges_areas[1].y2 = 450;
+    ctx->challenges_areas[2].x1 = 1280;
+    ctx->challenges_areas[2].x2 = 1280;
+    ctx->challenges_areas[2].y1 = 300;
+    ctx->challenges_areas[2].y2 = 450;
+    ctx->challenges_areas[3].x1 = 600;
+    ctx->challenges_areas[3].x2 = 870;
+    ctx->challenges_areas[3].y1 = 720;
+    ctx->challenges_areas[3].y2 = 720;
+    ctx->challenges_areas[4].x1 = 600;
+    ctx->challenges_areas[4].x2 = 870;
+    ctx->challenges_areas[4].y1 = 720;
+    ctx->challenges_areas[4].y2 = 720;
+
+
     ctx->challenge_index = 0; // 0 até 4
     ctx->life_counter = 3; // 3 até 0
     ctx->hunger_counter = 3; // 3 até 0
