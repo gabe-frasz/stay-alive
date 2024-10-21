@@ -7,6 +7,9 @@
 #include "types.h"
 #include "consts.c"
 
+int DISPLAY_WIDTH;
+int DISPLAY_HEIGHT;
+
 void must_init(bool test, char* description) {
     if (!test) {
         printf("Could not initialize %s.\n", description);
@@ -57,6 +60,14 @@ void init_context(Context* ctx) {
     must_init(al_install_keyboard(), "keyboard");
     must_init(al_install_mouse(), "mouse");
     must_init(al_init_image_addon(), "image");
+    
+    ALLEGRO_MONITOR_INFO info;
+    al_get_monitor_info(0, &info);
+
+    DISPLAY_WIDTH = info.x2 - info.x1;
+    DISPLAY_HEIGHT = info.y2 - info.y1;
+    if (DISPLAY_WIDTH > 1920) DISPLAY_WIDTH = 1920;
+    if (DISPLAY_HEIGHT > 1080) DISPLAY_HEIGHT = 1080;
 
     ctx->timer = al_create_timer(1.0 / FPS);
     must_init(ctx->timer, "timer");
@@ -69,9 +80,9 @@ void init_context(Context* ctx) {
 
     al_set_window_title(ctx->disp, "Stay Alive");
 
-    al_register_event_source(ctx->queue, al_get_keyboard_event_source());
     al_register_event_source(ctx->queue, al_get_display_event_source(ctx->disp));
     al_register_event_source(ctx->queue, al_get_timer_event_source(ctx->timer));
+    al_register_event_source(ctx->queue, al_get_keyboard_event_source());
     al_register_event_source(ctx->queue, al_get_mouse_event_source());
 
     load_images(&ctx->imgs);
@@ -82,27 +93,26 @@ void init_context(Context* ctx) {
     ctx->map.x = INITIAL_MAP_X;
     ctx->map.y = INITIAL_MAP_Y;
 
-    ctx->challenges_areas[0].x1 = 1000;
-    ctx->challenges_areas[0].x2 = 1200;
+    ctx->challenges_areas[0].x1 = DISPLAY_WIDTH - 280;
+    ctx->challenges_areas[0].x2 = DISPLAY_WIDTH - 80;
     ctx->challenges_areas[0].y1 = 0;
-    ctx->challenges_areas[0].y2 = 0;
-    ctx->challenges_areas[1].x1 = 1280;
-    ctx->challenges_areas[1].x2 = 1280;
-    ctx->challenges_areas[1].y1 = 300;
-    ctx->challenges_areas[1].y2 = 450;
-    ctx->challenges_areas[2].x1 = 1280;
-    ctx->challenges_areas[2].x2 = 1280;
-    ctx->challenges_areas[2].y1 = 300;
-    ctx->challenges_areas[2].y2 = 450;
-    ctx->challenges_areas[3].x1 = 600;
-    ctx->challenges_areas[3].x2 = 870;
-    ctx->challenges_areas[3].y1 = 720;
-    ctx->challenges_areas[3].y2 = 720;
-    ctx->challenges_areas[4].x1 = 600;
-    ctx->challenges_areas[4].x2 = 870;
-    ctx->challenges_areas[4].y1 = 720;
-    ctx->challenges_areas[4].y2 = 720;
-
+    ctx->challenges_areas[0].y2 = 15;
+    ctx->challenges_areas[1].x1 = DISPLAY_WIDTH - 15;
+    ctx->challenges_areas[1].x2 = DISPLAY_WIDTH;
+    ctx->challenges_areas[1].y1 = DISPLAY_HEIGHT/2.0 - 100;
+    ctx->challenges_areas[1].y2 = DISPLAY_HEIGHT/2.0 + 100;
+    ctx->challenges_areas[2].x1 = DISPLAY_WIDTH - 15;
+    ctx->challenges_areas[2].x2 = DISPLAY_WIDTH;
+    ctx->challenges_areas[2].y1 = DISPLAY_HEIGHT/2.0 - 100;
+    ctx->challenges_areas[2].y2 = DISPLAY_HEIGHT/2.0 + 100;
+    ctx->challenges_areas[3].x1 = DISPLAY_WIDTH - 680;
+    ctx->challenges_areas[3].x2 = DISPLAY_WIDTH - 410;
+    ctx->challenges_areas[3].y1 = DISPLAY_HEIGHT - 15;
+    ctx->challenges_areas[3].y2 = DISPLAY_HEIGHT;
+    ctx->challenges_areas[4].x1 = DISPLAY_WIDTH - 680;
+    ctx->challenges_areas[4].x2 = DISPLAY_WIDTH - 410;
+    ctx->challenges_areas[4].y1 = DISPLAY_HEIGHT - 15;
+    ctx->challenges_areas[4].y2 = DISPLAY_HEIGHT;
 
     ctx->challenge_index = 0; // 0 até 4
     ctx->life_counter = 3; // 3 até 0
@@ -123,6 +133,8 @@ void reset_context(Context* ctx) {
     ctx->life_counter = 3; // 3 até 0
     ctx->hunger_counter = 3; // 3 até 0
     ctx->state = MENU;
+    ctx->redraw = true;
+    ctx->done = false;
 }
 
 void free_context(Context* ctx) {
@@ -145,6 +157,50 @@ void free_context(Context* ctx) {
     al_destroy_event_queue(ctx->queue);
     al_uninstall_keyboard();
     al_uninstall_mouse();
+}
+
+void draw_context(Context* ctx) {
+    switch (ctx->state) {
+    case MENU:
+        al_clear_to_color(al_map_rgb(0, 0, 0));
+        al_draw_text(ctx->font, al_map_rgb(255, 255, 255), 500, 200, 0, "Stay Alive");
+        al_draw_filled_rectangle(500, 500, 500 + BUTTON_WIDTH, 500 + BUTTON_HEIGHT, al_map_rgb(255, 0, 0));
+        al_draw_text(ctx->font, al_map_rgb(255, 255, 255), 500, 500, 0, "Jogar");
+        break;
+    case OPEN_MAP:
+        al_clear_to_color(al_map_rgb(0, 0, 0));
+        al_draw_bitmap(ctx->imgs.map, ctx->map.x, ctx->map.y, 0);
+        al_draw_bitmap(ctx->imgs.char_sprites.current, ctx->player.x, ctx->player.y, 0);
+        for (int i = 2; i >= 0; i--) {
+            if (ctx->life_counter > i) {
+                al_draw_bitmap(ctx->imgs.heart_filled, 5 + i * HEART_WIDTH, 5, 0);
+            }
+            else {
+                al_draw_bitmap(ctx->imgs.heart_empty, 5 + i * HEART_WIDTH, 5, 0);
+            }
+            if (ctx->hunger_counter > i) {
+                al_draw_bitmap(ctx->imgs.hunger_filled, 5 + i * HUNGER_WIDTH, HEART_HEIGHT + 15, 0);
+            }
+            else {
+                al_draw_bitmap(ctx->imgs.hunger_empty, 5 + i * HUNGER_WIDTH, HEART_HEIGHT + 15, 0);
+            }
+        }
+        break;
+    case CHALLENGE:
+        if (ctx->challenge_index == 0) al_clear_to_color(al_map_rgb(0, 0, 0));
+        if (ctx->challenge_index == 1) al_clear_to_color(al_map_rgb(255, 0, 0));
+        if (ctx->challenge_index == 2) al_clear_to_color(al_map_rgb(0, 255, 0));
+        if (ctx->challenge_index == 3) al_clear_to_color(al_map_rgb(0, 0, 255));
+        if (ctx->challenge_index == 4) al_clear_to_color(al_map_rgb(100, 100, 100));
+        al_draw_textf(ctx->font, al_map_rgb(255, 255, 255), 0, 0, 0, "Desafio %d", ctx->challenge_index + 1);
+        break;
+    case GAME_OVER:
+        al_clear_to_color(al_map_rgb(0, 0, 0));
+        al_draw_text(ctx->font, al_map_rgb(255, 255, 255), 0, 0, 0, "Fim de jogo");
+        al_draw_filled_rectangle(500, 500, 500 + BUTTON_WIDTH, 500 + BUTTON_HEIGHT, al_map_rgb(255, 0, 0));
+        al_draw_text(ctx->font, al_map_rgb(255, 255, 255), 500, 500, 0, "Retornar ao menu");
+        break;
+    }
 }
 
 void move_camera(Context* ctx) {
@@ -238,12 +294,18 @@ void finish_challenge(bool success, Context* ctx) {
         ctx->hunger_counter--;
     }
 
+    if (ctx->challenge_index == 4) {
+        ctx->challenges_areas[4].x1 = 0;
+        ctx->challenges_areas[4].x2 = 0;
+        ctx->challenges_areas[4].y1 = 0;
+        ctx->challenges_areas[4].y2 = 0;
+    }
+
     if (ctx->challenge_index <= 3) {
         ctx->challenge_index++;
     }
 
     ctx->state = OPEN_MAP;
-    printf("life: %d; hunger: %d; c index: %d\n", ctx->life_counter, ctx->hunger_counter, ctx->challenge_index);
 }
 
 int get_event_index(ALLEGRO_EVENT_TYPE event_type) {

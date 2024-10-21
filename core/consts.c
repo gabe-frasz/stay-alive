@@ -1,6 +1,4 @@
 const int FPS = 30;
-const int DISPLAY_WIDTH = 1280;
-const int DISPLAY_HEIGHT = 720;
 const int MAP_SIZE = 2336;
 const int INITIAL_MAP_X = -320;
 const int INITIAL_MAP_Y = -90;
