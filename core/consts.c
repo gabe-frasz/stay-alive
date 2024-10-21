@@ -1,0 +1,12 @@
+const int FPS = 30;
+const int MAP_SIZE = 2336;
+const int INITIAL_MAP_X = -320;
+const int INITIAL_MAP_Y = -90;
+const int PLAYER_WIDTH = 100;
+const int PLAYER_HEIGHT = 125;
+const int PLAYER_SPEED = 5;
+const int BUTTON_WIDTH = 200;
+const int BUTTON_HEIGHT = 50;
+const int HEART_WIDTH = 50;
+const int HEART_HEIGHT = 45;
+const int HUNGER_WIDTH = 50;
