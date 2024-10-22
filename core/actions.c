@@ -1,6 +1,6 @@
 #include "functions.c"
 
-void timer_map(Context* ctx) {
+static void timer_map(Context* ctx) {
     float cx1 = ctx->challenges_areas[ctx->challenge_index].x1;
     float cx2 = ctx->challenges_areas[ctx->challenge_index].x2;
     float cy1 = ctx->challenges_areas[ctx->challenge_index].y1;
@@ -26,11 +26,11 @@ void timer_map(Context* ctx) {
         ctx->state = CHALLENGE;
     }
 }
-void keychar_map(Context* ctx) {
+static void keychar_map(Context* ctx) {
     move_camera(ctx);
     change_character_sprite(ctx);
 }
-void keyup_map(Context* ctx) {
+static void keyup_map(Context* ctx) {
     change_character_sprite(ctx);
 }
 

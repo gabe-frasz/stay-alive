@@ -7,9 +7,6 @@
 #include "types.h"
 #include "consts.c"
 
-int DISPLAY_WIDTH;
-int DISPLAY_HEIGHT;
-
 void must_init(bool test, char* description) {
     if (!test) {
         printf("Could not initialize %s.\n", description);
@@ -20,6 +17,16 @@ void must_init(bool test, char* description) {
 void load_images(Images* imgs) {
     imgs->map = al_load_bitmap("images/map.png");
     must_init(imgs->map, "map image");
+    imgs->menu = al_load_bitmap("images/menu.jpg");
+    must_init(imgs->menu, "menu image");
+    imgs->end_game = al_load_bitmap("images/end_game.jpeg");
+    must_init(imgs->end_game, "end game image");
+    imgs->game_over = al_load_bitmap("images/game_over.png");
+    must_init(imgs->game_over, "game over image");
+    imgs->play_btn = al_load_bitmap("images/play_btn.png");
+    must_init(imgs->play_btn, "play button image");
+    imgs->menu_btn = al_load_bitmap("images/menu_btn.png");
+    must_init(imgs->play_btn, "menu button image");
     imgs->char_sprites.front[0] = al_load_bitmap("images/parado_frente.png");
     must_init(imgs->char_sprites.front[0], "char front image");
     imgs->char_sprites.front[1] = al_load_bitmap("images/andando_frente1.png");
@@ -63,11 +70,6 @@ void init_context(Context* ctx) {
     
     ALLEGRO_MONITOR_INFO info;
     al_get_monitor_info(0, &info);
-
-    DISPLAY_WIDTH = info.x2 - info.x1;
-    DISPLAY_HEIGHT = info.y2 - info.y1;
-    if (DISPLAY_WIDTH > 1920) DISPLAY_WIDTH = 1920;
-    if (DISPLAY_HEIGHT > 1080) DISPLAY_HEIGHT = 1080;
 
     ctx->timer = al_create_timer(1.0 / FPS);
     must_init(ctx->timer, "timer");
@@ -114,6 +116,7 @@ void init_context(Context* ctx) {
     ctx->challenges_areas[4].y1 = DISPLAY_HEIGHT - 15;
     ctx->challenges_areas[4].y2 = DISPLAY_HEIGHT;
 
+    ctx->has_user_lost = false;
     ctx->challenge_index = 0; // 0 até 4
     ctx->life_counter = 3; // 3 até 0
     ctx->hunger_counter = 3; // 3 até 0
@@ -129,6 +132,7 @@ void reset_context(Context* ctx) {
     ctx->player.y = DISPLAY_HEIGHT/2.0 - PLAYER_HEIGHT/2;
     ctx->map.x = INITIAL_MAP_X;
     ctx->map.y = INITIAL_MAP_Y;
+    ctx->has_user_lost = false;
     ctx->challenge_index = 0; // 0 até 4
     ctx->life_counter = 3; // 3 até 0
     ctx->hunger_counter = 3; // 3 até 0
@@ -139,6 +143,11 @@ void reset_context(Context* ctx) {
 
 void free_context(Context* ctx) {
     al_destroy_bitmap(ctx->imgs.map);
+    al_destroy_bitmap(ctx->imgs.menu);
+    al_destroy_bitmap(ctx->imgs.end_game);
+    al_destroy_bitmap(ctx->imgs.game_over);
+    al_destroy_bitmap(ctx->imgs.play_btn);
+    al_destroy_bitmap(ctx->imgs.menu_btn);
     al_destroy_bitmap(ctx->imgs.heart_empty);
     al_destroy_bitmap(ctx->imgs.heart_filled);
     al_destroy_bitmap(ctx->imgs.hunger_empty);
@@ -160,12 +169,14 @@ void free_context(Context* ctx) {
 }
 
 void draw_context(Context* ctx) {
+    float btn_x = DISPLAY_WIDTH / 2.0 - BUTTON_WIDTH / 2.0;
+    float btn_y = DISPLAY_HEIGHT / 2.0 - BUTTON_HEIGHT / 2.0;
+
     switch (ctx->state) {
     case MENU:
         al_clear_to_color(al_map_rgb(0, 0, 0));
-        al_draw_text(ctx->font, al_map_rgb(255, 255, 255), 500, 200, 0, "Stay Alive");
-        al_draw_filled_rectangle(500, 500, 500 + BUTTON_WIDTH, 500 + BUTTON_HEIGHT, al_map_rgb(255, 0, 0));
-        al_draw_text(ctx->font, al_map_rgb(255, 255, 255), 500, 500, 0, "Jogar");
+        al_draw_bitmap(ctx->imgs.menu, 0, 0, 0);
+        al_draw_bitmap(ctx->imgs.play_btn, btn_x, btn_y, 0);
         break;
     case OPEN_MAP:
         al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -196,9 +207,13 @@ void draw_context(Context* ctx) {
         break;
     case GAME_OVER:
         al_clear_to_color(al_map_rgb(0, 0, 0));
-        al_draw_text(ctx->font, al_map_rgb(255, 255, 255), 0, 0, 0, "Fim de jogo");
-        al_draw_filled_rectangle(500, 500, 500 + BUTTON_WIDTH, 500 + BUTTON_HEIGHT, al_map_rgb(255, 0, 0));
-        al_draw_text(ctx->font, al_map_rgb(255, 255, 255), 500, 500, 0, "Retornar ao menu");
+        if (ctx->has_user_lost) {
+            al_draw_bitmap(ctx->imgs.game_over, 0, 0, 0);
+        }
+        else {
+            al_draw_bitmap(ctx->imgs.end_game, 0, 0, 0);
+        }
+        al_draw_bitmap(ctx->imgs.menu_btn, btn_x, btn_y, 0);
         break;
     }
 }
@@ -284,6 +299,12 @@ void finish_challenge(bool success, Context* ctx) {
 
     if (ctx->life_counter <= 0) {
         ctx->state = GAME_OVER;
+        ctx->has_user_lost = true;
+        return;
+    }
+
+    if (ctx->challenge_index == 4) {
+        ctx->state = GAME_OVER;
         return;
     }
 
@@ -292,13 +313,6 @@ void finish_challenge(bool success, Context* ctx) {
       ctx->hunger_counter = 3;
     } else if (ctx->hunger_counter > 0) {
         ctx->hunger_counter--;
-    }
-
-    if (ctx->challenge_index == 4) {
-        ctx->challenges_areas[4].x1 = 0;
-        ctx->challenges_areas[4].x2 = 0;
-        ctx->challenges_areas[4].y1 = 0;
-        ctx->challenges_areas[4].y2 = 0;
     }
 
     if (ctx->challenge_index <= 3) {
