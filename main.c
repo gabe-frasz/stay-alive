@@ -13,14 +13,6 @@ int main() {
         if (ctx.event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) ctx.done = true;
         if (ctx.event.type == ALLEGRO_EVENT_TIMER) ctx.redraw = true;
 
-        if (ctx.event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
-            Coordinate mouse = {ctx.event.mouse.x, ctx.event.mouse.y};
-            float btn_x = DISPLAY_WIDTH / 2.0 - BUTTON_WIDTH / 2.0;
-            float btn_y = DISPLAY_HEIGHT / 2.0 - BUTTON_HEIGHT / 2.0;
-            bool is_collision = check_collision(&mouse, btn_x, btn_x + BUTTON_WIDTH, btn_y, btn_y + BUTTON_HEIGHT);
-            if (ctx.state == MENU && is_collision) ctx.state = OPEN_MAP;
-            if (ctx.state == GAME_OVER && is_collision) reset_context(&ctx);
-        }
         if (ctx.event.type == ALLEGRO_EVENT_KEY_DOWN) {
             if (ctx.state == CHALLENGE) {
                 if (ctx.event.keyboard.keycode == ALLEGRO_KEY_0) finish_challenge(false, &ctx);
