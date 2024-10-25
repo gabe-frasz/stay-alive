@@ -338,7 +338,7 @@ int get_event_index(ALLEGRO_EVENT_TYPE event_type) {
     case ALLEGRO_EVENT_KEY_DOWN:
         index = 3;
         break;
-    case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+    case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
         index = 4;
         break;
     }
