@@ -14,10 +14,8 @@ int main() {
         if (ctx.event.type == ALLEGRO_EVENT_TIMER) ctx.redraw = true;
 
         if (ctx.event.type == ALLEGRO_EVENT_KEY_DOWN) {
-            if (ctx.state == CHALLENGE) {
-                if (ctx.event.keyboard.keycode == ALLEGRO_KEY_0) finish_challenge(false, &ctx);
-                if (ctx.event.keyboard.keycode == ALLEGRO_KEY_1) finish_challenge(true, &ctx);
-            }
+            if (ctx.state == CHALLENGE && ctx.event.keyboard.keycode == ALLEGRO_KEY_0) finish_challenge(false, &ctx);
+            if (ctx.state == CHALLENGE && ctx.event.keyboard.keycode == ALLEGRO_KEY_1) finish_challenge(true, &ctx);
             if (ctx.state == OPEN_MAP && ctx.event.keyboard.keycode == ALLEGRO_KEY_N) ctx.state = CHALLENGE;
         }
 
