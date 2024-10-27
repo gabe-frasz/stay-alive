@@ -116,6 +116,34 @@ void init_context(Context* ctx) {
     ctx->challenges_areas[4].y1 = DISPLAY_HEIGHT - 15;
     ctx->challenges_areas[4].y2 = DISPLAY_HEIGHT;
 
+    ctx->c1.placeable_positions[0].x = 5;
+    ctx->c1.placeable_positions[0].y = 600;
+    ctx->c1.placeable_positions[1].x = 10;
+    ctx->c1.placeable_positions[1].y = 200;
+    ctx->c1.placeable_positions[2].x = 150;
+    ctx->c1.placeable_positions[2].y = 600;
+    ctx->c1.placeable_positions[3].x = 150;
+    ctx->c1.placeable_positions[3].y = 200;
+    ctx->c1.placeable_positions[4].x = 300;
+    ctx->c1.placeable_positions[4].y = 600;
+    ctx->c1.placeable_positions[5].x = 400;
+    ctx->c1.placeable_positions[5].y = 200;
+    ctx->c1.placeable_positions[6].x = 450;
+    ctx->c1.placeable_positions[6].y = 600;
+    ctx->c1.placeable_positions[7].x = 550;
+    ctx->c1.placeable_positions[7].y = 200;
+    ctx->c1.placeable_positions[8].x = 700;
+    ctx->c1.placeable_positions[8].y = 600;
+    ctx->c1.placeable_positions[9].x = 700;
+    ctx->c1.placeable_positions[9].y = 200;
+
+    for (int i = 0; i < 5; i++) {
+        ctx->c1.selectable_objects[i].position_index = i * 2;
+        ctx->c1.selectable_objects[i].correct_position_index = i * 2 + 1;
+        ctx->c1.selectable_objects[i].width = 100;
+        ctx->c1.selectable_objects[i].height = 100;
+    }
+
     ctx->has_user_lost = false;
     ctx->challenge_index = 0; // 0 até 4
     ctx->life_counter = 3; // 3 até 0
@@ -132,6 +160,7 @@ void reset_context(Context* ctx) {
     ctx->player.y = DISPLAY_HEIGHT/2.0 - PLAYER_HEIGHT/2;
     ctx->map.x = INITIAL_MAP_X;
     ctx->map.y = INITIAL_MAP_Y;
+
     ctx->has_user_lost = false;
     ctx->challenge_index = 0; // 0 até 4
     ctx->life_counter = 3; // 3 até 0
@@ -198,7 +227,26 @@ void draw_context(Context* ctx) {
         }
         break;
     case CHALLENGE:
-        if (ctx->challenge_index == 0) al_clear_to_color(al_map_rgb(0, 0, 0));
+        if (ctx->challenge_index == 0) {
+            al_clear_to_color(al_map_rgb(0, 0, 0));
+            al_draw_textf(ctx->font, al_map_rgb(255, 255, 255), 0, 0, 0, "Desafio 1");
+            for (int i = 0; i < 10; i++) {
+                Coordinate* pos = &ctx->c1.placeable_positions[i];
+                al_draw_filled_rectangle(pos->x, pos->y, pos->x + 100, pos->y + 100, al_map_rgb(50, 50, 50));
+            }
+            for (int i = 0; i < 5; i++) {
+                int pos_i = ctx->c1.selectable_objects[i].position_index;
+                float x = ctx->c1.placeable_positions[pos_i].x,
+                      y = ctx->c1.placeable_positions[pos_i].y;
+                al_draw_filled_rectangle(x, y, x + 100, y + 100, al_map_rgb(255, 0, 255)); 
+                if (ctx->c1.selected_object_index == i) {
+                    al_draw_rectangle(x - 5, y - 5, x + 100 + 5, y + 100 + 5, al_map_rgb(255, 255, 255), 1);
+                }
+                al_draw_textf(ctx->font, al_map_rgb(255, 255, 255), x + 10, y + 10, 0, "%d", i + 1);
+            }  
+            al_draw_filled_rectangle(1000, 600, 1200, 700, al_map_rgb(0, 50, 0));
+            al_draw_text(ctx->font, al_map_rgb(255, 255, 255), 1000, 600, 0, "Pronto!");
+        }
         if (ctx->challenge_index == 1) al_clear_to_color(al_map_rgb(255, 0, 0));
         if (ctx->challenge_index == 2) al_clear_to_color(al_map_rgb(0, 255, 0));
         if (ctx->challenge_index == 3) al_clear_to_color(al_map_rgb(0, 0, 255));

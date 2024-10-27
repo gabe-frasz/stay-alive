@@ -31,16 +31,17 @@ typedef struct {
 } Coordinate;
 
 typedef struct {
-    Coordinate initial_position, correct_position;
-    int id, width, height;
+  float x1, x2, y1, y2;
+} Rectangle;
+
+typedef struct {
+    int width, height, position_index, correct_position_index;
 } Selectable_Object;
 
 typedef struct {
-    float x1, x2, y1, y2;
-} Challenge_Area;
-
-typedef struct {
     Selectable_Object selectable_objects[5];
+    Coordinate placeable_positions[10];
+    int selected_object_index;
 } Challenge_1;
 
 enum Game_State {
@@ -59,7 +60,7 @@ typedef struct {
     Images imgs;
     Coordinate player, map;
     Challenge_1 c1;
-    Challenge_Area challenges_areas[5];
+    Rectangle challenges_areas[5];
     int challenge_index, life_counter, hunger_counter;
     enum Game_State state;
     bool redraw, done, has_user_lost;
