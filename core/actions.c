@@ -1,6 +1,13 @@
 #include "functions.c"
 
-void timer_map(Context* ctx) {
+static void mouseup_menu(Context* ctx) {
+    Coordinate mouse = { ctx->event.mouse.x, ctx->event.mouse.y };
+    float btn_x = DISPLAY_WIDTH / 2.0 - BUTTON_WIDTH / 2.0;
+    float btn_y = DISPLAY_HEIGHT / 2.0 - BUTTON_HEIGHT / 2.0;
+    bool is_collision = check_collision(&mouse, btn_x, btn_x + BUTTON_WIDTH, btn_y, btn_y + BUTTON_HEIGHT);
+    if (is_collision) ctx->state = OPEN_MAP;
+}
+static void timer_map(Context* ctx) {
     float cx1 = ctx->challenges_areas[ctx->challenge_index].x1;
     float cx2 = ctx->challenges_areas[ctx->challenge_index].x2;
     float cy1 = ctx->challenges_areas[ctx->challenge_index].y1;
@@ -26,12 +33,19 @@ void timer_map(Context* ctx) {
         ctx->state = CHALLENGE;
     }
 }
-void keychar_map(Context* ctx) {
+static void keychar_map(Context* ctx) {
     move_camera(ctx);
     change_character_sprite(ctx);
 }
-void keyup_map(Context* ctx) {
+static void keyup_map(Context* ctx) {
     change_character_sprite(ctx);
+}
+static void mouseup_gameover(Context* ctx) {
+    Coordinate mouse = { ctx->event.mouse.x, ctx->event.mouse.y };
+    float btn_x = DISPLAY_WIDTH / 2.0 - BUTTON_WIDTH / 2.0;
+    float btn_y = DISPLAY_HEIGHT / 2.0 - BUTTON_HEIGHT / 2.0;
+    bool is_collision = check_collision(&mouse, btn_x, btn_x + BUTTON_WIDTH, btn_y, btn_y + BUTTON_HEIGHT);
+    if (is_collision) reset_context(ctx);
 }
 
 /*
@@ -47,8 +61,8 @@ void keyup_map(Context* ctx) {
     [n][4] mousedown
 */
 void (*actions[4][5])(Context*) = {
-    {NULL, NULL, NULL, NULL, NULL}, // MENU
+    {NULL, NULL, NULL, NULL, mouseup_menu}, // MENU
     {timer_map, keychar_map, keyup_map, NULL, NULL}, // OPEN_MAP
     {NULL, NULL, NULL, NULL, NULL}, // CHALLENGE
-    {NULL, NULL, NULL, NULL, NULL}  // GAME_OVER
+    {NULL, NULL, NULL, NULL, mouseup_gameover}  // GAME_OVER
 };
