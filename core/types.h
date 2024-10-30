@@ -1,3 +1,6 @@
+#ifndef TYPES_H
+#define TYPES_H
+
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <stdbool.h>
@@ -65,3 +68,5 @@ typedef struct {
     enum Game_State state;
     bool redraw, done, has_user_lost;
 } Context;
+
+#endif

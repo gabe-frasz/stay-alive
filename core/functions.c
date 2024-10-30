@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "types.h"
-#include "consts.c"
+#include "consts.h"
 
 void must_init(bool test, char* description) {
     if (!test) {

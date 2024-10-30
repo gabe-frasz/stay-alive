@@ -1,4 +1,6 @@
-#include "functions.c"
+#include "types.h"
+#include "consts.h"
+#include "functions.h"
 
 static void mouseup_menu(Context* ctx) {
     Coordinate mouse = { ctx->event.mouse.x, ctx->event.mouse.y };

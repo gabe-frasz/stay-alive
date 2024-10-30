@@ -1,0 +1,19 @@
+#ifndef CONSTS_H
+#define CONSTS_H
+
+#define FPS 30
+#define DISPLAY_WIDTH 1280
+#define DISPLAY_HEIGHT 720
+#define MAP_SIZE 2336
+#define INITIAL_MAP_X -320
+#define INITIAL_MAP_Y -90
+#define PLAYER_WIDTH 100
+#define PLAYER_HEIGHT 125
+#define PLAYER_SPEED 5
+#define BUTTON_WIDTH 178
+#define BUTTON_HEIGHT 73
+#define HEART_WIDTH 50
+#define HEART_HEIGHT 45
+#define HUNGER_WIDTH 50
+
+#endif
