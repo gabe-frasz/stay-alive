@@ -68,9 +68,6 @@ void init_context(Context* ctx) {
     must_init(al_install_mouse(), "mouse");
     must_init(al_init_image_addon(), "image");
     
-    ALLEGRO_MONITOR_INFO info;
-    al_get_monitor_info(0, &info);
-
     ctx->timer = al_create_timer(1.0 / FPS);
     must_init(ctx->timer, "timer");
     ctx->queue = al_create_event_queue();
