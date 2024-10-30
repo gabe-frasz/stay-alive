@@ -29,6 +29,13 @@ typedef struct {
     ALLEGRO_BITMAP* hunger_filled;
 } Images;
 
+enum Game_State {
+    MENU,
+    OPEN_MAP,
+    CHALLENGE,
+    GAME_OVER
+};
+
 typedef struct {
     float x, y;
 } Coordinate;
@@ -39,20 +46,22 @@ typedef struct {
 
 typedef struct {
     int width, height, position_index, correct_position_index;
-} Selectable_Object;
+} Placeable_Object;
 
 typedef struct {
-    Selectable_Object selectable_objects[5];
+    Placeable_Object placeable_objects[5];
     Coordinate placeable_positions[10];
     int selected_object_index;
 } Challenge_1;
 
-enum Game_State {
-    MENU,
-    OPEN_MAP,
-    CHALLENGE,
-    GAME_OVER
-};
+typedef struct {
+    Coordinate position;
+    bool selected, correct;
+} Selectable_Object;
+
+typedef struct {
+    Selectable_Object selectable_objects[7];
+} Challenge_2;
 
 typedef struct {
     ALLEGRO_TIMER* timer;
@@ -63,6 +72,7 @@ typedef struct {
     Images imgs;
     Coordinate player, map;
     Challenge_1 c1;
+    Challenge_2 c2;
     Rectangle challenges_areas[5];
     int challenge_index, life_counter, hunger_counter;
     enum Game_State state;

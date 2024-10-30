@@ -43,22 +43,23 @@ static void keyup_map(Context* ctx) {
     change_character_sprite(ctx);
 }
 static void mouseup_challenge(Context* ctx) {
+    Coordinate mouse = { ctx->event.mouse.x, ctx->event.mouse.y };
+
     if (ctx->challenge_index == 0) {
-        Coordinate mouse = { ctx->event.mouse.x, ctx->event.mouse.y };
         for (int i = 0; i < 5; i++) {
-            int pos_i = ctx->c1.selectable_objects[i].position_index,
-                cpos_i = ctx->c1.selectable_objects[i].correct_position_index;
+            int pos_i = ctx->c1.placeable_objects[i].position_index,
+                cpos_i = ctx->c1.placeable_objects[i].correct_position_index;
             float x = ctx->c1.placeable_positions[pos_i].x,
                   y = ctx->c1.placeable_positions[pos_i].y,
-                  w = ctx->c1.selectable_objects[i].width,
-                  h = ctx->c1.selectable_objects[i].height;
+                  w = ctx->c1.placeable_objects[i].width,
+                  h = ctx->c1.placeable_objects[i].height;
 
             if (check_collision(&mouse, x, x + w, y, y + h)) {
                 ctx->c1.selected_object_index = i;
             }
         }
         for (int i = 0; i < 10; i++) {
-            Selectable_Object* selected = &ctx->c1.selectable_objects[ctx->c1.selected_object_index];
+            Placeable_Object* selected = &ctx->c1.placeable_objects[ctx->c1.selected_object_index];
             float x = ctx->c1.placeable_positions[i].x,
                   y = ctx->c1.placeable_positions[i].y;
             if (check_collision(&mouse, x, x + 100, y, y + 100)) {
@@ -69,11 +70,33 @@ static void mouseup_challenge(Context* ctx) {
         if (check_collision(&mouse, 1000, 1200, 600, 700)) {
             bool success = true;
             for (int i = 0; i < 5; i++) {
-                Selectable_Object* obj = &ctx->c1.selectable_objects[i];
+                Placeable_Object* obj = &ctx->c1.placeable_objects[i];
                 if (obj->position_index != obj->correct_position_index) success = false;
             }
             finish_challenge(success, ctx);
         }
+        return;
+    }
+
+    if (ctx->challenge_index == 1) {
+        for (int i = 0; i < 7; i++) {
+            Selectable_Object* obj = &ctx->c2.selectable_objects[i];
+            if (check_collision(&mouse, obj->position.x, obj->position.x + 100, obj->position.y, obj->position.y + 100)) {
+                obj->selected = !obj->selected;
+            }
+        }
+
+        if (check_collision(&mouse, 1000, 1200, 600, 700)) {
+            bool success = true;
+            for (int i = 0; i < 7; i++) {
+                if ((ctx->c2.selectable_objects[i].selected && !ctx->c2.selectable_objects[i].correct) || 
+                    (!ctx->c2.selectable_objects[i].selected && ctx->c2.selectable_objects[i].correct)) {
+                    success = false;
+                }
+            }
+            finish_challenge(success, ctx);
+        }
+        return;
     }
 }
 static void mouseup_gameover(Context* ctx) {
