@@ -15,5 +15,6 @@
 #define HEART_WIDTH 50
 #define HEART_HEIGHT 45
 #define HUNGER_WIDTH 50
+#define FALLING_SPEED 10
 
 #endif

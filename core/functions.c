@@ -4,6 +4,8 @@
 #include <allegro5/allegro_font.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "types.h"
 #include "consts.h"
 
@@ -11,6 +13,17 @@ void must_init(bool test, char* description) {
     if (!test) {
         printf("Could not initialize %s.\n", description);
         exit(1);
+    }
+}
+
+void generate_random_falling_object(Falling_Object* obj) {
+    obj->position.y = (rand() % 150 + 50) * -1;
+    obj->id = rand() % 2;
+
+    if (obj->id == 0) {
+        obj->position.x += rand() % 25;
+    } else {
+        obj->position.x -= rand() % 25;
     }
 }
 
@@ -67,6 +80,8 @@ void init_context(Context* ctx) {
     must_init(al_install_keyboard(), "keyboard");
     must_init(al_install_mouse(), "mouse");
     must_init(al_init_image_addon(), "image");
+
+    srand(time(NULL));
     
     ctx->timer = al_create_timer(1.0 / FPS);
     must_init(ctx->timer, "timer");
@@ -113,6 +128,7 @@ void init_context(Context* ctx) {
     ctx->challenges_areas[4].y1 = DISPLAY_HEIGHT - 15;
     ctx->challenges_areas[4].y2 = DISPLAY_HEIGHT;
 
+    // Challenge 1
     ctx->c1.placeable_positions[0].x = 5;
     ctx->c1.placeable_positions[0].y = 600;
     ctx->c1.placeable_positions[1].x = 10;
@@ -133,6 +149,7 @@ void init_context(Context* ctx) {
     ctx->c1.placeable_positions[8].y = 600;
     ctx->c1.placeable_positions[9].x = 700;
     ctx->c1.placeable_positions[9].y = 200;
+    ctx->c1.selected_object_index = -1;
 
     for (int i = 0; i < 5; i++) {
         ctx->c1.placeable_objects[i].position_index = i * 2;
@@ -141,6 +158,7 @@ void init_context(Context* ctx) {
         ctx->c1.placeable_objects[i].height = 100;
     }
 
+    // Challenge 2
     ctx->c2.selectable_objects[0].position.x = 100;
     ctx->c2.selectable_objects[0].position.y = 100;
     ctx->c2.selectable_objects[1].position.x = 300;
@@ -163,12 +181,28 @@ void init_context(Context* ctx) {
         if (i < 5) ctx->c2.selectable_objects[i].correct = true;
     }
 
+    // Challenge 3
+    ctx->c3.player_position.x = 490;
+    ctx->c3.player_position.y = 600;
+    ctx->c3.apples_counter = 0;
+    ctx->c3.mushrooms_counter = 0;
+
+    for (int i = 0; i < 16; i++) {
+        Falling_Object* obj = &ctx->c3.falling_objects[i];
+        generate_random_falling_object(obj);
+        int index = i;
+        if (i >= 8) {
+            index = i - 8;
+            obj->position.y -= 300;
+        }
+        obj->position.x = (DISPLAY_WIDTH - 80.0) / 8 * index + 40;
+    }
+
     ctx->has_user_lost = false;
     ctx->challenge_index = 0; // 0 até 4
     ctx->life_counter = 3; // 3 até 0
     ctx->hunger_counter = 3; // 3 até 0
     ctx->state = MENU;
-
     ctx->redraw = true;
     ctx->done = false;
 }
@@ -193,6 +227,11 @@ void reset_context(Context* ctx) {
         ctx->c2.selectable_objects[i].correct = false;
         if (i < 5) ctx->c2.selectable_objects[i].correct = true;
     }
+
+    ctx->c3.player_position.x = 490;
+    ctx->c3.player_position.y = 600;
+    ctx->c3.apples_counter = 0;
+    ctx->c3.mushrooms_counter = 0;
 
     ctx->has_user_lost = false;
     ctx->challenge_index = 0; // 0 até 4
@@ -288,7 +327,24 @@ void draw_context(Context* ctx) {
             }
         }
             
-        if (ctx->challenge_index == 2) al_clear_to_color(al_map_rgb(0, 255, 0));
+        if (ctx->challenge_index == 2) {
+            al_draw_filled_rectangle(ctx->c3.player_position.x, ctx->c3.player_position.y, ctx->c3.player_position.x + 100, ctx->c3.player_position.y + 100, al_map_rgb(255, 255, 255));
+            al_draw_textf(ctx->font, al_map_rgb(255, 0, 0), 1180, 0, 0, "Maçãs: %d", ctx->c3.apples_counter);
+            al_draw_textf(ctx->font, al_map_rgb(0, 0, 255), 1180, 20, 0, "Cogumelos: %d", ctx->c3.mushrooms_counter);
+
+            for (int i = 0; i < 16; i++) {
+                Falling_Object* obj = &ctx->c3.falling_objects[i];
+            
+                ALLEGRO_COLOR color;
+                if (obj->id == 0) {
+                    color = al_map_rgb(255, 0, 0);
+                } else {
+                    color = al_map_rgb(0, 0, 255);
+                }
+                al_draw_filled_rectangle(obj->position.x, obj->position.y, obj->position.x + 50, obj->position.y + 50, color);
+            }
+        }
+
         if (ctx->challenge_index == 3) al_clear_to_color(al_map_rgb(0, 0, 255));
         if (ctx->challenge_index == 4) al_clear_to_color(al_map_rgb(100, 100, 100));
         al_draw_textf(ctx->font, al_map_rgb(255, 255, 255), 0, 0, 0, "Desafio %d", ctx->challenge_index + 1);
@@ -439,3 +495,81 @@ int get_event_index(ALLEGRO_EVENT_TYPE event_type) {
 bool check_collision(Coordinate* c, float x1, float x2, float y1, float y2) {
     return c->x >= x1 && c->x <= x2 && c->y >= y1 && c->y <= y2;
 }
+
+void handle_challenge_1(Context* ctx, Coordinate* mouse) {
+    Challenge_1* c1 = &ctx->c1;
+
+    // Seleciona o objeto clicado e retorna
+    for (int i = 0; i < 5; i++) {
+        int pos_i = c1->placeable_objects[i].position_index;
+        float x = c1->placeable_positions[pos_i].x,
+              y = c1->placeable_positions[pos_i].y;
+
+        if (check_collision(mouse, x, x + 100, y, y + 100)) {
+            c1->selected_object_index = i;
+        }
+    }
+
+    // Move o objeto selecionado para a posição clicada
+    for (int i = 0; i < 10; i++) {
+        float x = c1->placeable_positions[i].x,
+              y = c1->placeable_positions[i].y;
+
+        if (check_collision(mouse, x, x + 100, y, y + 100)) {
+           c1->placeable_objects[c1->selected_object_index].position_index = i;
+        }
+    }
+
+    // Verifica se o jogador conseguiu completar o desafio
+    if (check_collision(mouse, 1000, 1200, 600, 700)) {
+        bool success = true;
+        for (int i = 0; i < 5; i++) {
+            Placeable_Object* obj = &c1->placeable_objects[i];
+            if (obj->position_index != obj->correct_position_index) {
+                success = false;
+                break;
+            }
+        }
+        finish_challenge(success, ctx);
+    }
+}
+
+void handle_challenge_2(Context* ctx, Coordinate* mouse) {
+    Challenge_2* c2 = &ctx->c2;
+
+    // Seleciona ou desmarca os objetos clicados
+    for (int i = 0; i < 7; i++) {
+        Selectable_Object* obj = &c2->selectable_objects[i];
+        if (check_collision(mouse, obj->position.x, obj->position.x + 100, obj->position.y, obj->position.y + 100)) {
+            obj->selected = !obj->selected;
+        }
+    }
+
+    // Verifica se o jogador conseguiu completar o desafio
+    if (check_collision(mouse, 1000, 1200, 600, 700)) {
+        bool success = true;
+        for (int i = 0; i < 7; i++) {
+            if ((c2->selectable_objects[i].selected && !c2->selectable_objects[i].correct) || 
+                (!c2->selectable_objects[i].selected && c2->selectable_objects[i].correct)) {
+                success = false;
+                break;
+            }
+        }
+        finish_challenge(success, ctx);
+    }
+}
+
+void move_character_sideways(Context* ctx) {
+    switch (ctx->event.keyboard.keycode) {
+    case ALLEGRO_KEY_LEFT:
+    case ALLEGRO_KEY_A:
+        ctx->c3.player_position.x -= 150;
+        if (ctx->c3.player_position.x <= 0) ctx->c3.player_position.x += 150;
+        break;
+    case ALLEGRO_KEY_RIGHT:
+    case ALLEGRO_KEY_D:
+        ctx->c3.player_position.x += 150;
+        if (ctx->c3.player_position.x + 100 >= DISPLAY_WIDTH) ctx->c3.player_position.x -= 150;
+        break;
+    }
+} 

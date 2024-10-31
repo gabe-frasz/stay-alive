@@ -64,6 +64,17 @@ typedef struct {
 } Challenge_2;
 
 typedef struct {
+    Coordinate position;
+    int id; // 0 = maçã, 1 = cogumelo
+} Falling_Object;
+
+typedef struct {
+    Coordinate player_position;
+    Falling_Object falling_objects[16];
+    int apples_counter, mushrooms_counter;
+} Challenge_3;
+
+typedef struct {
     ALLEGRO_TIMER* timer;
     ALLEGRO_EVENT_QUEUE* queue;
     ALLEGRO_DISPLAY* disp;
@@ -73,6 +84,7 @@ typedef struct {
     Coordinate player, map;
     Challenge_1 c1;
     Challenge_2 c2;
+    Challenge_3 c3;
     Rectangle challenges_areas[5];
     int challenge_index, life_counter, hunger_counter;
     enum Game_State state;
