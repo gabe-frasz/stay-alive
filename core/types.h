@@ -6,6 +6,10 @@
 #include <stdbool.h>
 
 #define CHAR_SPRITES_LENGTH 3
+#define PLACEABLE_OBJECTS_LENGTH 5
+#define PLACEABLE_POSITIONS_LENGTH 10
+#define SELECTABLE_OBJECTS_LENGTH 7
+#define FALLING_OBJECTS_LENGTH 16
 
 typedef struct {
     ALLEGRO_BITMAP* front[CHAR_SPRITES_LENGTH]; // o index 0 é o sprite do personagem parado,
@@ -49,8 +53,8 @@ typedef struct {
 } Placeable_Object;
 
 typedef struct {
-    Placeable_Object placeable_objects[5];
-    Coordinate placeable_positions[10];
+    Placeable_Object placeable_objects[PLACEABLE_OBJECTS_LENGTH];
+    Coordinate placeable_positions[PLACEABLE_POSITIONS_LENGTH];
     int selected_object_index;
 } Challenge_1;
 
@@ -60,7 +64,7 @@ typedef struct {
 } Selectable_Object;
 
 typedef struct {
-    Selectable_Object selectable_objects[7];
+    Selectable_Object selectable_objects[SELECTABLE_OBJECTS_LENGTH];
 } Challenge_2;
 
 typedef struct {
@@ -70,7 +74,7 @@ typedef struct {
 
 typedef struct {
     Coordinate player_position;
-    Falling_Object falling_objects[16];
+    Falling_Object falling_objects[FALLING_OBJECTS_LENGTH];
     int apples_counter, mushrooms_counter;
 } Challenge_3;
 

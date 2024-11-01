@@ -5,9 +5,11 @@
 
 static void mouseup_menu(Context* ctx) {
     Coordinate mouse = { ctx->event.mouse.x, ctx->event.mouse.y };
-    float btn_x = DISPLAY_WIDTH / 2.0 - BUTTON_WIDTH / 2.0;
-    float btn_y = DISPLAY_HEIGHT / 2.0 - BUTTON_HEIGHT / 2.0;
-    bool is_collision = check_collision(&mouse, btn_x, btn_x + BUTTON_WIDTH, btn_y, btn_y + BUTTON_HEIGHT);
+    float x1 = PLAY_BTN_X,
+        x2 = PLAY_BTN_X + BUTTON_WIDTH,
+        y1 = PLAY_BTN_Y,
+        y2 = PLAY_BTN_Y + BUTTON_HEIGHT;
+    bool is_collision = check_collision(&mouse, x1, x2, y1, y2);
     if (is_collision) ctx->state = OPEN_MAP;
 }
 static void timer_map(Context* ctx) {
@@ -48,7 +50,7 @@ static void timer_challenge(Context* ctx) {
     
     Challenge_3* c3 = &ctx->c3;
 
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < FALLING_OBJECTS_LENGTH; i++) {
         Falling_Object* obj = &c3->falling_objects[i];
 
         obj->position.y += FALLING_SPEED;
@@ -88,9 +90,11 @@ static void mouseup_challenge(Context* ctx) {
 }
 static void mouseup_gameover(Context* ctx) {
     Coordinate mouse = { ctx->event.mouse.x, ctx->event.mouse.y };
-    float btn_x = DISPLAY_WIDTH / 2.0 - BUTTON_WIDTH / 2.0;
-    float btn_y = DISPLAY_HEIGHT / 2.0 - BUTTON_HEIGHT / 2.0;
-    bool is_collision = check_collision(&mouse, btn_x, btn_x + BUTTON_WIDTH, btn_y, btn_y + BUTTON_HEIGHT);
+    float x1 = RETURN_TO_MENU_BTN_X,
+        x2 = RETURN_TO_MENU_BTN_X + BUTTON_WIDTH,
+        y1 = RETURN_TO_MENU_BTN_Y,
+        y2 = RETURN_TO_MENU_BTN_Y + BUTTON_HEIGHT;
+    bool is_collision = check_collision(&mouse, x1, x2, y1, y2);
     if (is_collision) reset_context(ctx);
 }
 
