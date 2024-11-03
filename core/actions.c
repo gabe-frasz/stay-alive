@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <time.h>
 #include "types.h"
 #include "consts.h"
 #include "functions.h"
@@ -35,6 +36,7 @@ static void timer_map(Context* ctx) {
 
     if (is_player_top_left_colliding || is_player_top_right_colliding ||
         is_player_bottom_left_colliding || is_player_bottom_right_colliding) {
+        if (ctx->challenge_index == 3) ctx->c4.start_time = time(0);
         ctx->state = CHALLENGE;
     }
 }
@@ -46,35 +48,22 @@ static void keyup_map(Context* ctx) {
     change_character_sprite(ctx);
 }
 static void timer_challenge(Context* ctx) {
-    if (ctx->challenge_index != 2) return;
-    
-    Challenge_3* c3 = &ctx->c3;
-
-    for (int i = 0; i < FALLING_OBJECTS_LENGTH; i++) {
-        Falling_Object* obj = &c3->falling_objects[i];
-
-        obj->position.y += FALLING_SPEED;
-
-        if (obj->position.y >= c3->player_position.y && 
-            (obj->position.x >= c3->player_position.x && obj->position.x <= c3->player_position.x + 100 ||
-            obj->position.x + 50 >= c3->player_position.x && obj->position.x + 50 <= c3->player_position.x + 100)) {
-            if (obj->id == 0) {
-                c3->apples_counter++;
-            } else {
-                c3->mushrooms_counter++;
-            }
-            
-            generate_random_falling_object(obj);
-        }
-
-        if (obj->position.y > DISPLAY_HEIGHT) generate_random_falling_object(obj);
+    switch (ctx->challenge_index) {
+    case 2:
+        handle_challenge_3(ctx);
+        break;
+    case 3:
+        verify_challenge_4(ctx);
+        break;
     }
-
-    if (c3->apples_counter >= 10) finish_challenge(true, ctx);
-    if (c3->mushrooms_counter >= 10) finish_challenge(false, ctx);
+    
 }
 static void keydown_challenge(Context* ctx) {
-    move_character_sideways(ctx);
+    switch (ctx->challenge_index) {
+    case 2:
+        move_character_sideways(ctx);
+        break;
+    }
 }
 static void mouseup_challenge(Context* ctx) {
     Coordinate mouse = { ctx->event.mouse.x, ctx->event.mouse.y };
@@ -86,6 +75,9 @@ static void mouseup_challenge(Context* ctx) {
     case 1:
         handle_challenge_2(ctx, &mouse);
         break;
+    case 3:
+        handle_challenge_4(ctx, &mouse);
+        break;
     }
 }
 static void mouseup_gameover(Context* ctx) {
@@ -95,7 +87,7 @@ static void mouseup_gameover(Context* ctx) {
         y1 = RETURN_TO_MENU_BTN_Y,
         y2 = RETURN_TO_MENU_BTN_Y + BUTTON_HEIGHT;
     bool is_collision = check_collision(&mouse, x1, x2, y1, y2);
-    if (is_collision) reset_context(ctx);
+    if (is_collision) set_context_to_default(ctx);
 }
 
 /*

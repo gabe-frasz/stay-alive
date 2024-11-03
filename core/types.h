@@ -10,6 +10,7 @@
 #define PLACEABLE_POSITIONS_LENGTH 10
 #define SELECTABLE_OBJECTS_LENGTH 7
 #define FALLING_OBJECTS_LENGTH 16
+#define WANTED_OBJECTS_LENGTH 4
 
 typedef struct {
     ALLEGRO_BITMAP* front[CHAR_SPRITES_LENGTH]; // o index 0 é o sprite do personagem parado,
@@ -70,6 +71,7 @@ typedef struct {
 typedef struct {
     Coordinate position;
     int id; // 0 = maçã, 1 = cogumelo
+    float speed;
 } Falling_Object;
 
 typedef struct {
@@ -77,6 +79,18 @@ typedef struct {
     Falling_Object falling_objects[FALLING_OBJECTS_LENGTH];
     int apples_counter, mushrooms_counter;
 } Challenge_3;
+
+typedef struct {
+    Coordinate position;
+    bool selected;
+} Wanted_Object;
+
+typedef struct {
+    Wanted_Object wanted_objects[WANTED_OBJECTS_LENGTH];
+    Wanted_Object fake_wanted_objects[WANTED_OBJECTS_LENGTH];
+    time_t start_time;
+    int duration_in_seconds;
+} Challenge_4;
 
 typedef struct {
     ALLEGRO_TIMER* timer;
@@ -89,10 +103,11 @@ typedef struct {
     Challenge_1 c1;
     Challenge_2 c2;
     Challenge_3 c3;
+    Challenge_4 c4;
     Rectangle challenges_areas[5];
     int challenge_index, life_counter, hunger_counter;
     enum Game_State state;
-    bool redraw, done, has_user_lost;
+    bool redraw, done, has_user_lost, is_user_hallucinated;
 } Context;
 
 #endif

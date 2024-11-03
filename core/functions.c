@@ -17,6 +17,7 @@ void must_init(bool test, char* description) {
 }
 
 void generate_random_falling_object(Falling_Object* obj) {
+    obj->speed = 0;
     obj->position.y = (rand() % 150 + 50) * -1;
     obj->id = rand() % 2;
 
@@ -74,6 +75,60 @@ void load_images(Images* imgs) {
     must_init(imgs->hunger_filled, "hunger filled image");
 }
 
+void set_context_to_default(Context* ctx) {
+    ctx->imgs.char_sprites.current = ctx->imgs.char_sprites.front[0];
+    ctx->player.x = DISPLAY_WIDTH/2.0 - PLAYER_WIDTH/2;
+    ctx->player.y = DISPLAY_HEIGHT/2.0 - PLAYER_HEIGHT/2;
+    ctx->map.x = INITIAL_MAP_X;
+    ctx->map.y = INITIAL_MAP_Y;
+
+    for (int i = 0; i < PLACEABLE_OBJECTS_LENGTH; i++) {
+        ctx->c1.placeable_objects[i].position_index = i * 2;
+        ctx->c1.placeable_objects[i].correct_position_index = i * 2 + 1;
+        ctx->c1.placeable_objects[i].width = 100;
+        ctx->c1.placeable_objects[i].height = 100;
+    }
+
+    for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH; i++) {
+        ctx->c2.selectable_objects[i].selected = false;
+      
+        ctx->c2.selectable_objects[i].correct = false;
+        if (i < 5) ctx->c2.selectable_objects[i].correct = true;
+    }
+
+    ctx->c3.player_position.x = 490;
+    ctx->c3.player_position.y = 600;
+    ctx->c3.apples_counter = 0;
+    ctx->c3.mushrooms_counter = 0;
+
+    for (int i = 0; i < FALLING_OBJECTS_LENGTH; i++) {
+        Falling_Object* obj = &ctx->c3.falling_objects[i];
+        generate_random_falling_object(obj);
+        int index = i;
+        if (i >= 8) {
+            index = i - 8;
+            obj->position.y -= 600;
+        }
+        obj->position.x = (DISPLAY_WIDTH - 80.0) / 8 * index + 40;
+    }
+
+    ctx->c4.duration_in_seconds = 10;
+
+    for (int i = 0; i < WANTED_OBJECTS_LENGTH; i++) {
+        ctx->c4.wanted_objects[i].selected = false;
+        ctx->c4.fake_wanted_objects[i].selected = false;
+    }
+
+    ctx->has_user_lost = false;
+    ctx->is_user_hallucinated = false;
+    ctx->challenge_index = 0; // 0 até 4
+    ctx->life_counter = 3; // 3 até 0
+    ctx->hunger_counter = 3; // 3 até 0
+    ctx->state = MENU;
+    ctx->redraw = true;
+    ctx->done = false;
+}
+
 void init_context(Context* ctx) {
     must_init(al_init(), "allegro");
     must_init(al_init_primitives_addon(), "primitives");
@@ -100,12 +155,7 @@ void init_context(Context* ctx) {
     al_register_event_source(ctx->queue, al_get_mouse_event_source());
 
     load_images(&ctx->imgs);
-    ctx->imgs.char_sprites.current = ctx->imgs.char_sprites.front[0];
-
-    ctx->player.x = DISPLAY_WIDTH/2.0 - PLAYER_WIDTH/2;
-    ctx->player.y = DISPLAY_HEIGHT/2.0 - PLAYER_HEIGHT/2;
-    ctx->map.x = INITIAL_MAP_X;
-    ctx->map.y = INITIAL_MAP_Y;
+    set_context_to_default(ctx);
 
     ctx->challenges_areas[0].x1 = DISPLAY_WIDTH - 280;
     ctx->challenges_areas[0].x2 = DISPLAY_WIDTH - 80;
@@ -151,13 +201,6 @@ void init_context(Context* ctx) {
     ctx->c1.placeable_positions[9].y = 200;
     ctx->c1.selected_object_index = -1;
 
-    for (int i = 0; i < 5; i++) {
-        ctx->c1.placeable_objects[i].position_index = i * 2;
-        ctx->c1.placeable_objects[i].correct_position_index = i * 2 + 1;
-        ctx->c1.placeable_objects[i].width = 100;
-        ctx->c1.placeable_objects[i].height = 100;
-    }
-
     // Challenge 2
     ctx->c2.selectable_objects[0].position.x = 100;
     ctx->c2.selectable_objects[0].position.y = 100;
@@ -174,72 +217,23 @@ void init_context(Context* ctx) {
     ctx->c2.selectable_objects[6].position.x = 100;
     ctx->c2.selectable_objects[6].position.y = 500;
     
-    for (int i = 0; i < 7; i++) {
-        ctx->c2.selectable_objects[i].selected = false;
-      
-        ctx->c2.selectable_objects[i].correct = false;
-        if (i < 5) ctx->c2.selectable_objects[i].correct = true;
-    }
-
-    // Challenge 3
-    ctx->c3.player_position.x = 490;
-    ctx->c3.player_position.y = 600;
-    ctx->c3.apples_counter = 0;
-    ctx->c3.mushrooms_counter = 0;
-
-    for (int i = 0; i < 16; i++) {
-        Falling_Object* obj = &ctx->c3.falling_objects[i];
-        generate_random_falling_object(obj);
-        int index = i;
-        if (i >= 8) {
-            index = i - 8;
-            obj->position.y -= 300;
-        }
-        obj->position.x = (DISPLAY_WIDTH - 80.0) / 8 * index + 40;
-    }
-
-    ctx->has_user_lost = false;
-    ctx->challenge_index = 0; // 0 até 4
-    ctx->life_counter = 3; // 3 até 0
-    ctx->hunger_counter = 3; // 3 até 0
-    ctx->state = MENU;
-    ctx->redraw = true;
-    ctx->done = false;
-}
-
-void reset_context(Context* ctx) {
-    ctx->imgs.char_sprites.current = ctx->imgs.char_sprites.front[0];
-    ctx->player.x = DISPLAY_WIDTH/2.0 - PLAYER_WIDTH/2;
-    ctx->player.y = DISPLAY_HEIGHT/2.0 - PLAYER_HEIGHT/2;
-    ctx->map.x = INITIAL_MAP_X;
-    ctx->map.y = INITIAL_MAP_Y;
-
-    for (int i = 0; i < 5; i++) {
-        ctx->c1.placeable_objects[i].position_index = i * 2;
-        ctx->c1.placeable_objects[i].correct_position_index = i * 2 + 1;
-        ctx->c1.placeable_objects[i].width = 100;
-        ctx->c1.placeable_objects[i].height = 100;
-    }
-
-    for (int i = 0; i < 7; i++) {
-        ctx->c2.selectable_objects[i].selected = false;
-      
-        ctx->c2.selectable_objects[i].correct = false;
-        if (i < 5) ctx->c2.selectable_objects[i].correct = true;
-    }
-
-    ctx->c3.player_position.x = 490;
-    ctx->c3.player_position.y = 600;
-    ctx->c3.apples_counter = 0;
-    ctx->c3.mushrooms_counter = 0;
-
-    ctx->has_user_lost = false;
-    ctx->challenge_index = 0; // 0 até 4
-    ctx->life_counter = 3; // 3 até 0
-    ctx->hunger_counter = 3; // 3 até 0
-    ctx->state = MENU;
-    ctx->redraw = true;
-    ctx->done = false;
+    // Challenge 4
+    ctx->c4.wanted_objects[0].position.x = 100;
+    ctx->c4.wanted_objects[0].position.y = 100;
+    ctx->c4.wanted_objects[1].position.x = 300;
+    ctx->c4.wanted_objects[1].position.y = 100;
+    ctx->c4.wanted_objects[2].position.x = 500;
+    ctx->c4.wanted_objects[2].position.y = 400;
+    ctx->c4.wanted_objects[3].position.x = 700;
+    ctx->c4.wanted_objects[3].position.y = 400;
+    ctx->c4.fake_wanted_objects[0].position.x = 600;
+    ctx->c4.fake_wanted_objects[0].position.y = 600;
+    ctx->c4.fake_wanted_objects[1].position.x = 300;
+    ctx->c4.fake_wanted_objects[1].position.y = 500;
+    ctx->c4.fake_wanted_objects[2].position.x = 500;
+    ctx->c4.fake_wanted_objects[2].position.y = 500;
+    ctx->c4.fake_wanted_objects[3].position.x = 1000;
+    ctx->c4.fake_wanted_objects[3].position.y = 400;
 }
 
 void free_context(Context* ctx) {
@@ -315,6 +309,7 @@ void draw_context(Context* ctx) {
                 al_draw_textf(ctx->font, al_map_rgb(255, 255, 255), x + 10, y + 10, 0, "%d", i + 1);
             }  
         }
+
         if (ctx->challenge_index == 1) {
             for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH; i++) {
                 Selectable_Object* obj = &ctx->c2.selectable_objects[i];
@@ -342,6 +337,29 @@ void draw_context(Context* ctx) {
                 }
                 al_draw_filled_rectangle(obj->position.x, obj->position.y, obj->position.x + 50, obj->position.y + 50, color);
             }
+        }
+
+        if (ctx->challenge_index == 3) {
+            al_clear_to_color(al_map_rgb(250, 200, 150));
+            
+            for (int i = 0; i < WANTED_OBJECTS_LENGTH; i++) {
+                Wanted_Object* obj = &ctx->c4.wanted_objects[i];
+                Wanted_Object* fake_obj = &ctx->c4.fake_wanted_objects[i];
+                
+                if (ctx->is_user_hallucinated && !fake_obj->selected) {
+                    obj = fake_obj;
+                }
+                    
+                if (obj->selected) {
+                    al_draw_rectangle(obj->position.x - 5, obj->position.y - 5, obj->position.x + 105 + 5, obj->position.y + 105 + 5, al_map_rgb(255, 0, 0), 1);
+                }
+
+                al_draw_filled_rectangle(obj->position.x, obj->position.y, obj->position.x + 100, obj->position.y + 100, al_map_rgb(255, 205, 170));
+            }
+
+            time_t current_time = time(0);
+            int seconds_left = ctx->c4.duration_in_seconds - (current_time - ctx->c4.start_time);
+            al_draw_textf(ctx->font, al_map_rgb(0, 0, 0), 0, 20, 0, "Tempo: %d segundos", seconds_left);
         }
 
         al_draw_textf(ctx->font, al_map_rgb(255, 255, 255), 0, 0, 0, "Desafio %d", ctx->challenge_index + 1);
@@ -457,6 +475,8 @@ void finish_challenge(bool success, Context* ctx) {
         ctx->hunger_counter--;
     }
 
+    if (ctx->challenge_index == 2 && !success) ctx->is_user_hallucinated = true;
+
     if (ctx->challenge_index <= 3) {
         ctx->challenge_index++;
     }
@@ -555,6 +575,40 @@ void handle_challenge_2(Context* ctx, Coordinate* mouse) {
     }
 }
 
+void handle_challenge_3(Context* ctx) {
+    Challenge_3* c3 = &ctx->c3;
+
+    // Move os objetos e verifica se o jogador pegou algum
+    for (int i = 0; i < FALLING_OBJECTS_LENGTH; i++) {
+        Falling_Object* obj = &c3->falling_objects[i];
+
+        obj->position.y += obj->speed;
+        obj->speed += FALLING_ACCELERATION;
+
+        if (obj->position.y >= c3->player_position.y && 
+            (obj->position.x >= c3->player_position.x && obj->position.x <= c3->player_position.x + 100 ||
+            obj->position.x + 50 >= c3->player_position.x && obj->position.x + 50 <= c3->player_position.x + 100)) {
+            if (obj->id == 0) {
+                c3->apples_counter++;
+            } else {
+                c3->mushrooms_counter++;
+            }
+            
+            generate_random_falling_object(obj);
+        }
+
+        if (obj->position.y > DISPLAY_HEIGHT) generate_random_falling_object(obj);
+    }
+
+    // Verifica se o jogador conseguiu completar o desafio
+    if (c3->mushrooms_counter >= 10) {
+        return finish_challenge(false, ctx);
+    }
+    if (c3->apples_counter >= 10) {
+        return finish_challenge(true, ctx);
+    }
+}
+
 void move_character_sideways(Context* ctx) {
     switch (ctx->event.keyboard.keycode) {
     case ALLEGRO_KEY_LEFT:
@@ -569,3 +623,39 @@ void move_character_sideways(Context* ctx) {
         break;
     }
 } 
+
+void handle_challenge_4(Context* ctx, Coordinate* mouse) {
+    Challenge_4* c4 = &ctx->c4;
+
+    // Seleciona os objetos clicados
+    for (int i = 0; i < WANTED_OBJECTS_LENGTH; i++) {
+        Wanted_Object* obj = &c4->wanted_objects[i];
+        Wanted_Object* fake_obj = &c4->fake_wanted_objects[i];
+
+        if (check_collision(mouse, obj->position.x, obj->position.x + WANTED_OBJECT_WIDTH, obj->position.y, obj->position.y + WANTED_OBJECT_HEIGHT)) {
+            obj->selected = true;
+        }
+
+        if (check_collision(mouse, fake_obj->position.x, fake_obj->position.x + WANTED_OBJECT_WIDTH, fake_obj->position.y, fake_obj->position.y + WANTED_OBJECT_HEIGHT)) {
+            fake_obj->selected = true;
+        }
+    }
+}
+
+void verify_challenge_4(Context* ctx) {
+    Challenge_4* c4 = &ctx->c4;
+
+    // Verifica se o jogador conseguiu completar o desafio
+    bool success = true;
+    for (int i = 0; i < WANTED_OBJECTS_LENGTH; i++) {
+        if (!c4->wanted_objects[i].selected) {
+            success = false;
+            break;
+        }
+    }
+
+    time_t current_time = time(NULL);
+    bool time_is_up = current_time - c4->start_time >= c4->duration_in_seconds;
+    
+    if (time_is_up || success) finish_challenge(success, ctx);
+}
