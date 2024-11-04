@@ -16,6 +16,10 @@ void must_init(bool test, char* description) {
     }
 }
 
+bool check_collision(Coordinate* c, float x1, float x2, float y1, float y2) {
+    return c->x >= x1 && c->x <= x2 && c->y >= y1 && c->y <= y2;
+}
+
 void generate_random_falling_object(Falling_Object* obj) {
     obj->speed = 0;
     obj->position.y = (rand() % 150 + 50) * -1;
@@ -127,6 +131,401 @@ void set_context_to_default(Context* ctx) {
     ctx->state = MENU;
     ctx->redraw = true;
     ctx->done = false;
+
+    // Obstacles
+    ctx->obstacles[0].position.x = 1000;
+    ctx->obstacles[0].position.y = 1175;
+    ctx->obstacles[0].width = 100;
+    ctx->obstacles[0].height = 200;
+    ctx->obstacles[1].position.x = 1070;
+    ctx->obstacles[1].position.y = 1190;
+    ctx->obstacles[1].width = 100;
+    ctx->obstacles[1].height = 100;
+    ctx->obstacles[2].position.x = 1100;
+    ctx->obstacles[2].position.y = 1225;
+    ctx->obstacles[2].width = 125;
+    ctx->obstacles[2].height = 150;
+    ctx->obstacles[3].position.x = 1800;
+    ctx->obstacles[3].position.y = 1740;
+    ctx->obstacles[3].width = 200;
+    ctx->obstacles[3].height = 150;
+    ctx->obstacles[4].position.x = 1700;
+    ctx->obstacles[4].position.y = 1680;
+    ctx->obstacles[4].width = 100;
+    ctx->obstacles[4].height = 150;
+    ctx->obstacles[5].position.x = 1600;
+    ctx->obstacles[5].position.y = 1660;
+    ctx->obstacles[5].width = 100;
+    ctx->obstacles[5].height = 150;
+    ctx->obstacles[6].position.x = 1550;
+    ctx->obstacles[6].position.y = 1590;
+    ctx->obstacles[6].width = 100;
+    ctx->obstacles[6].height = 150;
+    ctx->obstacles[7].position.x = 1500;
+    ctx->obstacles[7].position.y = 1700;
+    ctx->obstacles[7].width = 100;
+    ctx->obstacles[7].height = 100;
+    ctx->obstacles[8].position.x = 1570;
+    ctx->obstacles[8].position.y = 1410;
+    ctx->obstacles[8].width = 70;
+    ctx->obstacles[8].height = 90;
+    ctx->obstacles[9].position.x = 1380;
+    ctx->obstacles[9].position.y = 1735;
+    ctx->obstacles[9].width = 100;
+    ctx->obstacles[9].height = 150;
+    ctx->obstacles[10].position.x = 1310;
+    ctx->obstacles[10].position.y = 1760;
+    ctx->obstacles[10].width = 70;
+    ctx->obstacles[10].height = 90;
+    ctx->obstacles[11].position.x = 1450;
+    ctx->obstacles[11].position.y = 1885;
+    ctx->obstacles[11].width = 100;
+    ctx->obstacles[11].height = 150;
+    ctx->obstacles[12].position.x = 1550;
+    ctx->obstacles[12].position.y = 2035;
+    ctx->obstacles[12].width = 100;
+    ctx->obstacles[12].height = 100;
+    ctx->obstacles[13].position.x = 1610;
+    ctx->obstacles[13].position.y = 2135;
+    ctx->obstacles[13].width = 100;
+    ctx->obstacles[13].height = 150;
+    ctx->obstacles[14].position.x = 1950;
+    ctx->obstacles[14].position.y = -100;
+    ctx->obstacles[14].width = 100;
+    ctx->obstacles[14].height = 130;
+    ctx->obstacles[15].position.x = 1870;
+    ctx->obstacles[15].position.y = -30;
+    ctx->obstacles[15].width = 80;
+    ctx->obstacles[15].height = 130;
+    ctx->obstacles[16].position.x = 1750;
+    ctx->obstacles[16].position.y = 100;
+    ctx->obstacles[16].width = 130;
+    ctx->obstacles[16].height = 130;
+    ctx->obstacles[17].position.x = 1610;
+    ctx->obstacles[17].position.y = -100;
+    ctx->obstacles[17].width = 100;
+    ctx->obstacles[17].height = 90;
+    ctx->obstacles[18].position.x = 1490;
+    ctx->obstacles[18].position.y = -50;
+    ctx->obstacles[18].width = 120;
+    ctx->obstacles[18].height = 90;
+    ctx->obstacles[19].position.x = 1390;
+    ctx->obstacles[19].position.y = 30;
+    ctx->obstacles[19].width = 100;
+    ctx->obstacles[19].height = 90;
+    ctx->obstacles[20].position.x = 1290;
+    ctx->obstacles[20].position.y = 90;
+    ctx->obstacles[20].width = 100;
+    ctx->obstacles[20].height = 80;
+    ctx->obstacles[21].position.x = 1220;
+    ctx->obstacles[21].position.y = -100;
+    ctx->obstacles[21].width = 70;
+    ctx->obstacles[21].height = 300;
+    ctx->obstacles[22].position.x = 1200;
+    ctx->obstacles[22].position.y = 245;
+    ctx->obstacles[22].width = 70;
+    ctx->obstacles[22].height = 90;
+    ctx->obstacles[23].position.x = 1660;
+    ctx->obstacles[23].position.y = 220;
+    ctx->obstacles[23].width = 90;
+    ctx->obstacles[23].height = 100;
+    ctx->obstacles[24].position.x = 1570;
+    ctx->obstacles[24].position.y = 245;
+    ctx->obstacles[24].width = 90;
+    ctx->obstacles[24].height = 100;
+    ctx->obstacles[25].position.x = 1370;
+    ctx->obstacles[25].position.y = 300;
+    ctx->obstacles[25].width = 200;
+    ctx->obstacles[25].height = 100;
+    ctx->obstacles[26].position.x = 1340;
+    ctx->obstacles[26].position.y = 340;
+    ctx->obstacles[26].width = 30;
+    ctx->obstacles[26].height = 120;
+    ctx->obstacles[27].position.x = 1370;
+    ctx->obstacles[27].position.y = 460;
+    ctx->obstacles[27].width = 60;
+    ctx->obstacles[27].height = 60;
+    ctx->obstacles[28].position.x = 1430;
+    ctx->obstacles[28].position.y = 520;
+    ctx->obstacles[28].width = 120;
+    ctx->obstacles[28].height = 200;
+    ctx->obstacles[29].position.x = 1530;
+    ctx->obstacles[29].position.y = 720;
+    ctx->obstacles[29].width = 500;
+    ctx->obstacles[29].height = 70;
+    ctx->obstacles[30].position.x = 1670;
+    ctx->obstacles[30].position.y = 790;
+    ctx->obstacles[30].width = 50;
+    ctx->obstacles[30].height = 30;
+    ctx->obstacles[31].position.x = 1890;
+    ctx->obstacles[31].position.y = 790;
+    ctx->obstacles[31].width = 200;
+    ctx->obstacles[31].height = 30;
+    ctx->obstacles[32].position.x = 1455;
+    ctx->obstacles[32].position.y = 810;
+    ctx->obstacles[32].width = 70;
+    ctx->obstacles[32].height = 90;
+    ctx->obstacles[33].position.x = 1950;
+    ctx->obstacles[33].position.y = 990;
+    ctx->obstacles[33].width = 70;
+    ctx->obstacles[33].height = 90;
+    ctx->obstacles[34].position.x = 1850;
+    ctx->obstacles[34].position.y = 970;
+    ctx->obstacles[34].width = 100;
+    ctx->obstacles[34].height = 90;
+    ctx->obstacles[35].position.x = 1800;
+    ctx->obstacles[35].position.y = 1000;
+    ctx->obstacles[35].width = 50;
+    ctx->obstacles[35].height = 60;
+    ctx->obstacles[36].position.x = 1700;
+    ctx->obstacles[36].position.y = 970;
+    ctx->obstacles[36].width = 100;
+    ctx->obstacles[36].height = 90;
+    ctx->obstacles[37].position.x = 1600;
+    ctx->obstacles[37].position.y = 970;
+    ctx->obstacles[37].width = 100;
+    ctx->obstacles[37].height = 150;
+    ctx->obstacles[38].position.x = 1600;
+    ctx->obstacles[38].position.y = 1170;
+    ctx->obstacles[38].width = 100;
+    ctx->obstacles[38].height = 100;
+    ctx->obstacles[39].position.x = 1670;
+    ctx->obstacles[39].position.y = 1120;
+    ctx->obstacles[39].width = 30;
+    ctx->obstacles[39].height = 50;
+    ctx->obstacles[40].position.x = 1640;
+    ctx->obstacles[40].position.y = 1270;
+    ctx->obstacles[40].width = 150;
+    ctx->obstacles[40].height = 170;
+    ctx->obstacles[41].position.x = 1790;
+    ctx->obstacles[41].position.y = 1440;
+    ctx->obstacles[41].width = 90;
+    ctx->obstacles[41].height = 70;
+    ctx->obstacles[42].position.x = 1880;
+    ctx->obstacles[42].position.y = 1510;
+    ctx->obstacles[42].width = 150;
+    ctx->obstacles[42].height = 70;
+    ctx->obstacles[43].position.x = 1190;
+    ctx->obstacles[43].position.y = 2170;
+    ctx->obstacles[43].width = 100;
+    ctx->obstacles[43].height = 100;
+    ctx->obstacles[44].position.x = 1240;
+    ctx->obstacles[44].position.y = 2070;
+    ctx->obstacles[44].width = 100;
+    ctx->obstacles[44].height = 100;
+    ctx->obstacles[45].position.x = 1190;
+    ctx->obstacles[45].position.y = 2000;
+    ctx->obstacles[45].width = 50;
+    ctx->obstacles[45].height = 100;
+    ctx->obstacles[46].position.x = 1140;
+    ctx->obstacles[46].position.y = 1950;
+    ctx->obstacles[46].width = 50;
+    ctx->obstacles[46].height = 50;
+    ctx->obstacles[47].position.x = 1090;
+    ctx->obstacles[47].position.y = 1900;
+    ctx->obstacles[47].width = 120;
+    ctx->obstacles[47].height = 50;
+    ctx->obstacles[48].position.x = 1100;
+    ctx->obstacles[48].position.y = 1830;
+    ctx->obstacles[48].width = 100;
+    ctx->obstacles[48].height = 70;
+    ctx->obstacles[49].position.x = 970;
+    ctx->obstacles[49].position.y = 1870;
+    ctx->obstacles[49].width = 80;
+    ctx->obstacles[49].height = 70;
+    ctx->obstacles[50].position.x = 1030;
+    ctx->obstacles[50].position.y = 1940;
+    ctx->obstacles[50].width = 60;
+    ctx->obstacles[50].height = 50;
+    ctx->obstacles[51].position.x = 880;
+    ctx->obstacles[51].position.y = 1890;
+    ctx->obstacles[51].width = 90;
+    ctx->obstacles[51].height = 70;
+    ctx->obstacles[52].position.x = 850;
+    ctx->obstacles[52].position.y = 1920;
+    ctx->obstacles[52].width = 30;
+    ctx->obstacles[52].height = 150;
+    ctx->obstacles[53].position.x = 800;
+    ctx->obstacles[53].position.y = 2070;
+    ctx->obstacles[53].width = 50;
+    ctx->obstacles[53].height = 50;
+    ctx->obstacles[54].position.x = 700;
+    ctx->obstacles[54].position.y = 2010;
+    ctx->obstacles[54].width = 100;
+    ctx->obstacles[54].height = 60;
+    ctx->obstacles[55].position.x = 630;
+    ctx->obstacles[55].position.y = 1910;
+    ctx->obstacles[55].width = 100;
+    ctx->obstacles[55].height = 100;
+    ctx->obstacles[56].position.x = 560;
+    ctx->obstacles[56].position.y = 1930;
+    ctx->obstacles[56].width = 70;
+    ctx->obstacles[56].height = 100;
+    ctx->obstacles[57].position.x = 480;
+    ctx->obstacles[57].position.y = 1930;
+    ctx->obstacles[57].width = 80;
+    ctx->obstacles[57].height = 100;
+    ctx->obstacles[58].position.x = 520;
+    ctx->obstacles[58].position.y = 2030;
+    ctx->obstacles[58].width = 100;
+    ctx->obstacles[58].height = 100;
+    ctx->obstacles[59].position.x = 540;
+    ctx->obstacles[59].position.y = 2130;
+    ctx->obstacles[59].width = 100;
+    ctx->obstacles[59].height = 150;
+    ctx->obstacles[60].position.x = 240;
+    ctx->obstacles[60].position.y = 2110;
+    ctx->obstacles[60].width = 100;
+    ctx->obstacles[60].height = 150;
+    ctx->obstacles[61].position.x = 240;
+    ctx->obstacles[61].position.y = 1930;
+    ctx->obstacles[61].width = 120;
+    ctx->obstacles[61].height = 150;
+    ctx->obstacles[62].position.x = 190;
+    ctx->obstacles[62].position.y = 2080;
+    ctx->obstacles[62].width = 50;
+    ctx->obstacles[62].height = 30;
+    ctx->obstacles[63].position.x = 120;
+    ctx->obstacles[63].position.y = 1880;
+    ctx->obstacles[63].width = 200;
+    ctx->obstacles[63].height = 50;
+    ctx->obstacles[64].position.x = 190;
+    ctx->obstacles[64].position.y = 2170;
+    ctx->obstacles[64].width = 50;
+    ctx->obstacles[64].height = 30;
+    ctx->obstacles[65].position.x = 40;
+    ctx->obstacles[65].position.y = 1930;
+    ctx->obstacles[65].width = 80;
+    ctx->obstacles[65].height = 50;
+    ctx->obstacles[66].position.x = -20;
+    ctx->obstacles[66].position.y = 1960;
+    ctx->obstacles[66].width = 60;
+    ctx->obstacles[66].height = 30;
+    ctx->obstacles[67].position.x = -260;
+    ctx->obstacles[67].position.y = 1880;
+    ctx->obstacles[67].width = 240;
+    ctx->obstacles[67].height = 80;
+    ctx->obstacles[68].position.x = -360;
+    ctx->obstacles[68].position.y = 1960;
+    ctx->obstacles[68].width = 100;
+    ctx->obstacles[68].height = 50;
+    ctx->obstacles[69].position.x = -180;
+    ctx->obstacles[69].position.y = 1840;
+    ctx->obstacles[69].width = 100;
+    ctx->obstacles[69].height = 40;
+    ctx->obstacles[70].position.x = -300;
+    ctx->obstacles[70].position.y = 1100;
+    ctx->obstacles[70].width = 100;
+    ctx->obstacles[70].height = 100;
+    ctx->obstacles[71].position.x = -200;
+    ctx->obstacles[71].position.y = 1100;
+    ctx->obstacles[71].width = 100;
+    ctx->obstacles[71].height = 100;
+    ctx->obstacles[72].position.x = -100;
+    ctx->obstacles[72].position.y = 1100;
+    ctx->obstacles[72].width = 100;
+    ctx->obstacles[72].height = 100;
+    ctx->obstacles[73].position.x = -200;
+    ctx->obstacles[73].position.y = 1000;
+    ctx->obstacles[73].width = 100;
+    ctx->obstacles[73].height = 100;
+    ctx->obstacles[74].position.x = -100;
+    ctx->obstacles[74].position.y = 1050;
+    ctx->obstacles[74].width = 50;
+    ctx->obstacles[74].height = 50;
+    ctx->obstacles[75].position.x = -300;
+    ctx->obstacles[75].position.y = 900;
+    ctx->obstacles[75].width = 100;
+    ctx->obstacles[75].height = 100;
+    ctx->obstacles[76].position.x = -200;
+    ctx->obstacles[76].position.y = 950;
+    ctx->obstacles[76].width = 50;
+    ctx->obstacles[76].height = 50;
+    ctx->obstacles[77].position.x = -300;
+    ctx->obstacles[77].position.y = 800;
+    ctx->obstacles[77].width = 100;
+    ctx->obstacles[77].height = 100;
+    ctx->obstacles[78].position.x = -300;
+    ctx->obstacles[78].position.y = 700;
+    ctx->obstacles[78].width = 100;
+    ctx->obstacles[78].height = 100;
+    ctx->obstacles[79].position.x = -300;
+    ctx->obstacles[79].position.y = 600;
+    ctx->obstacles[79].width = 100;
+    ctx->obstacles[79].height = 100;
+    ctx->obstacles[80].position.x = -200;
+    ctx->obstacles[80].position.y = 725;
+    ctx->obstacles[80].width = 50;
+    ctx->obstacles[80].height = 50;
+    ctx->obstacles[81].position.x = -200;
+    ctx->obstacles[81].position.y = 550;
+    ctx->obstacles[81].width = 50;
+    ctx->obstacles[81].height = 50;
+    ctx->obstacles[82].position.x = -150;
+    ctx->obstacles[82].position.y = 450;
+    ctx->obstacles[82].width = 100;
+    ctx->obstacles[82].height = 100;
+    ctx->obstacles[83].position.x = -50;
+    ctx->obstacles[83].position.y = 450;
+    ctx->obstacles[83].width = 100;
+    ctx->obstacles[83].height = 100;
+    ctx->obstacles[84].position.x = 50;
+    ctx->obstacles[84].position.y = 450;
+    ctx->obstacles[84].width = 50;
+    ctx->obstacles[84].height = 50;
+    ctx->obstacles[85].position.x = 100;
+    ctx->obstacles[85].position.y = 350;
+    ctx->obstacles[85].width = 100;
+    ctx->obstacles[85].height = 100;
+    ctx->obstacles[86].position.x = 200;
+    ctx->obstacles[86].position.y = 350;
+    ctx->obstacles[86].width = 100;
+    ctx->obstacles[86].height = 100;
+    ctx->obstacles[87].position.x = 300;
+    ctx->obstacles[87].position.y = 350;
+    ctx->obstacles[87].width = 50;
+    ctx->obstacles[87].height = 50;
+    ctx->obstacles[88].position.x = 350;
+    ctx->obstacles[88].position.y = 250;
+    ctx->obstacles[88].width = 100;
+    ctx->obstacles[88].height = 100;
+    ctx->obstacles[89].position.x = 450;
+    ctx->obstacles[89].position.y = 250;
+    ctx->obstacles[89].width = 50;
+    ctx->obstacles[89].height = 50;
+    ctx->obstacles[90].position.x = 500;
+    ctx->obstacles[90].position.y = 150;
+    ctx->obstacles[90].width = 100;
+    ctx->obstacles[90].height = 100;
+    ctx->obstacles[91].position.x = 500;
+    ctx->obstacles[91].position.y = 50;
+    ctx->obstacles[91].width = 100;
+    ctx->obstacles[91].height = 100;
+    ctx->obstacles[92].position.x = 600;
+    ctx->obstacles[92].position.y = 50;
+    ctx->obstacles[92].width = 50;
+    ctx->obstacles[92].height = 50;
+    ctx->obstacles[93].position.x = 650;
+    ctx->obstacles[93].position.y = -50;
+    ctx->obstacles[93].width = 100;
+    ctx->obstacles[93].height = 100;
+    ctx->obstacles[94].position.x = 750;
+    ctx->obstacles[94].position.y = 50;
+    ctx->obstacles[94].width = 50;
+    ctx->obstacles[94].height = 50;
+    ctx->obstacles[95].position.x = 800;
+    ctx->obstacles[95].position.y = 0;
+    ctx->obstacles[95].width = 50;
+    ctx->obstacles[95].height = 50;
+    ctx->obstacles[96].position.x = 850;
+    ctx->obstacles[96].position.y = -100;
+    ctx->obstacles[96].width = 100;
+    ctx->obstacles[96].height = 100;
+    ctx->obstacles[97].position.x = 950;
+    ctx->obstacles[97].position.y = -100;
+    ctx->obstacles[97].width = 100;
+    ctx->obstacles[97].height = 100;
+
 }
 
 void init_context(Context* ctx) {
@@ -266,16 +665,20 @@ void free_context(Context* ctx) {
 void draw_context(Context* ctx) {
     al_clear_to_color(al_map_rgb(0, 0, 0));
 
-    float btn_x = DISPLAY_WIDTH / 2.0 - BUTTON_WIDTH / 2.0;
-    float btn_y = DISPLAY_HEIGHT / 2.0 - BUTTON_HEIGHT / 2.0;
+    float centered_btn_x = DISPLAY_WIDTH / 2.0 - BUTTON_WIDTH / 2.0;
+    float centered_btn_y = DISPLAY_HEIGHT / 2.0 - BUTTON_HEIGHT / 2.0;
 
     switch (ctx->state) {
     case MENU:
         al_draw_bitmap(ctx->imgs.menu, 0, 0, 0);
-        al_draw_bitmap(ctx->imgs.play_btn, btn_x, btn_y, 0);
+        al_draw_bitmap(ctx->imgs.play_btn, centered_btn_x, centered_btn_y, 0);
         break;
     case OPEN_MAP:
         al_draw_bitmap(ctx->imgs.map, ctx->map.x, ctx->map.y, 0);
+        for (int i = 0; i < OBSTACLES_LENGTH; i++) {
+            Obstacle* obstacle = &ctx->obstacles[i];
+            al_draw_rectangle(obstacle->position.x, obstacle->position.y, obstacle->position.x + obstacle->width, obstacle->position.y + obstacle->height, al_map_rgb(255, 0, 0), 1);
+        }
         al_draw_bitmap(ctx->imgs.char_sprites.current, ctx->player.x, ctx->player.y, 0);
         for (int i = 2; i >= 0; i--) {
             if (ctx->life_counter > i) {
@@ -373,36 +776,101 @@ void draw_context(Context* ctx) {
         else {
             al_draw_bitmap(ctx->imgs.end_game, 0, 0, 0);
         }
-        al_draw_bitmap(ctx->imgs.menu_btn, btn_x, btn_y, 0);
+        al_draw_bitmap(ctx->imgs.menu_btn, centered_btn_x, centered_btn_y, 0);
         break;
     }
+}
+
+bool check_obstacles_collision(Context* ctx) {
+    bool is_colliding = false;
+
+    for (int i = 0; i < OBSTACLES_LENGTH; i++) {
+        float ox1 = ctx->obstacles[i].position.x,
+              ox2 = ctx->obstacles[i].position.x + ctx->obstacles[i].width,
+              oy1 = ctx->obstacles[i].position.y,
+              oy2 = ctx->obstacles[i].position.y + ctx->obstacles[i].height;
+
+        Coordinate player_bottom_left = {ctx->player.x + 25, ctx->player.y + PLAYER_HEIGHT - 10},
+                   player_bottom_right = {ctx->player.x + PLAYER_WIDTH - 25, ctx->player.y + PLAYER_HEIGHT - 10};
+
+        if (check_collision(&player_bottom_left, ox1, ox2, oy1, oy2) ||
+            check_collision(&player_bottom_right, ox1, ox2, oy1, oy2)) {
+            is_colliding = true;
+            break;
+        }
+    }
+
+    return is_colliding;
 }
 
 void move_camera(Context* ctx) {
     bool is_player_y_centered = ctx->player.y == (DISPLAY_HEIGHT/2.0 - PLAYER_HEIGHT/2);
     bool is_player_x_centered = ctx->player.x == (DISPLAY_WIDTH/2.0 - PLAYER_WIDTH/2);
 
+    Coordinate player = {ctx->player.x, ctx->player.y};
+    Coordinate map = {ctx->map.x, ctx->map.y};
+    Coordinate obstacles[OBSTACLES_LENGTH];
+
+    for (int i = 0; i < OBSTACLES_LENGTH; i++) {
+        obstacles[i] = ctx->obstacles[i].position;
+    }
+
     switch (ctx->event.keyboard.keycode) {
     case ALLEGRO_KEY_UP:
     case ALLEGRO_KEY_W:
-        if (ctx->map.y < 0 && is_player_y_centered) ctx->map.y += PLAYER_SPEED;
-        else if (ctx->player.y >= ctx->map.y) ctx->player.y -= PLAYER_SPEED;
+        if (ctx->map.y < 0 && is_player_y_centered) {
+            ctx->map.y += PLAYER_SPEED;
+            for (int i = 0; i < OBSTACLES_LENGTH; i++) {
+                ctx->obstacles[i].position.y += PLAYER_SPEED;
+            }
+        } else if (ctx->player.y >= ctx->map.y) {
+            ctx->player.y -= PLAYER_SPEED;
+        }
         break;
     case ALLEGRO_KEY_DOWN:
     case ALLEGRO_KEY_S:
-        if (ctx->map.y + MAP_SIZE > DISPLAY_HEIGHT && is_player_y_centered) ctx->map.y -= PLAYER_SPEED;
-        else if (ctx->player.y + PLAYER_HEIGHT <= ctx->map.y + MAP_SIZE) ctx->player.y += PLAYER_SPEED;
+        if (ctx->map.y + MAP_SIZE > DISPLAY_HEIGHT && is_player_y_centered) {
+            ctx->map.y -= PLAYER_SPEED;
+            for (int i = 0; i < OBSTACLES_LENGTH; i++) {
+                ctx->obstacles[i].position.y -= PLAYER_SPEED;
+            }
+        } else if (ctx->player.y + PLAYER_HEIGHT <= ctx->map.y + MAP_SIZE) {
+            ctx->player.y += PLAYER_SPEED;
+        }
         break;
     case ALLEGRO_KEY_LEFT:
     case ALLEGRO_KEY_A:
-        if (ctx->map.x < 0 && is_player_x_centered) ctx->map.x += PLAYER_SPEED;
-        else if (ctx->player.x >= ctx->map.x) ctx->player.x -= PLAYER_SPEED;
+        if (ctx->map.x < 0 && is_player_x_centered) {
+            ctx->map.x += PLAYER_SPEED;
+            for (int i = 0; i < OBSTACLES_LENGTH; i++) {
+                ctx->obstacles[i].position.x += PLAYER_SPEED;
+            }
+        } else if (ctx->player.x >= ctx->map.x) {
+            ctx->player.x -= PLAYER_SPEED;
+        }
         break;
     case ALLEGRO_KEY_RIGHT:
     case ALLEGRO_KEY_D:
-        if (ctx->map.x + MAP_SIZE > DISPLAY_WIDTH && is_player_x_centered) ctx->map.x -= PLAYER_SPEED;
-        else if (ctx->player.x + PLAYER_WIDTH <= ctx->map.x + MAP_SIZE) ctx->player.x += PLAYER_SPEED;
+        if (ctx->map.x + MAP_SIZE > DISPLAY_WIDTH && is_player_x_centered) {
+            ctx->map.x -= PLAYER_SPEED;
+            for (int i = 0; i < OBSTACLES_LENGTH; i++) {
+                ctx->obstacles[i].position.x -= PLAYER_SPEED;
+            }
+        } else if (ctx->player.x + PLAYER_WIDTH <= ctx->map.x + MAP_SIZE) {
+            ctx->player.x += PLAYER_SPEED;
+        }
         break;
+    }
+
+    if (check_obstacles_collision(ctx)) {
+        ctx->player.x = player.x;
+        ctx->player.y = player.y;
+        ctx->map.x = map.x;
+        ctx->map.y = map.y;
+        for (int i = 0; i < OBSTACLES_LENGTH; i++) {
+            ctx->obstacles[i].position.x = obstacles[i].x;
+            ctx->obstacles[i].position.y = obstacles[i].y;
+        }
     }
 }
 
@@ -506,10 +974,6 @@ int get_event_index(ALLEGRO_EVENT_TYPE event_type) {
     }
     
     return index;
-}
-
-bool check_collision(Coordinate* c, float x1, float x2, float y1, float y2) {
-    return c->x >= x1 && c->x <= x2 && c->y >= y1 && c->y <= y2;
 }
 
 void handle_challenge_1(Context* ctx, Coordinate* mouse) {

@@ -11,6 +11,7 @@
 #define SELECTABLE_OBJECTS_LENGTH 7
 #define FALLING_OBJECTS_LENGTH 16
 #define WANTED_OBJECTS_LENGTH 4
+#define OBSTACLES_LENGTH 98
 
 typedef struct {
     ALLEGRO_BITMAP* front[CHAR_SPRITES_LENGTH]; // o index 0 é o sprite do personagem parado,
@@ -93,6 +94,11 @@ typedef struct {
 } Challenge_4;
 
 typedef struct {
+    Coordinate position;
+    int width, height;
+} Obstacle;
+
+typedef struct {
     ALLEGRO_TIMER* timer;
     ALLEGRO_EVENT_QUEUE* queue;
     ALLEGRO_DISPLAY* disp;
@@ -105,6 +111,7 @@ typedef struct {
     Challenge_3 c3;
     Challenge_4 c4;
     Rectangle challenges_areas[5];
+    Obstacle obstacles[OBSTACLES_LENGTH];
     int challenge_index, life_counter, hunger_counter;
     enum Game_State state;
     bool redraw, done, has_user_lost, is_user_hallucinated;
