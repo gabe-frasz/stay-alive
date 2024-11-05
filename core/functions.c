@@ -525,7 +525,6 @@ void set_context_to_default(Context* ctx) {
     ctx->obstacles[97].position.y = -100;
     ctx->obstacles[97].width = 100;
     ctx->obstacles[97].height = 100;
-
 }
 
 void init_context(Context* ctx) {
@@ -665,13 +664,10 @@ void free_context(Context* ctx) {
 void draw_context(Context* ctx) {
     al_clear_to_color(al_map_rgb(0, 0, 0));
 
-    float centered_btn_x = DISPLAY_WIDTH / 2.0 - BUTTON_WIDTH / 2.0;
-    float centered_btn_y = DISPLAY_HEIGHT / 2.0 - BUTTON_HEIGHT / 2.0;
-
     switch (ctx->state) {
     case MENU:
         al_draw_bitmap(ctx->imgs.menu, 0, 0, 0);
-        al_draw_bitmap(ctx->imgs.play_btn, centered_btn_x, centered_btn_y, 0);
+        al_draw_bitmap(ctx->imgs.play_btn, PLAY_BTN_X, PLAY_BTN_Y, 0);
         break;
     case OPEN_MAP:
         al_draw_bitmap(ctx->imgs.map, ctx->map.x, ctx->map.y, 0);
@@ -776,7 +772,7 @@ void draw_context(Context* ctx) {
         else {
             al_draw_bitmap(ctx->imgs.end_game, 0, 0, 0);
         }
-        al_draw_bitmap(ctx->imgs.menu_btn, centered_btn_x, centered_btn_y, 0);
+        al_draw_bitmap(ctx->imgs.menu_btn, RETURN_TO_MENU_BTN_X, RETURN_TO_MENU_BTN_Y, 0);
         break;
     }
 }
