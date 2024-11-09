@@ -671,10 +671,6 @@ void draw_context(Context* ctx) {
         break;
     case OPEN_MAP:
         al_draw_bitmap(ctx->imgs.map, ctx->map.x, ctx->map.y, 0);
-        for (int i = 0; i < OBSTACLES_LENGTH; i++) {
-            Obstacle* obstacle = &ctx->obstacles[i];
-            al_draw_rectangle(obstacle->position.x, obstacle->position.y, obstacle->position.x + obstacle->width, obstacle->position.y + obstacle->height, al_map_rgb(255, 0, 0), 1);
-        }
         al_draw_bitmap(ctx->imgs.char_sprites.current, ctx->player.x, ctx->player.y, 0);
         for (int i = 2; i >= 0; i--) {
             if (ctx->life_counter > i) {
