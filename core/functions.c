@@ -937,12 +937,10 @@ void change_character_sprite(Context* ctx) {
     if (cyclic_timer == 10) {
         al_stop_samples();
         al_play_sample(ctx->sounds.footstep[0], 0.7, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
-        printf("playing sound 1\n");
     }
     if (cyclic_timer == 25) {
         al_stop_samples();
         al_play_sample(ctx->sounds.footstep[1], 0.7, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
-        printf("playing sound 2\n");
     }
 }
 
