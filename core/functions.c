@@ -93,7 +93,7 @@ void set_context_to_default(Context* ctx) {
         ctx->c1.placeable_objects[i].height = 100;
     }
 
-    for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH; i++) {
+    for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C2; i++) {
         ctx->c2.selectable_objects[i].selected = false;
       
         ctx->c2.selectable_objects[i].correct = false;
@@ -693,26 +693,32 @@ void draw_context(Context* ctx) {
                 Coordinate* pos = &ctx->c1.placeable_positions[i];
                 al_draw_filled_rectangle(pos->x, pos->y, pos->x + 100, pos->y + 100, al_map_rgb(50, 50, 50));
             }
+
             for (int i = 0; i < PLACEABLE_OBJECTS_LENGTH; i++) {
                 int pos_i = ctx->c1.placeable_objects[i].position_index;
                 float x = ctx->c1.placeable_positions[pos_i].x,
                       y = ctx->c1.placeable_positions[pos_i].y;
-                al_draw_filled_rectangle(x, y, x + 100, y + 100, al_map_rgb(255, 0, 255)); 
+                int w = PLACEABLE_OBJECT_WIDTH,
+                    h = PLACEABLE_OBJECT_HEIGHT;
+
+                al_draw_filled_rectangle(x, y, x + w, y + h, al_map_rgb(255, 0, 255)); 
                 if (ctx->c1.selected_object_index == i) {
-                    al_draw_rectangle(x - 5, y - 5, x + 100 + 5, y + 100 + 5, al_map_rgb(255, 255, 255), 1);
+                    al_draw_rectangle(x - 5, y - 5, x + w + 5, y + h + 5, al_map_rgb(255, 255, 255), 1);
                 }
                 al_draw_textf(ctx->font, al_map_rgb(255, 255, 255), x + 10, y + 10, 0, "%d", i + 1);
             }  
         }
 
         if (ctx->challenge_index == 1) {
-            for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH; i++) {
+            for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C2; i++) {
                 Selectable_Object* obj = &ctx->c2.selectable_objects[i];
+                int w = SELECTABLE_OBJECT_WIDTH,
+                    h = SELECTABLE_OBJECT_HEIGHT;
+
+                al_draw_filled_rectangle(obj->position.x, obj->position.y, obj->position.x + w, obj->position.y + h, al_map_rgb(255, 255, 255));
                 if (obj->selected) {
-                    al_draw_rectangle(obj->position.x - 5, obj->position.y - 5, obj->position.x + 105, obj->position.y + 105, al_map_rgb(255, 0, 0), 1);
+                    al_draw_rectangle(obj->position.x - 5, obj->position.y - 5, obj->position.x + w + 5, obj->position.y + h + 5, al_map_rgb(255, 0, 0), 1);
                 }
-                al_draw_filled_rectangle(obj->position.x, obj->position.y, obj->position.x + 100, obj->position.y + 100, al_map_rgb(255, 255, 255));
-                al_draw_textf(ctx->font, al_map_rgb(0, 0, 0), obj->position.x + 10, obj->position.y + 10, 0, "%d", i + 1);
             }
         }
             
@@ -723,6 +729,8 @@ void draw_context(Context* ctx) {
 
             for (int i = 0; i < FALLING_OBJECTS_LENGTH; i++) {
                 Falling_Object* obj = &ctx->c3.falling_objects[i];
+                int w = FALLING_OBJECT_WIDTH,
+                    h = FALLING_OBJECT_HEIGHT;
             
                 ALLEGRO_COLOR color;
                 if (obj->id == 0) {
@@ -730,7 +738,7 @@ void draw_context(Context* ctx) {
                 } else {
                     color = al_map_rgb(0, 0, 255);
                 }
-                al_draw_filled_rectangle(obj->position.x, obj->position.y, obj->position.x + 50, obj->position.y + 50, color);
+                al_draw_filled_rectangle(obj->position.x, obj->position.y, obj->position.x + w, obj->position.y + h, color);
             }
         }
 
@@ -740,16 +748,18 @@ void draw_context(Context* ctx) {
             for (int i = 0; i < WANTED_OBJECTS_LENGTH; i++) {
                 Wanted_Object* obj = &ctx->c4.wanted_objects[i];
                 Wanted_Object* fake_obj = &ctx->c4.fake_wanted_objects[i];
+                int w = WANTED_OBJECT_WIDTH,
+                    h = WANTED_OBJECT_HEIGHT;
                 
                 if (ctx->is_user_hallucinated && !fake_obj->selected) {
                     obj = fake_obj;
                 }
                     
                 if (obj->selected) {
-                    al_draw_rectangle(obj->position.x - 5, obj->position.y - 5, obj->position.x + 105 + 5, obj->position.y + 105 + 5, al_map_rgb(255, 0, 0), 1);
+                    al_draw_rectangle(obj->position.x - 5, obj->position.y - 5, obj->position.x + w + 5, obj->position.y + h + 5, al_map_rgb(255, 0, 0), 1);
                 }
 
-                al_draw_filled_rectangle(obj->position.x, obj->position.y, obj->position.x + 100, obj->position.y + 100, al_map_rgb(255, 205, 170));
+                al_draw_filled_rectangle(obj->position.x, obj->position.y, obj->position.x + w, obj->position.y + h, al_map_rgb(255, 205, 170));
             }
 
             time_t current_time = time(0);
@@ -988,7 +998,7 @@ void handle_challenge_1(Context* ctx, Coordinate* mouse) {
               y = c1->placeable_positions[i].y;
 
         if (check_collision(mouse, x, x + 100, y, y + 100)) {
-           c1->placeable_objects[c1->selected_object_index].position_index = i;
+            c1->placeable_objects[c1->selected_object_index].position_index = i;
         }
     }
 
@@ -1010,7 +1020,7 @@ void handle_challenge_2(Context* ctx, Coordinate* mouse) {
     Challenge_2* c2 = &ctx->c2;
 
     // Seleciona ou desmarca os objetos clicados
-    for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH; i++) {
+    for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C2; i++) {
         Selectable_Object* obj = &c2->selectable_objects[i];
         if (check_collision(mouse, obj->position.x, obj->position.x + 100, obj->position.y, obj->position.y + 100)) {
             obj->selected = !obj->selected;
