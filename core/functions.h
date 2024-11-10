@@ -7,6 +7,7 @@
 void must_init(bool test, char* description);
 void generate_random_falling_object(Falling_Object* obj);
 void load_images(Images* imgs);
+void load_sounds(Sounds* sounds);
 void set_context_to_default(Context* ctx);
 void init_context(Context* ctx);
 void reset_context(Context* ctx);

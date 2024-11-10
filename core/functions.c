@@ -2,6 +2,8 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -77,6 +79,13 @@ void load_images(Images* imgs) {
     must_init(imgs->hunger_empty, "hunger empty image");
     imgs->hunger_filled = al_load_bitmap("images/hunger.png");
     must_init(imgs->hunger_filled, "hunger filled image");
+}
+
+void load_sounds(Sounds* sounds) {
+    sounds->footstep[0] = al_load_sample("sounds/footstep-1.wav");
+    must_init(sounds->footstep[0], "footstep 1 sound");
+    sounds->footstep[1] = al_load_sample("sounds/footstep-2.wav");
+    must_init(sounds->footstep[1], "footstep 2 sound");
 }
 
 void set_context_to_default(Context* ctx) {
@@ -533,6 +542,9 @@ void init_context(Context* ctx) {
     must_init(al_install_keyboard(), "keyboard");
     must_init(al_install_mouse(), "mouse");
     must_init(al_init_image_addon(), "image");
+    must_init(al_install_audio(), "audio");
+    must_init(al_init_acodec_addon(), "acodec");
+    must_init(al_reserve_samples(5), "samples");
 
     srand(time(NULL));
     
@@ -553,6 +565,7 @@ void init_context(Context* ctx) {
     al_register_event_source(ctx->queue, al_get_mouse_event_source());
 
     load_images(&ctx->imgs);
+    load_sounds(&ctx->sounds);
     set_context_to_default(ctx);
 
     ctx->challenges_areas[0].x1 = DISPLAY_WIDTH - 280;
@@ -653,12 +666,16 @@ void free_context(Context* ctx) {
         al_destroy_bitmap(ctx->imgs.char_sprites.right[i]);
     }
 
+    al_destroy_sample(ctx->sounds.footstep[0]);
+    al_destroy_sample(ctx->sounds.footstep[1]);
+
     al_destroy_font(ctx->font);
     al_destroy_display(ctx->disp);
     al_destroy_timer(ctx->timer);
     al_destroy_event_queue(ctx->queue);
     al_uninstall_keyboard();
     al_uninstall_mouse();
+    al_uninstall_audio();
 }
 
 void draw_context(Context* ctx) {
@@ -916,6 +933,17 @@ void change_character_sprite(Context* ctx) {
         break;
     } 
     ctx->imgs.char_sprites.current = current;
+
+    if (cyclic_timer == 10) {
+        al_stop_samples();
+        al_play_sample(ctx->sounds.footstep[0], 0.7, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+        printf("playing sound 1\n");
+    }
+    if (cyclic_timer == 25) {
+        al_stop_samples();
+        al_play_sample(ctx->sounds.footstep[1], 0.7, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+        printf("playing sound 2\n");
+    }
 }
 
 void finish_challenge(bool success, Context* ctx) {

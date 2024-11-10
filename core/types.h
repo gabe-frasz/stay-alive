@@ -3,6 +3,7 @@
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_audio.h>
 #include <stdbool.h>
 
 #define CHAR_SPRITES_LENGTH 3
@@ -35,6 +36,10 @@ typedef struct {
     ALLEGRO_BITMAP* hunger_empty;
     ALLEGRO_BITMAP* hunger_filled;
 } Images;
+
+typedef struct {
+    ALLEGRO_SAMPLE* footstep[2];
+} Sounds;
 
 enum Game_State {
     MENU,
@@ -112,6 +117,7 @@ typedef struct {
     ALLEGRO_FONT* font;
     ALLEGRO_EVENT event;
     Images imgs;
+    Sounds sounds;
     Coordinate player, map;
     Challenge_1 c1;
     Challenge_2 c2;
