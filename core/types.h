@@ -57,6 +57,12 @@ typedef struct {
 } Obstacle;
 
 typedef struct {
+    char* theme;
+    char* description;
+    bool mouse, keyboard, is_completed;
+} Tutorial;
+
+typedef struct {
     int width, height, position_index, correct_position_index;
 } Placeable_Object;
 
@@ -113,6 +119,7 @@ typedef struct {
     ALLEGRO_EVENT event;
     Images imgs;
     Coordinate player, map;
+    Tutorial tutorials[5];
     Challenge_1 c1;
     Challenge_2 c2;
     Challenge_3 c3;

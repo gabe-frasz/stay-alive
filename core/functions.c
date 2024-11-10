@@ -86,6 +86,10 @@ void set_context_to_default(Context* ctx) {
     ctx->map.x = INITIAL_MAP_X;
     ctx->map.y = INITIAL_MAP_Y;
 
+    for (int i = 0; i < 5; i++) {
+        ctx->tutorials[i].is_completed = false;
+    }
+
     for (int i = 0; i < PLACEABLE_OBJECTS_LENGTH; i++) {
         ctx->c1.placeable_objects[i].position_index = i * 2;
         ctx->c1.placeable_objects[i].correct_position_index = i * 2 + 1;
@@ -555,6 +559,27 @@ void init_context(Context* ctx) {
     load_images(&ctx->imgs);
     set_context_to_default(ctx);
 
+    ctx->tutorials[0].theme = "Cadeia Alimentar";
+    ctx->tutorials[0].description = "Você deve manter o seu corpo saudável, evitando o desgaste e a falta de nutrientes.";
+    ctx->tutorials[0].mouse = true;
+    ctx->tutorials[0].keyboard = false;
+    ctx->tutorials[1].theme = "Osmose";
+    ctx->tutorials[1].description = "Você deve manter o seu corpo saudável, evitando o desgaste e a falta de nutrientes.";
+    ctx->tutorials[1].mouse = true;
+    ctx->tutorials[1].keyboard = false;
+    ctx->tutorials[2].theme = "Reino Fungi e Reino Plantae";
+    ctx->tutorials[2].description = "Você deve manter o seu corpo saudável, evitando o desgaste e a falta de nutrientes.";
+    ctx->tutorials[2].mouse = false;
+    ctx->tutorials[2].keyboard = true;
+    ctx->tutorials[3].theme = "Etnobotânica";
+    ctx->tutorials[3].description = "Você deve manter o seu corpo saudável, evitando o desgaste e a falta de nutrientes.";
+    ctx->tutorials[3].mouse = true;
+    ctx->tutorials[3].keyboard = false;
+    ctx->tutorials[4].theme = "Combustão e Fricção";
+    ctx->tutorials[4].description = "Você deve manter o seu corpo saudável, evitando o desgaste e a falta de nutrientes.";
+    ctx->tutorials[4].mouse = true;
+    ctx->tutorials[4].keyboard = true;
+
     ctx->challenges_areas[0].x1 = DISPLAY_WIDTH - 280;
     ctx->challenges_areas[0].x2 = DISPLAY_WIDTH - 80;
     ctx->challenges_areas[0].y1 = 0;
@@ -688,6 +713,13 @@ void draw_context(Context* ctx) {
         }
         break;
     case CHALLENGE:
+        Tutorial* tutorial = &ctx->tutorials[ctx->challenge_index];
+        if (!tutorial->is_completed) {
+            al_draw_text(ctx->font, al_map_rgb(255, 255, 255), 0, 0, 0, tutorial->theme);
+            al_draw_text(ctx->font, al_map_rgb(255, 255, 255), 0, 20, 0, tutorial->description);
+            return;
+        }
+
         if (ctx->challenge_index == 0) {
             for (int i = 0; i < PLACEABLE_POSITIONS_LENGTH; i++) {
                 Coordinate* pos = &ctx->c1.placeable_positions[i];
