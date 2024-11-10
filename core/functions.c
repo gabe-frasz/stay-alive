@@ -980,6 +980,8 @@ int get_event_index(ALLEGRO_EVENT_TYPE event_type) {
 
 void handle_challenge_1(Context* ctx, Coordinate* mouse) {
     Challenge_1* c1 = &ctx->c1;
+    int w = PLACEABLE_OBJECT_WIDTH,
+        h = PLACEABLE_OBJECT_HEIGHT;
 
     // Seleciona o objeto clicado e retorna
     for (int i = 0; i < PLACEABLE_OBJECTS_LENGTH; i++) {
@@ -987,7 +989,7 @@ void handle_challenge_1(Context* ctx, Coordinate* mouse) {
         float x = c1->placeable_positions[pos_i].x,
               y = c1->placeable_positions[pos_i].y;
 
-        if (check_collision(mouse, x, x + 100, y, y + 100)) {
+        if (check_collision(mouse, x, x + w, y, y + h)) {
             c1->selected_object_index = i;
             return;
         }
@@ -998,7 +1000,7 @@ void handle_challenge_1(Context* ctx, Coordinate* mouse) {
         float x = c1->placeable_positions[i].x,
               y = c1->placeable_positions[i].y;
 
-        if (check_collision(mouse, x, x + 100, y, y + 100)) {
+        if (check_collision(mouse, x, x + w, y, y + h)) {
             c1->placeable_objects[c1->selected_object_index].position_index = i;
             c1->selected_object_index = -1;
             return;
@@ -1052,13 +1054,15 @@ void handle_challenge_3(Context* ctx) {
     // Move os objetos e verifica se o jogador pegou algum
     for (int i = 0; i < FALLING_OBJECTS_LENGTH; i++) {
         Falling_Object* obj = &c3->falling_objects[i];
+        int w = FALLING_OBJECT_WIDTH,
+            h = FALLING_OBJECT_HEIGHT;
 
         obj->position.y += obj->speed;
         obj->speed += FALLING_ACCELERATION;
 
         if (obj->position.y >= c3->player_position.y && 
             (obj->position.x >= c3->player_position.x && obj->position.x <= c3->player_position.x + 100 ||
-            obj->position.x + 50 >= c3->player_position.x && obj->position.x + 50 <= c3->player_position.x + 100)) {
+            obj->position.x + w >= c3->player_position.x && obj->position.x + w <= c3->player_position.x + 100)) {
             if (obj->id == 0) {
                 c3->apples_counter++;
             } else {
@@ -1102,12 +1106,14 @@ void handle_challenge_4(Context* ctx, Coordinate* mouse) {
     for (int i = 0; i < WANTED_OBJECTS_LENGTH; i++) {
         Wanted_Object* obj = &c4->wanted_objects[i];
         Wanted_Object* fake_obj = &c4->fake_wanted_objects[i];
+        int w = WANTED_OBJECT_WIDTH,
+            h = WANTED_OBJECT_HEIGHT;
 
-        if (check_collision(mouse, obj->position.x, obj->position.x + WANTED_OBJECT_WIDTH, obj->position.y, obj->position.y + WANTED_OBJECT_HEIGHT)) {
+        if (check_collision(mouse, obj->position.x, obj->position.x + w, obj->position.y, obj->position.y + h)) {
             obj->selected = true;
         }
 
-        if (check_collision(mouse, fake_obj->position.x, fake_obj->position.x + WANTED_OBJECT_WIDTH, fake_obj->position.y, fake_obj->position.y + WANTED_OBJECT_HEIGHT)) {
+        if (check_collision(mouse, fake_obj->position.x, fake_obj->position.x + w, fake_obj->position.y, fake_obj->position.y + h)) {
             fake_obj->selected = true;
         }
     }
