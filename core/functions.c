@@ -79,6 +79,150 @@ void load_images(Images* imgs) {
     must_init(imgs->hunger_empty, "hunger empty image");
     imgs->hunger_filled = al_load_bitmap("images/hunger.png");
     must_init(imgs->hunger_filled, "hunger filled image");
+    imgs->bird_sprites.front[0] = al_load_bitmap("images/bird-front-1.png");
+    must_init(imgs->bird_sprites.front[0], "bird front 1 image");
+    imgs->bird_sprites.front[1] = al_load_bitmap("images/bird-front-2.png");
+    must_init(imgs->bird_sprites.front[1], "bird front 2 image");
+    imgs->bird_sprites.front[2] = al_load_bitmap("images/bird-front-3.png");
+    must_init(imgs->bird_sprites.front[2], "bird front 3 image");
+    imgs->bird_sprites.back[0] = al_load_bitmap("images/bird-back-1.png");
+    must_init(imgs->bird_sprites.back[0], "bird back 1 image");
+    imgs->bird_sprites.back[1] = al_load_bitmap("images/bird-back-2.png");
+    must_init(imgs->bird_sprites.back[1], "bird back 2 image");
+    imgs->bird_sprites.back[2] = al_load_bitmap("images/bird-back-3.png");
+    must_init(imgs->bird_sprites.back[2], "bird back 3 image");
+    imgs->bird_sprites.left[0] = al_load_bitmap("images/bird-left-1.png");
+    must_init(imgs->bird_sprites.left[0], "bird left 1 image");
+    imgs->bird_sprites.left[1] = al_load_bitmap("images/bird-left-2.png");
+    must_init(imgs->bird_sprites.left[1], "bird left 2 image");
+    imgs->bird_sprites.left[2] = al_load_bitmap("images/bird-left-3.png");
+    must_init(imgs->bird_sprites.left[2], "bird left 3 image");
+    imgs->bird_sprites.right[0] = al_load_bitmap("images/bird-right-1.png");
+    must_init(imgs->bird_sprites.right[0], "bird right 1 image");
+    imgs->bird_sprites.right[1] = al_load_bitmap("images/bird-right-2.png");
+    must_init(imgs->bird_sprites.right[1], "bird right 2 image");
+    imgs->bird_sprites.right[2] = al_load_bitmap("images/bird-right-3.png");
+    must_init(imgs->bird_sprites.right[2], "bird right 3 image");
+    imgs->rabbit_sprites.front[0] = al_load_bitmap("images/rabbit-front-1.png");
+    must_init(imgs->rabbit_sprites.front[0], "rabbit front 1 image");
+    imgs->rabbit_sprites.front[1] = al_load_bitmap("images/rabbit-front-2.png");
+    must_init(imgs->rabbit_sprites.front[1], "rabbit front 2 image");
+    imgs->rabbit_sprites.front[2] = al_load_bitmap("images/rabbit-front-3.png");
+    must_init(imgs->rabbit_sprites.front[2], "rabbit front 3 image");
+    imgs->rabbit_sprites.back[0] = al_load_bitmap("images/rabbit-back-1.png");
+    must_init(imgs->rabbit_sprites.back[0], "rabbit back 1 image");
+    imgs->rabbit_sprites.back[1] = al_load_bitmap("images/rabbit-back-2.png");
+    must_init(imgs->rabbit_sprites.back[1], "rabbit back 2 image");
+    imgs->rabbit_sprites.back[2] = al_load_bitmap("images/rabbit-back-3.png");
+    must_init(imgs->rabbit_sprites.back[2], "rabbit back 3 image");
+    imgs->rabbit_sprites.left[0] = al_load_bitmap("images/rabbit-left-1.png");
+    must_init(imgs->rabbit_sprites.left[0], "rabbit left 1 image");
+    imgs->rabbit_sprites.left[1] = al_load_bitmap("images/rabbit-left-2.png");
+    must_init(imgs->rabbit_sprites.left[1], "rabbit left 2 image");
+    imgs->rabbit_sprites.left[2] = al_load_bitmap("images/rabbit-left-3.png");
+    must_init(imgs->rabbit_sprites.left[2], "rabbit left 3 image");
+    imgs->rabbit_sprites.right[0] = al_load_bitmap("images/rabbit-right-1.png");
+    must_init(imgs->rabbit_sprites.right[0], "rabbit right 1 image");
+    imgs->rabbit_sprites.right[1] = al_load_bitmap("images/rabbit-right-2.png");
+    must_init(imgs->rabbit_sprites.right[1], "rabbit right 2 image");
+    imgs->rabbit_sprites.right[2] = al_load_bitmap("images/rabbit-right-3.png");
+    must_init(imgs->rabbit_sprites.right[2], "rabbit right 3 image");
+    imgs->goat_sprites.front[0] = al_load_bitmap("images/goat-front-1.png");
+    must_init(imgs->goat_sprites.front[0], "goat front 1 image");
+    imgs->goat_sprites.front[1] = al_load_bitmap("images/goat-front-2.png");
+    must_init(imgs->goat_sprites.front[1], "goat front 2 image");
+    imgs->goat_sprites.front[2] = al_load_bitmap("images/goat-front-3.png");
+    must_init(imgs->goat_sprites.front[2], "goat front 3 image");
+    imgs->goat_sprites.back[0] = al_load_bitmap("images/goat-back-1.png");
+    must_init(imgs->goat_sprites.back[0], "goat back 1 image");
+    imgs->goat_sprites.back[1] = al_load_bitmap("images/goat-back-2.png");
+    must_init(imgs->goat_sprites.back[1], "goat back 2 image");
+    imgs->goat_sprites.back[2] = al_load_bitmap("images/goat-back-3.png");
+    must_init(imgs->goat_sprites.back[2], "goat back 3 image");
+    imgs->goat_sprites.left[0] = al_load_bitmap("images/goat-left-1.png");
+    must_init(imgs->goat_sprites.left[0], "goat left 1 image");
+    imgs->goat_sprites.left[1] = al_load_bitmap("images/goat-left-2.png");
+    must_init(imgs->goat_sprites.left[1], "goat left 2 image");
+    imgs->goat_sprites.left[2] = al_load_bitmap("images/goat-left-3.png");
+    must_init(imgs->goat_sprites.left[2], "goat left 3 image");
+    imgs->goat_sprites.right[0] = al_load_bitmap("images/goat-right-1.png");
+    must_init(imgs->goat_sprites.right[0], "goat right 1 image");
+    imgs->goat_sprites.right[1] = al_load_bitmap("images/goat-right-2.png");
+    must_init(imgs->goat_sprites.right[1], "goat right 2 image");
+    imgs->goat_sprites.right[2] = al_load_bitmap("images/goat-right-3.png");
+    must_init(imgs->goat_sprites.right[2], "goat right 3 image");
+    imgs->sheep_sprites.front[0] = al_load_bitmap("images/sheep-front-1.png");
+    must_init(imgs->sheep_sprites.front[0], "sheep front 1 image");
+    imgs->sheep_sprites.front[1] = al_load_bitmap("images/sheep-front-2.png");
+    must_init(imgs->sheep_sprites.front[1], "sheep front 2 image");
+    imgs->sheep_sprites.front[2] = al_load_bitmap("images/sheep-front-3.png");
+    must_init(imgs->sheep_sprites.front[2], "sheep front 3 image");
+    imgs->sheep_sprites.back[0] = al_load_bitmap("images/sheep-back-1.png");
+    must_init(imgs->sheep_sprites.back[0], "sheep back 1 image");
+    imgs->sheep_sprites.back[1] = al_load_bitmap("images/sheep-back-2.png");    
+    must_init(imgs->sheep_sprites.back[1], "sheep back 2 image");
+    imgs->sheep_sprites.back[2] = al_load_bitmap("images/sheep-back-3.png");
+    must_init(imgs->sheep_sprites.back[2], "sheep back 3 image");
+    imgs->sheep_sprites.left[0] = al_load_bitmap("images/sheep-left-1.png");
+    must_init(imgs->sheep_sprites.left[0], "sheep left 1 image");
+    imgs->sheep_sprites.left[1] = al_load_bitmap("images/sheep-left-2.png");
+    must_init(imgs->sheep_sprites.left[1], "sheep left 2 image");
+    imgs->sheep_sprites.left[2] = al_load_bitmap("images/sheep-left-3.png");
+    must_init(imgs->sheep_sprites.left[2], "sheep left 3 image");
+    imgs->sheep_sprites.right[0] = al_load_bitmap("images/sheep-right-1.png");
+    must_init(imgs->sheep_sprites.right[0], "sheep right 1 image");
+    imgs->sheep_sprites.right[1] = al_load_bitmap("images/sheep-right-2.png");
+    must_init(imgs->sheep_sprites.right[1], "sheep right 2 image");
+    imgs->sheep_sprites.right[2] = al_load_bitmap("images/sheep-right-3.png");
+    must_init(imgs->sheep_sprites.right[2], "sheep right 3 image");
+    imgs->cat_sprites.front[0] = al_load_bitmap("images/cat-front-1.png");
+    must_init(imgs->cat_sprites.front[0], "cat front 1 image");
+    imgs->cat_sprites.front[1] = al_load_bitmap("images/cat-front-2.png");
+    must_init(imgs->cat_sprites.front[1], "cat front 2 image");
+    imgs->cat_sprites.front[2] = al_load_bitmap("images/cat-front-3.png");
+    must_init(imgs->cat_sprites.front[2], "cat front 3 image");
+    imgs->cat_sprites.back[0] = al_load_bitmap("images/cat-back-1.png");
+    must_init(imgs->cat_sprites.back[0], "cat back 1 image");
+    imgs->cat_sprites.back[1] = al_load_bitmap("images/cat-back-2.png");
+    must_init(imgs->cat_sprites.back[1], "cat back 2 image");
+    imgs->cat_sprites.back[2] = al_load_bitmap("images/cat-back-3.png");
+    must_init(imgs->cat_sprites.back[2], "cat back 3 image");
+    imgs->cat_sprites.left[0] = al_load_bitmap("images/cat-left-1.png");
+    must_init(imgs->cat_sprites.left[0], "cat left 1 image");
+    imgs->cat_sprites.left[1] = al_load_bitmap("images/cat-left-2.png");
+    must_init(imgs->cat_sprites.left[1], "cat left 2 image");
+    imgs->cat_sprites.left[2] = al_load_bitmap("images/cat-left-3.png");
+    must_init(imgs->cat_sprites.left[2], "cat left 3 image");
+    imgs->cat_sprites.right[0] = al_load_bitmap("images/cat-right-1.png");
+    must_init(imgs->cat_sprites.right[0], "cat right 1 image");
+    imgs->cat_sprites.right[1] = al_load_bitmap("images/cat-right-2.png");
+    must_init(imgs->cat_sprites.right[1], "cat right 2 image");
+    imgs->cat_sprites.right[2] = al_load_bitmap("images/cat-right-3.png");
+    must_init(imgs->cat_sprites.right[2], "cat right 3 image");
+    imgs->snake_sprites.front[0] = al_load_bitmap("images/snake-front-1.png");
+    must_init(imgs->snake_sprites.front[0], "snake front 1 image");
+    imgs->snake_sprites.front[1] = al_load_bitmap("images/snake-front-2.png");
+    must_init(imgs->snake_sprites.front[1], "snake front 2 image");
+    imgs->snake_sprites.front[2] = al_load_bitmap("images/snake-front-3.png");
+    must_init(imgs->snake_sprites.front[2], "snake front 3 image");
+    imgs->snake_sprites.back[0] = al_load_bitmap("images/snake-back-1.png");
+    must_init(imgs->snake_sprites.back[0], "snake back 1 image");
+    imgs->snake_sprites.back[1] = al_load_bitmap("images/snake-back-2.png");
+    must_init(imgs->snake_sprites.back[1], "snake back 2 image");
+    imgs->snake_sprites.back[2] = al_load_bitmap("images/snake-back-3.png");
+    must_init(imgs->snake_sprites.back[2], "snake back 3 image");
+    imgs->snake_sprites.left[0] = al_load_bitmap("images/snake-left-1.png");    
+    must_init(imgs->snake_sprites.left[0], "snake left 1 image");
+    imgs->snake_sprites.left[1] = al_load_bitmap("images/snake-left-2.png");
+    must_init(imgs->snake_sprites.left[1], "snake left 2 image");
+    imgs->snake_sprites.left[2] = al_load_bitmap("images/snake-left-3.png");
+    must_init(imgs->snake_sprites.left[2], "snake left 3 image");
+    imgs->snake_sprites.right[0] = al_load_bitmap("images/snake-right-1.png");
+    must_init(imgs->snake_sprites.right[0], "snake right 1 image");
+    imgs->snake_sprites.right[1] = al_load_bitmap("images/snake-right-2.png");
+    must_init(imgs->snake_sprites.right[1], "snake right 2 image");
+    imgs->snake_sprites.right[2] = al_load_bitmap("images/snake-right-3.png");
+    must_init(imgs->snake_sprites.right[2], "snake right 3 image");
 }
 
 void load_sounds(Sounds* sounds) {
@@ -86,6 +230,53 @@ void load_sounds(Sounds* sounds) {
     must_init(sounds->footstep[0], "footstep 1 sound");
     sounds->footstep[1] = al_load_sample("sounds/footstep-2.wav");
     must_init(sounds->footstep[1], "footstep 2 sound");
+}
+
+void sort_destination(Animal* self) {
+    switch (self->type) {
+    case BIRD:
+        self->destination.y = rand() % (MAP_SIZE + 700);
+
+        if (self->position.x <= 0) {
+            self->destination.x = MAP_SIZE;
+        } else if (self->position.x >= DISPLAY_WIDTH) {
+            self->destination.x = (-MAP_SIZE - 700);
+        }
+
+        self->birds_count = rand() % 7 + 1;
+        break;
+    case RABBIT:
+    case GOAT:
+    case SHEEP:
+    case CAT:
+    case SNAKE:
+        self->destination.x = rand() % (int)(self->bounds.x2 - self->bounds.x1) + self->bounds.x1;
+        self->destination.y = rand() % (int)(self->bounds.y2 - self->bounds.y1) + self->bounds.y1;
+        break;
+    }
+}
+
+void move_animal(Animal* self) {
+    if (self->position.x < self->destination.x) {
+        self->position.x += self->speed;
+        if (self->position.x >= self->destination.x) self->position.x = self->destination.x;
+    }
+    if (self->position.x > self->destination.x) {
+        self->position.x -= self->speed;
+        if (self->position.x <= self->destination.x) self->position.x = self->destination.x;
+    }
+    if (self->position.y < self->destination.y) {
+        self->position.y += self->speed;
+        if (self->position.y >= self->destination.y) self->position.y = self->destination.y;
+    }
+    if (self->position.y > self->destination.y) {
+        self->position.y -= self->speed;
+        if (self->position.y <= self->destination.y) self->position.y = self->destination.y;
+    }
+
+    if (self->position.x == self->destination.x && self->position.y == self->destination.y) {
+        self->is_moving = false;
+    }
 }
 
 void set_context_to_default(Context* ctx) {
@@ -141,7 +332,93 @@ void set_context_to_default(Context* ctx) {
     ctx->redraw = true;
     ctx->done = false;
 
-    // Obstacles
+    // Animais
+    ctx->animals[0].type = BIRD;
+    ctx->animals[1].type = BIRD;
+    ctx->animals[2].type = RABBIT;
+    ctx->animals[3].type = RABBIT;
+    ctx->animals[4].type = GOAT;
+    ctx->animals[5].type = SHEEP;
+    ctx->animals[6].type = CAT;
+    ctx->animals[7].type = SNAKE;
+
+    for (int i = 0; i < ANIMALS_LENGTH; i++) {
+        ctx->animals[i].is_moving = false;
+        ctx->animals[i].move = &move_animal;
+        ctx->animals[i].sort_destination = &sort_destination;
+        ctx->animals[i].birds_count = 0;
+        ctx->animals[i].bounds.x1 = 0;
+        ctx->animals[i].bounds.x2 = DISPLAY_WIDTH;
+        ctx->animals[i].bounds.y1 = 0;
+        ctx->animals[i].bounds.y2 = DISPLAY_HEIGHT;
+        
+        switch (ctx->animals[i].type) {
+        case BIRD:
+            ctx->animals[i].position.x = -MAP_SIZE;
+            ctx->animals[i].position.y = rand() % MAP_SIZE;
+            ctx->animals[i].speed = 20;
+            ctx->animals[i].width = 25;
+            ctx->animals[i].height = 25;
+            break;
+        case RABBIT:
+            ctx->animals[i].position.x = 1100;
+            ctx->animals[i].position.y = 1300;
+            ctx->animals[i].speed = 6;
+            ctx->animals[i].width = 25;
+            ctx->animals[i].height = 25;
+            ctx->animals[i].bounds.x1 = 800;
+            ctx->animals[i].bounds.x2 = 1400;
+            ctx->animals[i].bounds.y1 = 1000;
+            ctx->animals[i].bounds.y2 = 1600;
+            break;
+        case GOAT:
+            ctx->animals[i].position.x = 1000;
+            ctx->animals[i].position.y = -150;
+            ctx->animals[i].speed = 8;
+            ctx->animals[i].width = 50;
+            ctx->animals[i].height = 50;
+            ctx->animals[i].bounds.x1 = 1000;
+            ctx->animals[i].bounds.x2 = 1200;
+            ctx->animals[i].bounds.y1 = -200;
+            ctx->animals[i].bounds.y2 = 300;
+            break;
+        case SHEEP:
+            ctx->animals[i].position.x = 1000;
+            ctx->animals[i].position.y = -200;
+            ctx->animals[i].speed = 3;
+            ctx->animals[i].width = 50;
+            ctx->animals[i].height = 50;
+            ctx->animals[i].bounds.x1 = 1000;
+            ctx->animals[i].bounds.x2 = 1200;
+            ctx->animals[i].bounds.y1 = -200;
+            ctx->animals[i].bounds.y2 = 300;
+            break;
+        case CAT:
+            ctx->animals[i].position.x = 1100;
+            ctx->animals[i].position.y = 1300;
+            ctx->animals[i].speed = 3;
+            ctx->animals[i].width = 25;
+            ctx->animals[i].height = 25;
+            ctx->animals[i].bounds.x1 = 800;
+            ctx->animals[i].bounds.x2 = 1400;
+            ctx->animals[i].bounds.y1 = 1000;
+            ctx->animals[i].bounds.y2 = 1600;
+            break;
+        case SNAKE:
+            ctx->animals[i].position.x = 0;
+            ctx->animals[i].position.y = 1600;
+            ctx->animals[i].speed = 5;
+            ctx->animals[i].width = 25;
+            ctx->animals[i].height = 25;
+            ctx->animals[i].bounds.x1 = -500;
+            ctx->animals[i].bounds.x2 = 500;
+            ctx->animals[i].bounds.y1 = 1500;
+            ctx->animals[i].bounds.y2 = 2400;
+            break;
+        }
+    }
+
+    // Obstaculos
     ctx->obstacles[0].position.x = 1000;
     ctx->obstacles[0].position.y = 1175;
     ctx->obstacles[0].width = 100;
@@ -659,11 +936,35 @@ void free_context(Context* ctx) {
     al_destroy_bitmap(ctx->imgs.hunger_empty);
     al_destroy_bitmap(ctx->imgs.hunger_filled);
 
-    for (int i = 0; i < CHAR_SPRITES_LENGTH; i++) {
+    for (int i = 0; i < SPRITES_LENGTH; i++) {
         al_destroy_bitmap(ctx->imgs.char_sprites.front[i]);
         al_destroy_bitmap(ctx->imgs.char_sprites.back[i]);
         al_destroy_bitmap(ctx->imgs.char_sprites.left[i]);
         al_destroy_bitmap(ctx->imgs.char_sprites.right[i]);
+        al_destroy_bitmap(ctx->imgs.bird_sprites.front[i]);
+        al_destroy_bitmap(ctx->imgs.bird_sprites.back[i]);
+        al_destroy_bitmap(ctx->imgs.bird_sprites.left[i]);
+        al_destroy_bitmap(ctx->imgs.bird_sprites.right[i]);
+        al_destroy_bitmap(ctx->imgs.rabbit_sprites.front[i]);
+        al_destroy_bitmap(ctx->imgs.rabbit_sprites.back[i]);
+        al_destroy_bitmap(ctx->imgs.rabbit_sprites.left[i]);
+        al_destroy_bitmap(ctx->imgs.rabbit_sprites.right[i]);
+        al_destroy_bitmap(ctx->imgs.goat_sprites.front[i]);
+        al_destroy_bitmap(ctx->imgs.goat_sprites.back[i]);
+        al_destroy_bitmap(ctx->imgs.goat_sprites.left[i]);
+        al_destroy_bitmap(ctx->imgs.goat_sprites.right[i]);
+        al_destroy_bitmap(ctx->imgs.sheep_sprites.front[i]);
+        al_destroy_bitmap(ctx->imgs.sheep_sprites.back[i]);
+        al_destroy_bitmap(ctx->imgs.sheep_sprites.left[i]);
+        al_destroy_bitmap(ctx->imgs.sheep_sprites.right[i]);
+        al_destroy_bitmap(ctx->imgs.cat_sprites.front[i]);
+        al_destroy_bitmap(ctx->imgs.cat_sprites.back[i]);
+        al_destroy_bitmap(ctx->imgs.cat_sprites.left[i]);
+        al_destroy_bitmap(ctx->imgs.cat_sprites.right[i]);
+        al_destroy_bitmap(ctx->imgs.snake_sprites.front[i]);
+        al_destroy_bitmap(ctx->imgs.snake_sprites.back[i]);
+        al_destroy_bitmap(ctx->imgs.snake_sprites.left[i]);
+        al_destroy_bitmap(ctx->imgs.snake_sprites.right[i]);
     }
 
     al_destroy_sample(ctx->sounds.footstep[0]);
@@ -688,7 +989,58 @@ void draw_context(Context* ctx) {
         break;
     case OPEN_MAP:
         al_draw_bitmap(ctx->imgs.map, ctx->map.x, ctx->map.y, 0);
+
+        for (int i = 2; i < ANIMALS_LENGTH; i++) {
+            Animal* a = &ctx->animals[i];
+            bool hide = false;
+            switch (a->type) {
+            case CAT:
+                hide = a->position.x >= a->bounds.x1 + 200 && a->position.x <= a->bounds.x2 - 200 && a->position.y >= a->bounds.y1 + 200 &&
+                       a->position.y <= a->bounds.y2 - 200;
+                if (!hide) al_draw_bitmap(ctx->imgs.cat_sprites.current, a->position.x, a->position.y, 0);
+                break;
+            case RABBIT:
+                hide = a->position.x >= a->bounds.x1 + 200 && a->position.x <= a->bounds.x2 - 200 && a->position.y >= a->bounds.y1 + 200 &&
+                       a->position.y <= a->bounds.y2 - 200;
+                if (!hide) al_draw_bitmap(ctx->imgs.rabbit_sprites.current, a->position.x, a->position.y, 0);
+                break;
+            case SNAKE:
+                hide = a->position.x <= a->bounds.x2 - 150 && a->position.y >= a->bounds.y1 + 300;
+                if (!hide) al_draw_bitmap(ctx->imgs.snake_sprites.current, a->position.x, a->position.y, 0);
+                break;
+            case GOAT:
+                al_draw_bitmap(ctx->imgs.goat_sprites.current, a->position.x, a->position.y, 0);
+                break;
+            case SHEEP:
+                al_draw_bitmap(ctx->imgs.sheep_sprites.current, a->position.x, a->position.y, 0);
+                break;
+            }
+        }
+
         al_draw_bitmap(ctx->imgs.char_sprites.current, ctx->player.x, ctx->player.y, 0);
+
+        for (int i = 0; i < 2; i++) {
+            Animal* a = &ctx->animals[i];
+
+            for (int j = 0; j < a->birds_count; j++) {
+                  float x = j * 100,
+                        y = j * 50;
+
+                  if (j % 2 == 0 && j != 0) {
+                      y -= 10;
+                      y *= -1;
+                      x -= 25;
+                  }
+                  if (x < a->destination.x) x *= -1;
+
+                  x += a->position.x;
+                  y += a->position.y;
+
+                  al_draw_bitmap(ctx->imgs.bird_sprites.current, x, y, 0);
+            }
+        }
+
+
         for (int i = 2; i >= 0; i--) {
             if (ctx->life_counter > i) {
                 al_draw_bitmap(ctx->imgs.heart_filled, 5 + i * HEART_WIDTH, 5, 0);
@@ -829,9 +1181,24 @@ void move_camera(Context* ctx) {
     Coordinate player = {ctx->player.x, ctx->player.y};
     Coordinate map = {ctx->map.x, ctx->map.y};
     Coordinate obstacles[OBSTACLES_LENGTH];
+    Coordinate animals_positions[ANIMALS_LENGTH];
+    Coordinate animals_destinations[ANIMALS_LENGTH];
+    Rectangle animals_bounds[ANIMALS_LENGTH];
 
     for (int i = 0; i < OBSTACLES_LENGTH; i++) {
         obstacles[i] = ctx->obstacles[i].position;
+
+        if (i < ANIMALS_LENGTH) {
+            Animal* a = &ctx->animals[i];
+            animals_positions[i].x = a->position.x;
+            animals_positions[i].y = a->position.y;
+            animals_destinations[i].x = a->destination.x;
+            animals_destinations[i].y = a->destination.y;
+            animals_bounds[i].x1 = a->bounds.x1;
+            animals_bounds[i].x2 = a->bounds.x2;
+            animals_bounds[i].y1 = a->bounds.y1;
+            animals_bounds[i].y2 = a->bounds.y2;
+        }
     }
 
     switch (ctx->event.keyboard.keycode) {
@@ -841,6 +1208,14 @@ void move_camera(Context* ctx) {
             ctx->map.y += PLAYER_SPEED;
             for (int i = 0; i < OBSTACLES_LENGTH; i++) {
                 ctx->obstacles[i].position.y += PLAYER_SPEED;
+                
+                if (i < ANIMALS_LENGTH) {
+                    Animal* a = &ctx->animals[i];
+                    a->position.y += PLAYER_SPEED;
+                    a->destination.y += PLAYER_SPEED;
+                    a->bounds.y1 += PLAYER_SPEED;
+                    a->bounds.y2 += PLAYER_SPEED;
+                }
             }
         } else if (ctx->player.y >= ctx->map.y) {
             ctx->player.y -= PLAYER_SPEED;
@@ -852,6 +1227,14 @@ void move_camera(Context* ctx) {
             ctx->map.y -= PLAYER_SPEED;
             for (int i = 0; i < OBSTACLES_LENGTH; i++) {
                 ctx->obstacles[i].position.y -= PLAYER_SPEED;
+            
+                if (i < ANIMALS_LENGTH) {
+                    Animal* a = &ctx->animals[i];
+                    a->position.y -= PLAYER_SPEED;
+                    a->destination.y -= PLAYER_SPEED;
+                    a->bounds.y1 -= PLAYER_SPEED;
+                    a->bounds.y2 -= PLAYER_SPEED;
+                }
             }
         } else if (ctx->player.y + PLAYER_HEIGHT <= ctx->map.y + MAP_SIZE) {
             ctx->player.y += PLAYER_SPEED;
@@ -863,6 +1246,14 @@ void move_camera(Context* ctx) {
             ctx->map.x += PLAYER_SPEED;
             for (int i = 0; i < OBSTACLES_LENGTH; i++) {
                 ctx->obstacles[i].position.x += PLAYER_SPEED;
+
+                if (i < ANIMALS_LENGTH) {
+                    Animal* a = &ctx->animals[i];
+                    a->position.x += PLAYER_SPEED;
+                    a->destination.x += PLAYER_SPEED;
+                    a->bounds.x1 += PLAYER_SPEED;
+                    a->bounds.x2 += PLAYER_SPEED;
+                }
             }
         } else if (ctx->player.x >= ctx->map.x) {
             ctx->player.x -= PLAYER_SPEED;
@@ -874,6 +1265,14 @@ void move_camera(Context* ctx) {
             ctx->map.x -= PLAYER_SPEED;
             for (int i = 0; i < OBSTACLES_LENGTH; i++) {
                 ctx->obstacles[i].position.x -= PLAYER_SPEED;
+            
+                if (i < ANIMALS_LENGTH) {
+                    Animal* a = &ctx->animals[i];
+                    a->position.x -= PLAYER_SPEED;
+                    a->destination.x -= PLAYER_SPEED;
+                    a->bounds.x1 -= PLAYER_SPEED;
+                    a->bounds.x2 -= PLAYER_SPEED;
+                }
             }
         } else if (ctx->player.x + PLAYER_WIDTH <= ctx->map.x + MAP_SIZE) {
             ctx->player.x += PLAYER_SPEED;
@@ -889,13 +1288,25 @@ void move_camera(Context* ctx) {
         for (int i = 0; i < OBSTACLES_LENGTH; i++) {
             ctx->obstacles[i].position.x = obstacles[i].x;
             ctx->obstacles[i].position.y = obstacles[i].y;
+
+            if (i < ANIMALS_LENGTH) {
+                Animal* a = &ctx->animals[i];
+                a->position.x = animals_positions[i].x;
+                a->position.y = animals_positions[i].y;
+                a->destination.x = animals_destinations[i].x;
+                a->destination.y = animals_destinations[i].y;
+                a->bounds.x1 = animals_bounds[i].x1;
+                a->bounds.x2 = animals_bounds[i].x2;
+                a->bounds.y1 = animals_bounds[i].y1;
+                a->bounds.y2 = animals_bounds[i].y2;
+            }
         }
     }
 }
 
-void change_character_sprite(Context* ctx) {
+int get_quarter_from_timer(ALLEGRO_TIMER* timer) {
     // Calcula o frame atual do jogo (0-29)
-    float cyclic_timer = al_get_timer_count(ctx->timer) % FPS;
+    float cyclic_timer = al_get_timer_count(timer) % FPS;
 
     // Divide o timer em quatro partes
     bool is_one_quarter = cyclic_timer >= 0 && cyclic_timer <= 7.5;
@@ -903,37 +1314,50 @@ void change_character_sprite(Context* ctx) {
     bool is_three_quarters = cyclic_timer > 15 && cyclic_timer <= 22.5;
     bool is_four_quarters = cyclic_timer > 22.5 && cyclic_timer <= 30;
 
+    if (is_one_quarter) return 1;
+    if (is_two_quarters) return 2;
+    if (is_three_quarters) return 3;
+    if (is_four_quarters) return 4;
+
+    return -1;
+}
+
+void change_character_sprite(Context* ctx) {
+    int quarter = get_quarter_from_timer(ctx->timer);
+    if (quarter == -1) return;
+
     bool is_player_standing = ctx->event.type == ALLEGRO_EVENT_KEY_UP;
 
     ALLEGRO_BITMAP* current = ctx->imgs.char_sprites.current;
     switch (ctx->event.keyboard.keycode) {
     case ALLEGRO_KEY_UP:
     case ALLEGRO_KEY_W:
-        if (is_two_quarters) current = ctx->imgs.char_sprites.back[1];
-        if (is_four_quarters) current = ctx->imgs.char_sprites.back[2];
-        if (is_one_quarter || is_three_quarters || is_player_standing) current = ctx->imgs.char_sprites.back[0];
+        if (quarter == 2) current = ctx->imgs.char_sprites.back[1];
+        if (quarter == 4) current = ctx->imgs.char_sprites.back[2];
+        if (quarter == 1 || quarter == 3 || is_player_standing) current = ctx->imgs.char_sprites.back[0];
         break;
     case ALLEGRO_KEY_DOWN:
     case ALLEGRO_KEY_S:
-        if (is_two_quarters) current = ctx->imgs.char_sprites.front[1];
-        if (is_four_quarters) current = ctx->imgs.char_sprites.front[2];
-        if (is_one_quarter || is_three_quarters || is_player_standing) current = ctx->imgs.char_sprites.front[0];
+        if (quarter == 2) current = ctx->imgs.char_sprites.front[1];
+        if (quarter == 4) current = ctx->imgs.char_sprites.front[2];
+        if (quarter == 1 || quarter == 3 || is_player_standing) current = ctx->imgs.char_sprites.front[0];
         break;
     case ALLEGRO_KEY_LEFT:
     case ALLEGRO_KEY_A:
-        if (is_two_quarters) current = ctx->imgs.char_sprites.left[1];
-        if (is_four_quarters) current = ctx->imgs.char_sprites.left[2];
-        if (is_one_quarter || is_three_quarters || is_player_standing) current = ctx->imgs.char_sprites.left[0];
+        if (quarter == 2) current = ctx->imgs.char_sprites.left[1];
+        if (quarter == 4) current = ctx->imgs.char_sprites.left[2];
+        if (quarter == 1 || quarter == 3 || is_player_standing) current = ctx->imgs.char_sprites.left[0];
         break;
     case ALLEGRO_KEY_RIGHT:
     case ALLEGRO_KEY_D:
-        if (is_two_quarters) current = ctx->imgs.char_sprites.right[1];
-        if (is_four_quarters) current = ctx->imgs.char_sprites.right[2];
-        if (is_one_quarter || is_three_quarters || is_player_standing) current = ctx->imgs.char_sprites.right[0];
+        if (quarter == 2) current = ctx->imgs.char_sprites.right[1];
+        if (quarter == 4) current = ctx->imgs.char_sprites.right[2];
+        if (quarter == 1 || quarter == 3 || is_player_standing) current = ctx->imgs.char_sprites.right[0];
         break;
     } 
     ctx->imgs.char_sprites.current = current;
 
+    float cyclic_timer = al_get_timer_count(ctx->timer) % FPS;
     if (cyclic_timer == 10) {
         al_stop_samples();
         al_play_sample(ctx->sounds.footstep[0], 0.7, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
@@ -981,7 +1405,7 @@ void finish_challenge(bool success, Context* ctx) {
 }
 
 int get_event_index(ALLEGRO_EVENT_TYPE event_type) {
-    int index = 0;
+    int index;
 
     switch (event_type) {
     case ALLEGRO_EVENT_TIMER:
@@ -998,6 +1422,9 @@ int get_event_index(ALLEGRO_EVENT_TYPE event_type) {
         break;
     case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
         index = 4;
+        break;
+    default:
+        index = -1;
         break;
     }
     

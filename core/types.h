@@ -6,7 +6,7 @@
 #include <allegro5/allegro_audio.h>
 #include <stdbool.h>
 
-#define CHAR_SPRITES_LENGTH 3
+#define SPRITES_LENGTH 3
 #define PLACEABLE_OBJECTS_LENGTH 5
 #define PLACEABLE_POSITIONS_LENGTH 10
 #define SELECTABLE_OBJECTS_LENGTH_C2 7
@@ -14,14 +14,15 @@
 #define FALLING_OBJECTS_LENGTH 16
 #define WANTED_OBJECTS_LENGTH 4
 #define OBSTACLES_LENGTH 98
+#define ANIMALS_LENGTH 8 // 2 grupos de aves, 2 coelhos, 1 ovelha, bode, gato, cobra
 
 typedef struct {
-    ALLEGRO_BITMAP* front[CHAR_SPRITES_LENGTH]; // o index 0 é o sprite do personagem parado,
-    ALLEGRO_BITMAP* back[CHAR_SPRITES_LENGTH];  // os demais são dele em movimento
-    ALLEGRO_BITMAP* left[CHAR_SPRITES_LENGTH];
-    ALLEGRO_BITMAP* right[CHAR_SPRITES_LENGTH];
+    ALLEGRO_BITMAP* front[SPRITES_LENGTH];
+    ALLEGRO_BITMAP* back[SPRITES_LENGTH];
+    ALLEGRO_BITMAP* left[SPRITES_LENGTH];
+    ALLEGRO_BITMAP* right[SPRITES_LENGTH];
     ALLEGRO_BITMAP* current;
-} Character_Sprites;
+} Sprites;
 
 typedef struct {
     ALLEGRO_BITMAP* map;
@@ -30,7 +31,13 @@ typedef struct {
     ALLEGRO_BITMAP* game_over;
     ALLEGRO_BITMAP* play_btn;
     ALLEGRO_BITMAP* menu_btn;
-    Character_Sprites char_sprites;
+    Sprites char_sprites;
+    Sprites bird_sprites;
+    Sprites rabbit_sprites;
+    Sprites goat_sprites;
+    Sprites sheep_sprites;
+    Sprites cat_sprites;
+    Sprites snake_sprites;
     ALLEGRO_BITMAP* heart_empty;
     ALLEGRO_BITMAP* heart_filled;
     ALLEGRO_BITMAP* hunger_empty;
@@ -48,6 +55,15 @@ enum Game_State {
     GAME_OVER
 };
 
+enum Animal_Type {
+    BIRD,
+    CAT,
+    SHEEP,
+    SNAKE,
+    RABBIT,
+    GOAT
+};
+
 typedef struct {
     float x, y;
 } Coordinate;
@@ -55,6 +71,16 @@ typedef struct {
 typedef struct {
   float x1, x2, y1, y2;
 } Rectangle;
+
+typedef struct Animal {
+    enum Animal_Type type;
+    Coordinate position, destination;
+    Rectangle bounds;
+    int width, height, speed, birds_count;
+    bool is_moving;
+    void (*move)(struct Animal* self);
+    void (*sort_destination)(struct Animal* self);
+} Animal;
 
 typedef struct {
     Coordinate position;
@@ -126,6 +152,7 @@ typedef struct {
     Challenge_5 c5;
     Rectangle challenges_areas[5];
     Obstacle obstacles[OBSTACLES_LENGTH];
+    Animal animals[ANIMALS_LENGTH];
     int challenge_index, life_counter, hunger_counter;
     enum Game_State state;
     bool redraw, done, has_user_lost, is_user_hallucinated;
