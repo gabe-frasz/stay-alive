@@ -989,6 +989,7 @@ void handle_challenge_1(Context* ctx, Coordinate* mouse) {
 
         if (check_collision(mouse, x, x + 100, y, y + 100)) {
             c1->selected_object_index = i;
+            return;
         }
     }
 
@@ -999,8 +1000,12 @@ void handle_challenge_1(Context* ctx, Coordinate* mouse) {
 
         if (check_collision(mouse, x, x + 100, y, y + 100)) {
             c1->placeable_objects[c1->selected_object_index].position_index = i;
+            c1->selected_object_index = -1;
+            return;
         }
     }
+
+    if (c1->selected_object_index != -1) c1->selected_object_index = -1;
 
     // Verifica se o jogador conseguiu completar o desafio
     if (check_collision(mouse, 1000, 1200, 600, 700)) {
