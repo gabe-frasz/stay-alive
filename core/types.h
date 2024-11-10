@@ -8,7 +8,8 @@
 #define CHAR_SPRITES_LENGTH 3
 #define PLACEABLE_OBJECTS_LENGTH 5
 #define PLACEABLE_POSITIONS_LENGTH 10
-#define SELECTABLE_OBJECTS_LENGTH 7
+#define SELECTABLE_OBJECTS_LENGTH_C2 7
+#define SELECTABLE_OBJECTS_LENGTH_C5 10
 #define FALLING_OBJECTS_LENGTH 16
 #define WANTED_OBJECTS_LENGTH 4
 #define OBSTACLES_LENGTH 98
@@ -51,6 +52,11 @@ typedef struct {
 } Rectangle;
 
 typedef struct {
+    Coordinate position;
+    int width, height;
+} Obstacle;
+
+typedef struct {
     int width, height, position_index, correct_position_index;
 } Placeable_Object;
 
@@ -66,7 +72,7 @@ typedef struct {
 } Selectable_Object;
 
 typedef struct {
-    Selectable_Object selectable_objects[SELECTABLE_OBJECTS_LENGTH];
+    Selectable_Object selectable_objects[SELECTABLE_OBJECTS_LENGTH_C2];
 } Challenge_2;
 
 typedef struct {
@@ -94,9 +100,10 @@ typedef struct {
 } Challenge_4;
 
 typedef struct {
-    Coordinate position;
-    int width, height;
-} Obstacle;
+    Selectable_Object selectable_objects[SELECTABLE_OBJECTS_LENGTH_C5];
+    time_t start_time;
+    int duration_in_seconds;
+} Challenge_5;
 
 typedef struct {
     ALLEGRO_TIMER* timer;
@@ -110,6 +117,7 @@ typedef struct {
     Challenge_2 c2;
     Challenge_3 c3;
     Challenge_4 c4;
+    Challenge_5 c5;
     Rectangle challenges_areas[5];
     Obstacle obstacles[OBSTACLES_LENGTH];
     int challenge_index, life_counter, hunger_counter;
