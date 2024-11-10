@@ -18,7 +18,6 @@ int main() {
             if (ctx.state == CHALLENGE && ctx.event.keyboard.keycode == ALLEGRO_KEY_0) finish_challenge(false, &ctx);
             if (ctx.state == CHALLENGE && ctx.event.keyboard.keycode == ALLEGRO_KEY_1) finish_challenge(true, &ctx);
             if (ctx.state == OPEN_MAP && ctx.event.keyboard.keycode == ALLEGRO_KEY_N) {
-                if (ctx.challenge_index == 3) ctx.c4.start_time = time(0);
                 ctx.state = CHALLENGE;
             }
         }

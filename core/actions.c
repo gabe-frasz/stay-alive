@@ -36,7 +36,6 @@ static void timer_map(Context* ctx) {
 
     if (is_player_top_left_colliding || is_player_top_right_colliding ||
         is_player_bottom_left_colliding || is_player_bottom_right_colliding) {
-        if (ctx->challenge_index == 3) ctx->c4.start_time = time(0);
         ctx->state = CHALLENGE;
     }
 }
@@ -48,6 +47,9 @@ static void keyup_map(Context* ctx) {
     change_character_sprite(ctx);
 }
 static void timer_challenge(Context* ctx) {
+    Tutorial* tutorial = &ctx->tutorials[ctx->challenge_index];
+    if (!tutorial->is_completed) return;
+
     switch (ctx->challenge_index) {
     case 2:
         handle_challenge_3(ctx);
@@ -59,6 +61,9 @@ static void timer_challenge(Context* ctx) {
     
 }
 static void keydown_challenge(Context* ctx) {
+    Tutorial* tutorial = &ctx->tutorials[ctx->challenge_index];
+    if (!tutorial->is_completed) return;
+
     switch (ctx->challenge_index) {
     case 2:
         move_character_sideways(ctx);
@@ -67,6 +72,15 @@ static void keydown_challenge(Context* ctx) {
 }
 static void mouseup_challenge(Context* ctx) {
     Coordinate mouse = { ctx->event.mouse.x, ctx->event.mouse.y };
+    Tutorial* tutorial = &ctx->tutorials[ctx->challenge_index];
+
+    if (!tutorial->is_completed) {
+        if (check_collision(&mouse, 1000, 1200, 600, 700)) {
+            tutorial->is_completed = true;
+            if (ctx->challenge_index == 3) ctx->c4.start_time = time(0);
+            return;
+        }
+    }
 
     switch (ctx->challenge_index) {
     case 0:
