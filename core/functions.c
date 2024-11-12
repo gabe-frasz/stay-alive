@@ -41,8 +41,18 @@ void load_images(Images* imgs) {
     must_init(imgs->menu, "menu image");
     imgs->end_game = al_load_bitmap("images/end_game.jpeg");
     must_init(imgs->end_game, "end game image");
-    imgs->game_over = al_load_bitmap("images/game_over.png");
+    imgs->game_over = al_load_bitmap("images/game_over.jpeg");
     must_init(imgs->game_over, "game over image");
+    imgs->challenges[0] = al_load_bitmap("images/challenge-1.jpeg");
+    must_init(imgs->challenges[0], "challenge 1 image");
+    imgs->challenges[1] = al_load_bitmap("images/challenge-2.png");
+    must_init(imgs->challenges[1], "challenge 2 image");
+    imgs->challenges[2] = al_load_bitmap("images/challenge-3.jpeg");
+    must_init(imgs->challenges[2], "challenge 3 image");
+    imgs->challenges[3] = al_load_bitmap("images/challenge-4.jpg");
+    must_init(imgs->challenges[3], "challenge 4 image");
+    imgs->challenges[4] = al_load_bitmap("images/challenge-3.jpeg");
+    must_init(imgs->challenges[4], "challenge 5 image");
     imgs->play_btn = al_load_bitmap("images/play_btn.png");
     must_init(imgs->play_btn, "play button image");
     imgs->menu_btn = al_load_bitmap("images/menu_btn.png");
@@ -71,6 +81,8 @@ void load_images(Images* imgs) {
     must_init(imgs->char_sprites.right[1], "char walking 1 right image");
     imgs->char_sprites.right[2] = al_load_bitmap("images/andando_direita2.png");
     must_init(imgs->char_sprites.right[2], "char walking 2 right image");
+    imgs->char_with_basket = al_load_bitmap("images/char_with_basket.png");
+    must_init(imgs->char_with_basket, "char with basket image");
     imgs->heart_empty = al_load_bitmap("images/heart_empty.png");
     must_init(imgs->heart_empty, "heart empty image");
     imgs->heart_filled = al_load_bitmap("images/heart.png");
@@ -929,6 +941,11 @@ void free_context(Context* ctx) {
     al_destroy_bitmap(ctx->imgs.menu);
     al_destroy_bitmap(ctx->imgs.end_game);
     al_destroy_bitmap(ctx->imgs.game_over);
+
+    for (int i = 0; i < 5; i++) {
+        al_destroy_bitmap(ctx->imgs.challenges[i]);
+    }
+
     al_destroy_bitmap(ctx->imgs.play_btn);
     al_destroy_bitmap(ctx->imgs.menu_btn);
     al_destroy_bitmap(ctx->imgs.heart_empty);
@@ -1057,6 +1074,8 @@ void draw_context(Context* ctx) {
         }
         break;
     case CHALLENGE:
+        al_draw_bitmap(ctx->imgs.challenges[ctx->challenge_index], 0, 0, 0);
+
         if (ctx->challenge_index == 0) {
             for (int i = 0; i < PLACEABLE_POSITIONS_LENGTH; i++) {
                 Coordinate* pos = &ctx->c1.placeable_positions[i];
@@ -1092,7 +1111,7 @@ void draw_context(Context* ctx) {
         }
             
         if (ctx->challenge_index == 2) {
-            al_draw_filled_rectangle(ctx->c3.player_position.x, ctx->c3.player_position.y, ctx->c3.player_position.x + 100, ctx->c3.player_position.y + 100, al_map_rgb(255, 255, 255));
+            al_draw_bitmap(ctx->imgs.char_with_basket, ctx->c3.player_position.x, ctx->c3.player_position.y, 0);
             al_draw_textf(ctx->font, al_map_rgb(255, 0, 0), 1180, 0, 0, "Maçãs: %d", ctx->c3.apples_counter);
             al_draw_textf(ctx->font, al_map_rgb(0, 0, 255), 1180, 20, 0, "Cogumelos: %d", ctx->c3.mushrooms_counter);
 
@@ -1112,8 +1131,6 @@ void draw_context(Context* ctx) {
         }
 
         if (ctx->challenge_index == 3) {
-            al_clear_to_color(al_map_rgb(250, 200, 150));
-            
             for (int i = 0; i < WANTED_OBJECTS_LENGTH; i++) {
                 Wanted_Object* obj = &ctx->c4.wanted_objects[i];
                 Wanted_Object* fake_obj = &ctx->c4.fake_wanted_objects[i];
@@ -1136,7 +1153,6 @@ void draw_context(Context* ctx) {
             al_draw_textf(ctx->font, al_map_rgb(0, 0, 0), 0, 20, 0, "Tempo: %d segundos", seconds_left);
         }
 
-        al_draw_textf(ctx->font, al_map_rgb(255, 255, 255), 0, 0, 0, "Desafio %d", ctx->challenge_index + 1);
         al_draw_filled_rectangle(1000, 600, 1200, 700, al_map_rgb(0, 50, 0));
         al_draw_text(ctx->font, al_map_rgb(255, 255, 255), 1000, 600, 0, "Pronto!");
         break;

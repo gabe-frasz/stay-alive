@@ -29,9 +29,11 @@ typedef struct {
     ALLEGRO_BITMAP* menu;
     ALLEGRO_BITMAP* end_game;
     ALLEGRO_BITMAP* game_over;
+    ALLEGRO_BITMAP* challenges[5];
     ALLEGRO_BITMAP* play_btn;
     ALLEGRO_BITMAP* menu_btn;
     Sprites char_sprites;
+    ALLEGRO_BITMAP* char_with_basket;
     Sprites bird_sprites;
     Sprites rabbit_sprites;
     Sprites goat_sprites;
