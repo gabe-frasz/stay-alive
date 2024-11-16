@@ -52,6 +52,7 @@ typedef struct {
     ALLEGRO_BITMAP* heart_filled;
     ALLEGRO_BITMAP* hunger_empty;
     ALLEGRO_BITMAP* hunger_filled;
+    ALLEGRO_BITMAP* snake_alert;
     ALLEGRO_BITMAP* current_video_frame;
 } Images;
 

@@ -800,7 +800,7 @@ void draw_context(Context* ctx) {
         }
 
         if (ctx->is_snake_hunting) {
-            al_draw_filled_rectangle(DISPLAY_WIDTH/2.0 - 25, 0, DISPLAY_WIDTH/2.0 + 25, 50, al_map_rgb(255, 0, 0));
+            al_draw_bitmap(ctx->imgs.snake_alert, DISPLAY_WIDTH/2.0 - 25, 0, 0);
         }
         break;
     case CHALLENGE:

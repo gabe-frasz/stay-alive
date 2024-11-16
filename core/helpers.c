@@ -239,6 +239,8 @@ void load_images(Images* imgs) {
     must_init(imgs->medicinal_plants[3], "medicinal plant 4 image");
     imgs->medicinal_plants[4] = al_load_bitmap("images/japecanga.png");
     must_init(imgs->medicinal_plants[4], "medicinal plant 5 image");
+    imgs->snake_alert = al_load_bitmap("images/snake-alert.png");
+    must_init(imgs->snake_alert, "snake alert image");
 }
 
 void load_sounds(Sounds* sounds) {
