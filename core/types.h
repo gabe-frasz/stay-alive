@@ -16,6 +16,16 @@
 #define OBSTACLES_LENGTH 98
 #define ANIMALS_LENGTH 8 // 2 grupos de aves, 2 coelhos, 1 ovelha, bode, gato, cobra
 
+enum Animal_Type {
+    BIRD,
+    CAT,
+    SHEEP,
+    SNAKE,
+    RABBIT,
+    GOAT,
+    ANIMAL_TYPE_LENGTH
+};
+
 typedef struct {
     ALLEGRO_BITMAP* front[SPRITES_LENGTH];
     ALLEGRO_BITMAP* back[SPRITES_LENGTH];
@@ -34,12 +44,7 @@ typedef struct {
     ALLEGRO_BITMAP* menu_btn;
     Sprites char_sprites;
     ALLEGRO_BITMAP* char_with_basket;
-    Sprites bird_sprites;
-    Sprites rabbit_sprites;
-    Sprites goat_sprites;
-    Sprites sheep_sprites;
-    Sprites cat_sprites;
-    Sprites snake_sprites;
+    Sprites animals[ANIMAL_TYPE_LENGTH];
     ALLEGRO_BITMAP* heart_empty;
     ALLEGRO_BITMAP* heart_filled;
     ALLEGRO_BITMAP* hunger_empty;
@@ -57,15 +62,6 @@ enum Game_State {
     GAME_OVER
 };
 
-enum Animal_Type {
-    BIRD,
-    CAT,
-    SHEEP,
-    SNAKE,
-    RABBIT,
-    GOAT
-};
-
 typedef struct {
     float x, y;
 } Coordinate;
@@ -80,6 +76,7 @@ typedef struct Animal {
     Rectangle bounds;
     int width, height, speed, birds_count;
     bool is_moving;
+    ALLEGRO_BITMAP* current_sprite;
     void (*move)(struct Animal* self);
     void (*sort_destination)(struct Animal* self);
 } Animal;
@@ -157,7 +154,7 @@ typedef struct {
     Animal animals[ANIMALS_LENGTH];
     int challenge_index, life_counter, hunger_counter;
     enum Game_State state;
-    bool redraw, done, has_user_lost, is_user_hallucinated;
+    bool redraw, done, has_user_lost, is_user_hallucinated, is_snake_idle, is_snake_hunting;
 } Context;
 
 #endif

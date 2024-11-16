@@ -1,7 +1,8 @@
 #include <allegro5/allegro5.h>
 #include <stdbool.h>
 #include "core/actions.c"
-#include "core/functions.c"
+#include "core/helpers.c"
+#include "core/ctx-functions.c"
 
 int main() {
     Context ctx;
