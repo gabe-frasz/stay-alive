@@ -34,6 +34,7 @@ void set_context_to_default(Context* ctx) {
         ctx->c1.placeable_objects[i].correct_position_index = i * 2 + 1;
         ctx->c1.placeable_objects[i].width = 100;
         ctx->c1.placeable_objects[i].height = 100;
+        ctx->c1.placeable_objects[i].img = ctx->imgs.c1_placeable_objects[i];
     }
 
     for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C2; i++) {
@@ -634,10 +635,6 @@ void init_context(Context* ctx) {
     ctx->c1.placeable_positions[6].y = 600;
     ctx->c1.placeable_positions[7].x = 550;
     ctx->c1.placeable_positions[7].y = 200;
-    ctx->c1.placeable_positions[8].x = 700;
-    ctx->c1.placeable_positions[8].y = 600;
-    ctx->c1.placeable_positions[9].x = 700;
-    ctx->c1.placeable_positions[9].y = 200;
     ctx->c1.selected_object_index = -1;
 
     // Challenge 2
@@ -833,7 +830,7 @@ void draw_context(Context* ctx) {
                 int w = PLACEABLE_OBJECT_WIDTH,
                     h = PLACEABLE_OBJECT_HEIGHT;
 
-                al_draw_filled_rectangle(x, y, x + w, y + h, al_map_rgb(255, 0, 255)); 
+                al_draw_bitmap(ctx->c1.placeable_objects[i].img, x, y, 0); 
                 if (ctx->c1.selected_object_index == i) {
                     al_draw_rectangle(x - 5, y - 5, x + w + 5, y + h + 5, al_map_rgb(255, 255, 255), 1);
                 }

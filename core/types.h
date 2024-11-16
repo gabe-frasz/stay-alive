@@ -8,8 +8,8 @@
 #include <stdbool.h>
 
 #define SPRITES_LENGTH 3
-#define PLACEABLE_OBJECTS_LENGTH 5
-#define PLACEABLE_POSITIONS_LENGTH 10
+#define PLACEABLE_OBJECTS_LENGTH 4
+#define PLACEABLE_POSITIONS_LENGTH 8
 #define SELECTABLE_OBJECTS_LENGTH_C2 7
 #define SELECTABLE_OBJECTS_LENGTH_C5 10
 #define FALLING_OBJECTS_LENGTH 16
@@ -55,6 +55,7 @@ typedef struct {
     ALLEGRO_BITMAP* hunger_empty;
     ALLEGRO_BITMAP* hunger_filled;
     ALLEGRO_BITMAP* snake_alert;
+    ALLEGRO_BITMAP* c1_placeable_objects[PLACEABLE_OBJECTS_LENGTH];
     ALLEGRO_BITMAP* current_video_frame;
 } Images;
 
@@ -100,6 +101,7 @@ typedef struct {
 
 typedef struct {
     int width, height, position_index, correct_position_index;
+    ALLEGRO_BITMAP* img;
 } Placeable_Object;
 
 typedef struct {

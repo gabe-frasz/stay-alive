@@ -245,6 +245,14 @@ void load_images(Images* imgs) {
     must_init(imgs->medicinal_plants[4], "medicinal plant 5 image");
     imgs->snake_alert = al_load_bitmap("images/snake-alert.png");
     must_init(imgs->snake_alert, "snake alert image");
+    imgs->c1_placeable_objects[0] = al_load_bitmap("images/plants-and-seaweeds.png");
+    must_init(imgs->c1_placeable_objects[0], "c1 placeable object 1 image");
+    imgs->c1_placeable_objects[1] = al_load_bitmap("images/giraffe.png");
+    must_init(imgs->c1_placeable_objects[1], "c1 placeable object 2 image");
+    imgs->c1_placeable_objects[2] = al_load_bitmap("images/lion.png");
+    must_init(imgs->c1_placeable_objects[2], "c1 placeable object 3 image");
+    imgs->c1_placeable_objects[3] = al_load_bitmap("images/worms-and-bacteria.png");
+    must_init(imgs->c1_placeable_objects[3], "c1 placeable object 4 image");
 }
 
 void load_sounds(Sounds* sounds) {
