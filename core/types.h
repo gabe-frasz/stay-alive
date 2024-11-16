@@ -45,6 +45,7 @@ typedef struct {
     Sprites char_sprites;
     ALLEGRO_BITMAP* char_with_basket;
     Sprites animals[ANIMAL_TYPE_LENGTH];
+    ALLEGRO_BITMAP* medicinal_plants[5];
     ALLEGRO_BITMAP* heart_empty;
     ALLEGRO_BITMAP* heart_filled;
     ALLEGRO_BITMAP* hunger_empty;

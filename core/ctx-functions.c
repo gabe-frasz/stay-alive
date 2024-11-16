@@ -841,6 +841,7 @@ void draw_context(Context* ctx) {
             for (int i = 0; i < WANTED_OBJECTS_LENGTH; i++) {
                 Wanted_Object* obj = &ctx->c4.wanted_objects[i];
                 Wanted_Object* fake_obj = &ctx->c4.fake_wanted_objects[i];
+                ALLEGRO_BITMAP* img = ctx->imgs.medicinal_plants[i];
                 int w = WANTED_OBJECT_WIDTH,
                     h = WANTED_OBJECT_HEIGHT;
                 
@@ -852,7 +853,7 @@ void draw_context(Context* ctx) {
                     al_draw_rectangle(obj->position.x - 5, obj->position.y - 5, obj->position.x + w + 5, obj->position.y + h + 5, al_map_rgb(255, 0, 0), 1);
                 }
 
-                al_draw_filled_rectangle(obj->position.x, obj->position.y, obj->position.x + w, obj->position.y + h, al_map_rgb(255, 205, 170));
+                al_draw_bitmap(img, obj->position.x, obj->position.y, 0);
             }
 
             time_t current_time = time(0);
