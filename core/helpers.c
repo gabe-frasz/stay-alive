@@ -47,10 +47,14 @@ void load_images(Images* imgs) {
     must_init(imgs->challenges[3], "challenge 4 image");
     imgs->challenges[4] = al_load_bitmap("images/challenge-5.png");
     must_init(imgs->challenges[4], "challenge 5 image");
-    imgs->play_btn = al_load_bitmap("images/play_btn.png");
+    imgs->play_btn = al_load_bitmap("images/play-btn.png");
     must_init(imgs->play_btn, "play button image");
-    imgs->menu_btn = al_load_bitmap("images/menu_btn.png");
+    imgs->menu_btn = al_load_bitmap("images/menu-btn.png");
     must_init(imgs->play_btn, "menu button image");
+    imgs->small_next_btn = al_load_bitmap("images/small-next-btn.png");
+    must_init(imgs->small_next_btn, "small next button image");
+    imgs->small_play_btn = al_load_bitmap("images/small-play-btn.png");
+    must_init(imgs->small_play_btn, "small play button image");
     imgs->char_sprites.front[0] = al_load_bitmap("images/parado_frente.png");
     must_init(imgs->char_sprites.front[0], "char front image");
     imgs->char_sprites.front[1] = al_load_bitmap("images/andando_frente1.png");

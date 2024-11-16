@@ -810,7 +810,13 @@ void draw_context(Context* ctx) {
             ALLEGRO_VIDEO* video = ctx->videos.tutorials[ctx->tutorial_index];
             ALLEGRO_BITMAP* frame = al_get_video_frame(video);
             if (frame) al_draw_bitmap(frame, 0, 0, 0);
-            if (!al_is_video_playing(video)) al_draw_filled_rectangle(1000, 600, 1100, 700, al_map_rgb(255, 0, 0));
+            if (!al_is_video_playing(video) && ctx->tutorial_index % 2 == 0) {
+                if (ctx->tutorial_index == ctx->tutorials[ctx->challenge_index].last_step_index - 1) {
+                    al_draw_bitmap(ctx->imgs.small_play_btn, 1100, 650, 0);
+                } else {
+                    al_draw_bitmap(ctx->imgs.small_next_btn, 1100, 650, 0);
+                }
+            }
             break;
         }
 

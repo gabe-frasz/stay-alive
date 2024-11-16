@@ -44,6 +44,8 @@ typedef struct {
     ALLEGRO_BITMAP* challenges[5];
     ALLEGRO_BITMAP* play_btn;
     ALLEGRO_BITMAP* menu_btn;
+    ALLEGRO_BITMAP* small_play_btn;
+    ALLEGRO_BITMAP* small_next_btn;
     Sprites char_sprites;
     ALLEGRO_BITMAP* char_with_basket;
     Sprites animals[ANIMAL_TYPE_LENGTH];
