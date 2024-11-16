@@ -32,8 +32,6 @@ void set_context_to_default(Context* ctx) {
     for (int i = 0; i < PLACEABLE_OBJECTS_LENGTH; i++) {
         ctx->c1.placeable_objects[i].position_index = i * 2;
         ctx->c1.placeable_objects[i].correct_position_index = i * 2 + 1;
-        ctx->c1.placeable_objects[i].width = 100;
-        ctx->c1.placeable_objects[i].height = 100;
         ctx->c1.placeable_objects[i].img = ctx->imgs.c1_placeable_objects[i];
     }
 
