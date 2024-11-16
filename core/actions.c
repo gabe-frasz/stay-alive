@@ -26,17 +26,26 @@ static void keyup_map(Context* ctx) {
     change_character_sprite(ctx);
 }
 static void timer_challenge(Context* ctx) {
+    if (!ctx->tutorials[ctx->challenge_index].is_completed) {
+        play_tutorial(ctx);
+        return;
+    }
+
     switch (ctx->challenge_index) {
     case 2:
         handle_challenge_3(ctx);
         break;
     case 3:
+        if (ctx->c4.start_time == -1) ctx->c4.start_time = time(0);
         verify_challenge_4(ctx);
         break;
     }
-    
 }
 static void keydown_challenge(Context* ctx) {
+    if (!ctx->tutorials[ctx->challenge_index].is_completed) {
+        return;
+    }
+
     switch (ctx->challenge_index) {
     case 2:
         move_character_sideways(ctx);
@@ -45,6 +54,20 @@ static void keydown_challenge(Context* ctx) {
 }
 static void mouseup_challenge(Context* ctx) {
     Coordinate mouse = { ctx->event.mouse.x, ctx->event.mouse.y };
+
+    if (!ctx->tutorials[ctx->challenge_index].is_completed) {
+        ALLEGRO_VIDEO* current_video = ctx->videos.tutorials[ctx->tutorial_index];
+        ALLEGRO_VIDEO* next_video = ctx->videos.tutorials[ctx->tutorial_index + 1];
+        if (!al_is_video_playing(current_video) && check_collision(&mouse, 1000, 1100, 600, 700)) {
+            ctx->tutorial_index++;
+            if (ctx->tutorial_index <= ctx->tutorials[ctx->challenge_index].last_step_index) {
+                al_start_video(next_video, al_get_default_mixer());
+            } else {
+                ctx->tutorials[ctx->challenge_index].is_completed = true;
+            }
+        }
+        return;
+    }
 
     switch (ctx->challenge_index) {
     case 0:

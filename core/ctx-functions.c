@@ -4,6 +4,7 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_video.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
@@ -17,6 +18,16 @@ void set_context_to_default(Context* ctx) {
     ctx->player.y = DISPLAY_HEIGHT/2.0 - PLAYER_HEIGHT/2;
     ctx->map.x = INITIAL_MAP_X;
     ctx->map.y = INITIAL_MAP_Y;
+
+    ctx->tutorials[0].last_step_index = 1;
+    ctx->tutorials[1].last_step_index = 5;
+    ctx->tutorials[2].last_step_index = 7;
+    ctx->tutorials[3].last_step_index = 13;
+    ctx->tutorials[4].last_step_index = 15;
+
+    for (int i = 0; i < 5; i++) {
+        ctx->tutorials[i].is_completed = false;
+    }
 
     for (int i = 0; i < PLACEABLE_OBJECTS_LENGTH; i++) {
         ctx->c1.placeable_objects[i].position_index = i * 2;
@@ -49,6 +60,7 @@ void set_context_to_default(Context* ctx) {
     }
 
     ctx->c4.duration_in_seconds = 10;
+    ctx->c4.start_time = -1;
 
     for (int i = 0; i < WANTED_OBJECTS_LENGTH; i++) {
         ctx->c4.wanted_objects[i].selected = false;
@@ -60,6 +72,7 @@ void set_context_to_default(Context* ctx) {
     ctx->is_snake_idle = false;
     ctx->is_snake_hunting = false;
     ctx->challenge_index = 0; // 0 até 4
+    ctx->tutorial_index = 0; 
     ctx->life_counter = 3; // 3 até 0
     ctx->hunger_counter = 3; // 3 até 0
     ctx->state = MENU;
@@ -558,6 +571,7 @@ void init_context(Context* ctx) {
     must_init(al_install_audio(), "audio");
     must_init(al_init_acodec_addon(), "acodec");
     must_init(al_reserve_samples(5), "samples");
+    must_init(al_init_video_addon(), "video");
 
     srand(time(NULL));
     
@@ -579,6 +593,7 @@ void init_context(Context* ctx) {
 
     load_images(&ctx->imgs);
     load_sounds(&ctx->sounds);
+    load_videos(&ctx->videos);
     set_context_to_default(ctx);
 
     ctx->challenges_areas[0].x1 = DISPLAY_WIDTH - 280;
@@ -694,10 +709,18 @@ void free_context(Context* ctx) {
     al_destroy_sample(ctx->sounds.footstep[0]);
     al_destroy_sample(ctx->sounds.footstep[1]);
 
+    for (int i = 0; i < TUTORIALS_LENGTH; i++) {
+        al_close_video(ctx->videos.tutorials[i]);
+    }
+
     al_destroy_font(ctx->font);
     al_destroy_display(ctx->disp);
     al_destroy_timer(ctx->timer);
     al_destroy_event_queue(ctx->queue);
+    al_shutdown_font_addon();
+    al_shutdown_primitives_addon();
+    al_shutdown_video_addon();
+    al_shutdown_image_addon();;
     al_uninstall_keyboard();
     al_uninstall_mouse();
     al_uninstall_audio();
@@ -782,6 +805,14 @@ void draw_context(Context* ctx) {
         break;
     case CHALLENGE:
         al_draw_bitmap(ctx->imgs.challenges[ctx->challenge_index], 0, 0, 0);
+
+        if (!ctx->tutorials[ctx->challenge_index].is_completed) {
+            ALLEGRO_VIDEO* video = ctx->videos.tutorials[ctx->tutorial_index];
+            ALLEGRO_BITMAP* frame = al_get_video_frame(video);
+            if (frame) al_draw_bitmap(frame, 0, 0, 0);
+            if (!al_is_video_playing(video)) al_draw_filled_rectangle(1000, 600, 1100, 700, al_map_rgb(255, 0, 0));
+            break;
+        }
 
         if (ctx->challenge_index == 0) {
             for (int i = 0; i < PLACEABLE_POSITIONS_LENGTH; i++) {
@@ -1047,8 +1078,9 @@ void check_player_position(Context* ctx) {
 
     if (is_player_top_left_colliding || is_player_top_right_colliding ||
         is_player_bottom_left_colliding || is_player_bottom_right_colliding) {
-        if (ctx->challenge_index == 3) ctx->c4.start_time = time(0);
         ctx->state = CHALLENGE;
+        al_start_video(ctx->videos.tutorials[ctx->tutorial_index], al_get_default_mixer());
+        al_play_sample(ctx->sounds.typing, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
     }
 }
 
@@ -1204,6 +1236,24 @@ void finish_challenge(bool success, Context* ctx) {
     }
 
     ctx->state = OPEN_MAP;
+}
+
+void play_tutorial(Context* ctx) {
+    Tutorial* t = &ctx->tutorials[ctx->challenge_index];
+    ALLEGRO_VIDEO* current_video = ctx->videos.tutorials[ctx->tutorial_index];
+    ALLEGRO_VIDEO* next_video = ctx->videos.tutorials[ctx->tutorial_index + 1];
+
+    ctx->imgs.current_video_frame = al_get_video_frame(current_video);
+    
+    if (!al_is_video_playing(current_video) && ctx->tutorial_index % 2 != 0) {
+        if (ctx->tutorial_index == t->last_step_index) {
+            t->is_completed = true;
+        } else {
+            al_start_video(next_video, al_get_default_mixer());
+            al_play_sample(ctx->sounds.typing, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+        }
+        ctx->tutorial_index++;
+    }
 }
 
 void handle_challenge_1(Context* ctx, Coordinate* mouse) {

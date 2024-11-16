@@ -246,6 +246,44 @@ void load_sounds(Sounds* sounds) {
     must_init(sounds->footstep[0], "footstep 1 sound");
     sounds->footstep[1] = al_load_sample("sounds/footstep-2.wav");
     must_init(sounds->footstep[1], "footstep 2 sound");
+    sounds->typing = al_load_sample("sounds/typing.wav");
+    must_init(sounds->typing, "typing sound");
+}
+
+void load_videos(Videos* videos) {
+    videos->tutorials[0] = al_open_video("videos/challenge-1-in.ogv");
+    must_init(videos->tutorials[0], "challenge 1 in video");
+    videos->tutorials[1] = al_open_video("videos/challenge-1-out.ogv");
+    must_init(videos->tutorials[1], "challenge 1 out video");
+    videos->tutorials[2] = al_open_video("videos/challenge-2-in.ogv");
+    must_init(videos->tutorials[2], "challenge 2 in video");
+    videos->tutorials[3] = al_open_video("videos/challenge-2-out.ogv");
+    must_init(videos->tutorials[3], "challenge 2 out video");
+    videos->tutorials[4] = al_open_video("videos/challenge-2-linus-in.ogv");
+    must_init(videos->tutorials[4], "challenge 2 linus in video");
+    videos->tutorials[5] = al_open_video("videos/challenge-2-linus-out.ogv");
+    must_init(videos->tutorials[5], "challenge 2 linus out video");
+    videos->tutorials[6] = al_open_video("videos/challenge-3-in.ogv");
+    must_init(videos->tutorials[6], "challenge 3 in video");
+    videos->tutorials[7] = al_open_video("videos/challenge-3-out.ogv");
+    must_init(videos->tutorials[7], "challenge 3 out video");
+    videos->tutorials[8] = al_open_video("videos/challenge-4-in-p1.ogv");
+    must_init(videos->tutorials[8], "challenge 4 pt 1 in video");
+    videos->tutorials[9] = al_open_video("videos/challenge-4-in-p1.ogv");
+    must_init(videos->tutorials[9], "challenge 4 pt 1 out video");
+    videos->tutorials[10] = al_open_video("videos/challenge-4-in-p2.ogv");
+    must_init(videos->tutorials[10], "challenge 4 pt 2 in video");
+    videos->tutorials[11] = al_open_video("videos/challenge-4-in-p2.ogv");
+    must_init(videos->tutorials[11], "challenge 4 pt 2 out video");
+    videos->tutorials[12] = al_open_video("videos/challenge-4-in-p3.ogv");
+    must_init(videos->tutorials[12], "challenge 4 pt 3 in video");
+    videos->tutorials[13] = al_open_video("videos/challenge-4-in-p3.ogv");
+    must_init(videos->tutorials[13], "challenge 4 pt 3 out video");
+    videos->tutorials[14] = al_open_video("videos/challenge-5-in.ogv");
+    must_init(videos->tutorials[14], "challenge 5 in video");
+    videos->tutorials[15] = al_open_video("videos/challenge-5-in.ogv");
+    must_init(videos->tutorials[15], "challenge 5 out video");
+    
 }
 
 void move_animal(Animal* self) {

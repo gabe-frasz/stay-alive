@@ -15,6 +15,7 @@ void check_player_position(Context* ctx);
 void change_character_sprite(Context* ctx);
 void change_animals_sprite(Context* ctx);
 void finish_challenge(bool success, Context* ctx);
+void play_tutorial(Context* ctx);
 void handle_challenge_1(Context* ctx, Coordinate* mouse);
 void handle_challenge_2(Context* ctx, Coordinate* mouse);
 void handle_challenge_3(Context* ctx);

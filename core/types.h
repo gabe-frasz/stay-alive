@@ -4,6 +4,7 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_video.h>
 #include <stdbool.h>
 
 #define SPRITES_LENGTH 3
@@ -15,6 +16,7 @@
 #define WANTED_OBJECTS_LENGTH 4
 #define OBSTACLES_LENGTH 98
 #define ANIMALS_LENGTH 8 // 2 grupos de aves, 2 coelhos, 1 ovelha, bode, gato, cobra
+#define TUTORIALS_LENGTH 16
 
 enum Animal_Type {
     BIRD,
@@ -50,11 +52,17 @@ typedef struct {
     ALLEGRO_BITMAP* heart_filled;
     ALLEGRO_BITMAP* hunger_empty;
     ALLEGRO_BITMAP* hunger_filled;
+    ALLEGRO_BITMAP* current_video_frame;
 } Images;
 
 typedef struct {
     ALLEGRO_SAMPLE* footstep[2];
+    ALLEGRO_SAMPLE* typing;
 } Sounds;
+
+typedef struct {
+    ALLEGRO_VIDEO* tutorials[TUTORIALS_LENGTH];
+} Videos;
 
 enum Game_State {
     MENU,
@@ -137,6 +145,11 @@ typedef struct {
 } Challenge_5;
 
 typedef struct {
+    int last_step_index;
+    bool is_completed;
+} Tutorial;
+
+typedef struct {
     ALLEGRO_TIMER* timer;
     ALLEGRO_EVENT_QUEUE* queue;
     ALLEGRO_DISPLAY* disp;
@@ -144,7 +157,9 @@ typedef struct {
     ALLEGRO_EVENT event;
     Images imgs;
     Sounds sounds;
+    Videos videos;
     Coordinate player, map;
+    Tutorial tutorials[5];
     Challenge_1 c1;
     Challenge_2 c2;
     Challenge_3 c3;
@@ -153,7 +168,7 @@ typedef struct {
     Rectangle challenges_areas[5];
     Obstacle obstacles[OBSTACLES_LENGTH];
     Animal animals[ANIMALS_LENGTH];
-    int challenge_index, life_counter, hunger_counter;
+    int challenge_index, tutorial_index, life_counter, hunger_counter;
     enum Game_State state;
     bool redraw, done, has_user_lost, is_user_hallucinated, is_snake_idle, is_snake_hunting;
 } Context;
