@@ -56,6 +56,7 @@ typedef struct {
     ALLEGRO_BITMAP* hunger_filled;
     ALLEGRO_BITMAP* snake_alert;
     ALLEGRO_BITMAP* c1_placeable_objects[PLACEABLE_OBJECTS_LENGTH];
+    ALLEGRO_BITMAP* c2_selectable_objects[SELECTABLE_OBJECTS_LENGTH_C2];
     ALLEGRO_BITMAP* apple;
     ALLEGRO_BITMAP* mushroom;
     ALLEGRO_BITMAP* current_video_frame;
@@ -68,6 +69,7 @@ typedef struct {
 
 typedef struct {
     ALLEGRO_VIDEO* tutorials[TUTORIALS_LENGTH];
+    ALLEGRO_VIDEO* c2_distillation;
 } Videos;
 
 enum Game_State {
@@ -114,11 +116,13 @@ typedef struct {
 
 typedef struct {
     Coordinate position;
+    int width, height;
     bool selected, correct;
 } Selectable_Object;
 
 typedef struct {
     Selectable_Object selectable_objects[SELECTABLE_OBJECTS_LENGTH_C2];
+    bool is_distillation_playing;
 } Challenge_2;
 
 typedef struct {

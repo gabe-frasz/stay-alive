@@ -253,6 +253,20 @@ void load_images(Images* imgs) {
     must_init(imgs->c1_placeable_objects[2], "c1 placeable object 3 image");
     imgs->c1_placeable_objects[3] = al_load_bitmap("images/worms-and-bacteria.png");
     must_init(imgs->c1_placeable_objects[3], "c1 placeable object 4 image");
+    imgs->c2_selectable_objects[0] = al_load_bitmap("images/bottle.png");
+    must_init(imgs->c2_selectable_objects[0], "c2 selectable object 1 image");
+    imgs->c2_selectable_objects[1] = al_load_bitmap("images/cloth.png");
+    must_init(imgs->c2_selectable_objects[1], "c2 selectable object 2 image");
+    imgs->c2_selectable_objects[2] = al_load_bitmap("images/plastic-bag.png");
+    must_init(imgs->c2_selectable_objects[2], "c2 selectable object 3 image");
+    imgs->c2_selectable_objects[3] = al_load_bitmap("images/bottle.png");
+    must_init(imgs->c2_selectable_objects[3], "c2 selectable object 4 image");
+    imgs->c2_selectable_objects[4] = al_load_bitmap("images/stones.png");
+    must_init(imgs->c2_selectable_objects[4], "c2 selectable object 5 image");
+    imgs->c2_selectable_objects[5] = al_load_bitmap("images/bottle-cap.png");
+    must_init(imgs->c2_selectable_objects[5], "c2 selectable object 6 image");
+    imgs->c2_selectable_objects[6] = al_load_bitmap("images/wood-sticks.png");
+    must_init(imgs->c2_selectable_objects[6], "c2 selectable object 7 image");
     imgs->apple = al_load_bitmap("images/apple.png");
     must_init(imgs->apple, "apple image");
     imgs->mushroom = al_load_bitmap("images/mushroom.png");
@@ -301,7 +315,8 @@ void load_videos(Videos* videos) {
     must_init(videos->tutorials[14], "challenge 5 in video");
     videos->tutorials[15] = al_open_video("videos/challenge-5-in.ogv");
     must_init(videos->tutorials[15], "challenge 5 out video");
-    
+    videos->c2_distillation = al_open_video("videos/distillation.ogv");
+    must_init(videos->c2_distillation, "c2 distilation video");
 }
 
 void move_animal(Animal* self) {

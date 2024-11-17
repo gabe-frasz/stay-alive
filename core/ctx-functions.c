@@ -6,6 +6,7 @@
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_video.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include "types.h"
@@ -34,6 +35,8 @@ void set_context_to_default(Context* ctx) {
         ctx->c1.placeable_objects[i].correct_position_index = i * 2 + 1;
         ctx->c1.placeable_objects[i].img = ctx->imgs.c1_placeable_objects[i];
     }
+
+    ctx->c2.is_distillation_playing = false;
 
     for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C2; i++) {
         ctx->c2.selectable_objects[i].selected = false;
@@ -636,20 +639,34 @@ void init_context(Context* ctx) {
     ctx->c1.selected_object_index = -1;
 
     // Challenge 2
-    ctx->c2.selectable_objects[0].position.x = 100;
-    ctx->c2.selectable_objects[0].position.y = 100;
-    ctx->c2.selectable_objects[1].position.x = 300;
-    ctx->c2.selectable_objects[1].position.y = 100;
-    ctx->c2.selectable_objects[2].position.x = 500;
-    ctx->c2.selectable_objects[2].position.y = 400;
-    ctx->c2.selectable_objects[3].position.x = 700;
-    ctx->c2.selectable_objects[3].position.y = 400;
-    ctx->c2.selectable_objects[4].position.x = 900;
-    ctx->c2.selectable_objects[4].position.y = 100;
-    ctx->c2.selectable_objects[5].position.x = 1100;
-    ctx->c2.selectable_objects[5].position.y = 100;
-    ctx->c2.selectable_objects[6].position.x = 100;
-    ctx->c2.selectable_objects[6].position.y = 500;
+    ctx->c2.selectable_objects[0].position.x = 640;
+    ctx->c2.selectable_objects[0].position.y = 340;
+    ctx->c2.selectable_objects[0].width = 101;
+    ctx->c2.selectable_objects[0].height = 180;
+    ctx->c2.selectable_objects[1].position.x = 475;
+    ctx->c2.selectable_objects[1].position.y = 350;
+    ctx->c2.selectable_objects[1].width = 118;
+    ctx->c2.selectable_objects[1].height = 99;
+    ctx->c2.selectable_objects[2].position.x = 690;
+    ctx->c2.selectable_objects[2].position.y = 570;
+    ctx->c2.selectable_objects[2].width = 100;
+    ctx->c2.selectable_objects[2].height = 144;
+    ctx->c2.selectable_objects[3].position.x = 745;
+    ctx->c2.selectable_objects[3].position.y = 380;
+    ctx->c2.selectable_objects[3].width = 101;
+    ctx->c2.selectable_objects[3].height = 180;
+    ctx->c2.selectable_objects[4].position.x = 890;
+    ctx->c2.selectable_objects[4].position.y = 400;
+    ctx->c2.selectable_objects[4].width = 145;
+    ctx->c2.selectable_objects[4].height = 99;
+    ctx->c2.selectable_objects[5].position.x = 550;
+    ctx->c2.selectable_objects[5].position.y = 570;
+    ctx->c2.selectable_objects[5].width = 120;
+    ctx->c2.selectable_objects[5].height = 99;
+    ctx->c2.selectable_objects[6].position.x = 900;
+    ctx->c2.selectable_objects[6].position.y = 540;
+    ctx->c2.selectable_objects[6].width = 102;
+    ctx->c2.selectable_objects[6].height = 80;
     
     // Challenge 4
     ctx->c4.wanted_objects[0].position.x = 100;
@@ -711,6 +728,8 @@ void free_context(Context* ctx) {
     for (int i = 0; i < TUTORIALS_LENGTH; i++) {
         al_close_video(ctx->videos.tutorials[i]);
     }
+
+    al_close_video(ctx->videos.c2_distillation);
 
     al_destroy_font(ctx->font);
     al_destroy_display(ctx->disp);
@@ -811,11 +830,16 @@ void draw_context(Context* ctx) {
             if (frame) al_draw_bitmap(frame, 0, 0, 0);
             if (!al_is_video_playing(video) && ctx->tutorial_index % 2 == 0) {
                 if (ctx->tutorial_index == ctx->tutorials[ctx->challenge_index].last_step_index - 1) {
-                    al_draw_bitmap(ctx->imgs.small_play_btn, 1100, 650, 0);
+                    al_draw_bitmap(ctx->imgs.small_play_btn, 1130, 630, 0);
                 } else {
-                    al_draw_bitmap(ctx->imgs.small_next_btn, 1100, 650, 0);
+                    al_draw_bitmap(ctx->imgs.small_next_btn, 1130, 630, 0);
                 }
             }
+            break;
+        }
+
+        if (ctx->challenge_index == 1 && ctx->c2.is_distillation_playing) {
+            if (ctx->imgs.current_video_frame) al_draw_bitmap(ctx->imgs.current_video_frame, 0, 0, 0); 
             break;
         }
 
@@ -843,10 +867,10 @@ void draw_context(Context* ctx) {
         if (ctx->challenge_index == 1) {
             for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C2; i++) {
                 Selectable_Object* obj = &ctx->c2.selectable_objects[i];
-                int w = SELECTABLE_OBJECT_WIDTH,
-                    h = SELECTABLE_OBJECT_HEIGHT;
+                int w = obj->width,
+                    h = obj->height;
 
-                al_draw_filled_rectangle(obj->position.x, obj->position.y, obj->position.x + w, obj->position.y + h, al_map_rgb(255, 255, 255));
+                al_draw_bitmap(ctx->imgs.c2_selectable_objects[i], obj->position.x, obj->position.y, 0);
                 if (obj->selected) {
                     al_draw_rectangle(obj->position.x - 5, obj->position.y - 5, obj->position.x + w + 5, obj->position.y + h + 5, al_map_rgb(255, 0, 0), 1);
                 }
@@ -1259,6 +1283,16 @@ void play_tutorial(Context* ctx) {
     }
 }
 
+void play_video(Context* ctx) {
+    ALLEGRO_VIDEO* distillation = ctx->videos.c2_distillation;
+    ctx->imgs.current_video_frame = al_get_video_frame(distillation);
+    if (!al_is_video_playing(distillation)) {
+        ctx->c2.is_distillation_playing = false;
+        al_rest(2);
+        return finish_challenge(true, ctx);
+    }
+}
+
 void handle_challenge_1(Context* ctx, Coordinate* mouse) {
     Challenge_1* c1 = &ctx->c1;
     int w = PLACEABLE_OBJECT_WIDTH,
@@ -1310,22 +1344,22 @@ void handle_challenge_2(Context* ctx, Coordinate* mouse) {
     // Seleciona ou desmarca os objetos clicados
     for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C2; i++) {
         Selectable_Object* obj = &c2->selectable_objects[i];
-        if (check_collision(mouse, obj->position.x, obj->position.x + 100, obj->position.y, obj->position.y + 100)) {
+        if (check_collision(mouse, obj->position.x, obj->position.x + obj->width, obj->position.y, obj->position.y + obj->height)) {
             obj->selected = !obj->selected;
         }
     }
 
     // Verifica se o jogador conseguiu completar o desafio
     if (check_collision(mouse, 1000, 1200, 600, 700)) {
-        bool success = true;
         for (int i = 0; i < 7; i++) {
             if ((c2->selectable_objects[i].selected && !c2->selectable_objects[i].correct) || 
                 (!c2->selectable_objects[i].selected && c2->selectable_objects[i].correct)) {
-                success = false;
+                finish_challenge(false, ctx);
                 break;
             }
         }
-        finish_challenge(success, ctx);
+        c2->is_distillation_playing = true;
+        al_start_video(ctx->videos.c2_distillation, al_get_default_mixer());
     }
 }
 

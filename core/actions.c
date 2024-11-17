@@ -31,6 +31,11 @@ static void timer_challenge(Context* ctx) {
         return;
     }
 
+    if (ctx->challenge_index == 1 && ctx->c2.is_distillation_playing) {
+        play_video(ctx);
+        return;
+    }
+
     switch (ctx->challenge_index) {
     case 2:
         handle_challenge_3(ctx);
@@ -58,7 +63,7 @@ static void mouseup_challenge(Context* ctx) {
     if (!ctx->tutorials[ctx->challenge_index].is_completed) {
         ALLEGRO_VIDEO* current_video = ctx->videos.tutorials[ctx->tutorial_index];
         ALLEGRO_VIDEO* next_video = ctx->videos.tutorials[ctx->tutorial_index + 1];
-        if (!al_is_video_playing(current_video) && check_collision(&mouse, 1100, 1202, 650, 697)) {
+        if (!al_is_video_playing(current_video) && check_collision(&mouse, 1130, 1232, 630, 677)) {
             ctx->tutorial_index++;
             if (ctx->tutorial_index <= ctx->tutorials[ctx->challenge_index].last_step_index) {
                 al_start_video(next_video, al_get_default_mixer());
