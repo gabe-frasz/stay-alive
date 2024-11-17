@@ -32,7 +32,7 @@ static void timer_challenge(Context* ctx) {
     }
 
     if (ctx->challenge_index == 1 && ctx->c2.is_distillation_playing) {
-        play_video(ctx);
+        play_video(ctx, ctx->videos.c2_distillation);
         return;
     }
 

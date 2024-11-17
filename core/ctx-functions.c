@@ -1285,10 +1285,9 @@ void play_tutorial(Context* ctx) {
     }
 }
 
-void play_video(Context* ctx) {
-    ALLEGRO_VIDEO* distillation = ctx->videos.c2_distillation;
-    ctx->imgs.current_video_frame = al_get_video_frame(distillation);
-    if (!al_is_video_playing(distillation)) {
+void play_video(Context* ctx, ALLEGRO_VIDEO* video) {
+    ctx->imgs.current_video_frame = al_get_video_frame(video);
+    if (!al_is_video_playing(video)) {
         ctx->c2.is_distillation_playing = false;
         al_rest(2);
         return finish_challenge(true, ctx);
