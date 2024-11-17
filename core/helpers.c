@@ -37,7 +37,7 @@ void load_images(Images* imgs) {
     must_init(imgs->end_game, "end game image");
     imgs->game_over = al_load_bitmap("images/game_over.jpeg");
     must_init(imgs->game_over, "game over image");
-    imgs->challenges[0] = al_load_bitmap("images/challenge-1.jpeg");
+    imgs->challenges[0] = al_load_bitmap("images/challenge-1.png");
     must_init(imgs->challenges[0], "challenge 1 image");
     imgs->challenges[1] = al_load_bitmap("images/challenge-2.png");
     must_init(imgs->challenges[1], "challenge 2 image");

@@ -104,7 +104,7 @@ typedef struct {
 } Obstacle;
 
 typedef struct {
-    int position_index, correct_position_index;
+    int position_index, correct_position_index, width, height;
     ALLEGRO_BITMAP* img;
 } Placeable_Object;
 

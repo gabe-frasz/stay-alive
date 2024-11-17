@@ -620,22 +620,30 @@ void init_context(Context* ctx) {
     ctx->challenges_areas[4].y2 = DISPLAY_HEIGHT;
 
     // Challenge 1
-    ctx->c1.placeable_positions[0].x = 5;
-    ctx->c1.placeable_positions[0].y = 600;
-    ctx->c1.placeable_positions[1].x = 10;
-    ctx->c1.placeable_positions[1].y = 200;
-    ctx->c1.placeable_positions[2].x = 150;
-    ctx->c1.placeable_positions[2].y = 600;
-    ctx->c1.placeable_positions[3].x = 150;
-    ctx->c1.placeable_positions[3].y = 200;
-    ctx->c1.placeable_positions[4].x = 300;
-    ctx->c1.placeable_positions[4].y = 600;
-    ctx->c1.placeable_positions[5].x = 400;
-    ctx->c1.placeable_positions[5].y = 200;
-    ctx->c1.placeable_positions[6].x = 450;
-    ctx->c1.placeable_positions[6].y = 600;
-    ctx->c1.placeable_positions[7].x = 550;
-    ctx->c1.placeable_positions[7].y = 200;
+    ctx->c1.placeable_positions[0].x = 150;
+    ctx->c1.placeable_positions[0].y = 0;
+    ctx->c1.placeable_positions[1].x = 70;
+    ctx->c1.placeable_positions[1].y = 530;
+    ctx->c1.placeable_positions[2].x = 450;
+    ctx->c1.placeable_positions[2].y = 0;
+    ctx->c1.placeable_positions[3].x = 470;
+    ctx->c1.placeable_positions[3].y = 420;
+    ctx->c1.placeable_positions[4].x = 0;
+    ctx->c1.placeable_positions[4].y = 0;
+    ctx->c1.placeable_positions[5].x = 720;
+    ctx->c1.placeable_positions[5].y = 260;
+    ctx->c1.placeable_positions[6].x = 300;
+    ctx->c1.placeable_positions[6].y = 0;
+    ctx->c1.placeable_positions[7].x = 1100;
+    ctx->c1.placeable_positions[7].y = 100;
+    ctx->c1.placeable_objects[0].width = 98;
+    ctx->c1.placeable_objects[0].height = 100;
+    ctx->c1.placeable_objects[1].width = 59;
+    ctx->c1.placeable_objects[1].height = 100;
+    ctx->c1.placeable_objects[2].width = 101;
+    ctx->c1.placeable_objects[2].height = 100;
+    ctx->c1.placeable_objects[3].width = 130;
+    ctx->c1.placeable_objects[3].height = 100;
     ctx->c1.selected_object_index = -1;
 
     // Challenge 2
@@ -844,23 +852,17 @@ void draw_context(Context* ctx) {
         }
 
         if (ctx->challenge_index == 0) {
-            for (int i = 0; i < PLACEABLE_POSITIONS_LENGTH; i++) {
-                Coordinate* pos = &ctx->c1.placeable_positions[i];
-                al_draw_filled_rectangle(pos->x, pos->y, pos->x + 100, pos->y + 100, al_map_rgb(50, 50, 50));
-            }
-
             for (int i = 0; i < PLACEABLE_OBJECTS_LENGTH; i++) {
                 int pos_i = ctx->c1.placeable_objects[i].position_index;
                 float x = ctx->c1.placeable_positions[pos_i].x,
                       y = ctx->c1.placeable_positions[pos_i].y;
-                int w = PLACEABLE_OBJECT_WIDTH,
-                    h = PLACEABLE_OBJECT_HEIGHT;
+                int w = ctx->c1.placeable_objects[i].width,
+                    h = ctx->c1.placeable_objects[i].height;
 
                 al_draw_bitmap(ctx->c1.placeable_objects[i].img, x, y, 0); 
                 if (ctx->c1.selected_object_index == i) {
                     al_draw_rectangle(x - 5, y - 5, x + w + 5, y + h + 5, al_map_rgb(255, 255, 255), 1);
                 }
-                al_draw_textf(ctx->font, al_map_rgb(255, 255, 255), x + 10, y + 10, 0, "%d", i + 1);
             }  
         }
 
