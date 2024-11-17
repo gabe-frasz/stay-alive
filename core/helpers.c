@@ -253,6 +253,10 @@ void load_images(Images* imgs) {
     must_init(imgs->c1_placeable_objects[2], "c1 placeable object 3 image");
     imgs->c1_placeable_objects[3] = al_load_bitmap("images/worms-and-bacteria.png");
     must_init(imgs->c1_placeable_objects[3], "c1 placeable object 4 image");
+    imgs->apple = al_load_bitmap("images/apple.png");
+    must_init(imgs->apple, "apple image");
+    imgs->mushroom = al_load_bitmap("images/mushroom.png");
+    must_init(imgs->mushroom, "mushroom image");
 }
 
 void load_sounds(Sounds* sounds) {

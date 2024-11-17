@@ -851,21 +851,20 @@ void draw_context(Context* ctx) {
             
         if (ctx->challenge_index == 2) {
             al_draw_bitmap(ctx->imgs.char_with_basket, ctx->c3.player_position.x, ctx->c3.player_position.y, 0);
-            al_draw_textf(ctx->font, al_map_rgb(255, 0, 0), 1180, 0, 0, "Maçãs: %d", ctx->c3.apples_counter);
-            al_draw_textf(ctx->font, al_map_rgb(0, 0, 255), 1180, 20, 0, "Cogumelos: %d", ctx->c3.mushrooms_counter);
+            al_draw_textf(ctx->font, al_map_rgb(255, 255, 255), 1180, 0, 0, "Maçãs: %d", ctx->c3.apples_counter);
+            al_draw_textf(ctx->font, al_map_rgb(255, 255, 255), 1180, 20, 0, "Cogumelos: %d", ctx->c3.mushrooms_counter);
 
             for (int i = 0; i < FALLING_OBJECTS_LENGTH; i++) {
                 Falling_Object* obj = &ctx->c3.falling_objects[i];
-                int w = FALLING_OBJECT_WIDTH,
-                    h = FALLING_OBJECT_HEIGHT;
-            
-                ALLEGRO_COLOR color;
+                ALLEGRO_BITMAP* img;
+
                 if (obj->id == 0) {
-                    color = al_map_rgb(255, 0, 0);
+                    img = ctx->imgs.apple;
                 } else {
-                    color = al_map_rgb(0, 0, 255);
+                    img = ctx->imgs.mushroom;
                 }
-                al_draw_filled_rectangle(obj->position.x, obj->position.y, obj->position.x + w, obj->position.y + h, color);
+            
+                al_draw_bitmap(img, obj->position.x, obj->position.y, 0);
             }
         }
 
