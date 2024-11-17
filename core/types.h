@@ -13,7 +13,7 @@
 #define SELECTABLE_OBJECTS_LENGTH_C2 7
 #define SELECTABLE_OBJECTS_LENGTH_C5 10
 #define FALLING_OBJECTS_LENGTH 16
-#define WANTED_OBJECTS_LENGTH 4
+#define WANTED_OBJECTS_LENGTH 5
 #define OBSTACLES_LENGTH 98
 #define ANIMALS_LENGTH 8 // 2 grupos de aves, 2 coelhos, 1 ovelha, bode, gato, cobra
 #define TUTORIALS_LENGTH 16

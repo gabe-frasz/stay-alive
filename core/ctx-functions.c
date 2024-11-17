@@ -654,20 +654,24 @@ void init_context(Context* ctx) {
     // Challenge 4
     ctx->c4.wanted_objects[0].position.x = 100;
     ctx->c4.wanted_objects[0].position.y = 100;
-    ctx->c4.wanted_objects[1].position.x = 300;
-    ctx->c4.wanted_objects[1].position.y = 100;
-    ctx->c4.wanted_objects[2].position.x = 500;
-    ctx->c4.wanted_objects[2].position.y = 400;
-    ctx->c4.wanted_objects[3].position.x = 700;
-    ctx->c4.wanted_objects[3].position.y = 400;
-    ctx->c4.fake_wanted_objects[0].position.x = 600;
+    ctx->c4.wanted_objects[1].position.x = 410;
+    ctx->c4.wanted_objects[1].position.y = 300;
+    ctx->c4.wanted_objects[2].position.x = 590;
+    ctx->c4.wanted_objects[2].position.y = 490;
+    ctx->c4.wanted_objects[3].position.x = 900;
+    ctx->c4.wanted_objects[3].position.y = 270;
+    ctx->c4.wanted_objects[4].position.x = 1150;
+    ctx->c4.wanted_objects[4].position.y = 570;
+    ctx->c4.fake_wanted_objects[0].position.x = 260;
     ctx->c4.fake_wanted_objects[0].position.y = 600;
-    ctx->c4.fake_wanted_objects[1].position.x = 300;
-    ctx->c4.fake_wanted_objects[1].position.y = 500;
-    ctx->c4.fake_wanted_objects[2].position.x = 500;
-    ctx->c4.fake_wanted_objects[2].position.y = 500;
-    ctx->c4.fake_wanted_objects[3].position.x = 1000;
-    ctx->c4.fake_wanted_objects[3].position.y = 400;
+    ctx->c4.fake_wanted_objects[1].position.x = 1160;
+    ctx->c4.fake_wanted_objects[1].position.y = 0;
+    ctx->c4.fake_wanted_objects[2].position.x = 630;
+    ctx->c4.fake_wanted_objects[2].position.y = 330;
+    ctx->c4.fake_wanted_objects[3].position.x = 0;
+    ctx->c4.fake_wanted_objects[3].position.y = 480;
+    ctx->c4.fake_wanted_objects[4].position.x = 770;
+    ctx->c4.fake_wanted_objects[4].position.y = 30;
 }
 
 void free_context(Context* ctx) {
@@ -889,7 +893,8 @@ void draw_context(Context* ctx) {
 
             time_t current_time = time(0);
             int seconds_left = ctx->c4.duration_in_seconds - (current_time - ctx->c4.start_time);
-            al_draw_textf(ctx->font, al_map_rgb(0, 0, 0), 0, 20, 0, "Tempo: %d segundos", seconds_left);
+            al_draw_filled_rectangle(0, 0, 150, 50, al_map_rgb(0, 0, 0));
+            al_draw_textf(ctx->font, al_map_rgb(255, 255, 255), 0, 20, 0, "Tempo: %d segundos", seconds_left);
         }
         break;
     case GAME_OVER:
@@ -1203,11 +1208,7 @@ void change_animals_sprite(Context* ctx) {
 }
 
 void finish_challenge(bool success, Context* ctx) {
-    if (!success) {
-        ctx->life_counter--;
-    }
-
-    if (ctx->hunger_counter == 0) {
+    if (!success || ctx->hunger_counter == 0) {
         ctx->life_counter--;
     }
 
@@ -1216,6 +1217,8 @@ void finish_challenge(bool success, Context* ctx) {
         ctx->has_user_lost = true;
         return;
     }
+
+    if (ctx->challenge_index == 1 && success && ctx->life_counter < 3) ctx->life_counter++;
 
     if (ctx->challenge_index == 4) {
         ctx->state = GAME_OVER;
