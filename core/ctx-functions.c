@@ -1348,6 +1348,8 @@ void change_animals_sprite(Context* ctx) {
 void finish_challenge(bool success, Context* ctx) {
     if (!success || ctx->hunger_counter == 0) {
         ctx->life_counter--;
+        play_sound(ctx->mute_sounds, ctx->sounds.hurting, 1, 0, 1, false);
+        al_rest(1);
     }
 
     if (ctx->life_counter <= 0) {

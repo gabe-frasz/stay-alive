@@ -68,6 +68,7 @@ typedef struct {
     ALLEGRO_SAMPLE* footstep[2];
     ALLEGRO_SAMPLE* typing;
     ALLEGRO_SAMPLE* challenges[5];
+    ALLEGRO_SAMPLE* hurting;
 } Sounds;
 
 typedef struct {
