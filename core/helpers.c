@@ -290,16 +290,16 @@ void load_sounds(Sounds* sounds) {
     must_init(sounds->footstep[1], "footstep 2 sound");
     sounds->typing = al_load_sample("sounds/typing.wav");
     must_init(sounds->typing, "typing sound");
-    sounds->challenges[0].sample = al_load_sample("sounds/challenge-1.wav");
-    must_init(sounds->challenges[0].sample, "challenge 1 sound");
-    sounds->challenges[1].sample = al_load_sample("sounds/challenge-2.wav");
-    must_init(sounds->challenges[1].sample, "challenge 2 sound");
-    sounds->challenges[2].sample = al_load_sample("sounds/challenge-3.wav");
-    must_init(sounds->challenges[2].sample, "challenge 3 sound");
-    sounds->challenges[3].sample = al_load_sample("sounds/challenge-4.wav");
-    must_init(sounds->challenges[3].sample, "challenge 4 sound");
-    sounds->challenges[4].sample = al_load_sample("sounds/challenge-5.wav");
-    must_init(sounds->challenges[4].sample, "challenge 5 sound");
+    sounds->challenges[0] = al_load_sample("sounds/challenge-1.wav");
+    must_init(sounds->challenges[0], "challenge 1 sound");
+    sounds->challenges[1] = al_load_sample("sounds/challenge-2.wav");
+    must_init(sounds->challenges[1], "challenge 2 sound");
+    sounds->challenges[2] = al_load_sample("sounds/challenge-3.wav");
+    must_init(sounds->challenges[2], "challenge 3 sound");
+    sounds->challenges[3] = al_load_sample("sounds/challenge-4.wav");
+    must_init(sounds->challenges[3], "challenge 4 sound");
+    sounds->challenges[4] = al_load_sample("sounds/challenge-5.wav");
+    must_init(sounds->challenges[4], "challenge 5 sound");
 }
 
 void load_videos(Videos* videos) {

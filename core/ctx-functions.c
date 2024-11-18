@@ -815,7 +815,7 @@ void free_context(Context* ctx) {
     al_destroy_sample(ctx->sounds.typing);
 
     for (int i = 0; i < 5; i++) {
-        al_destroy_sample(ctx->sounds.challenges[i].sample);
+        al_destroy_sample(ctx->sounds.challenges[i]);
     }
 
     for (int i = 0; i < TUTORIALS_LENGTH; i++) {
@@ -1401,8 +1401,8 @@ void play_tutorial(Context* ctx) {
     if (!al_is_video_playing(current_video) && ctx->tutorial_index % 2 != 0) {
         if (ctx->tutorial_index == t->last_step_index) {
             t->is_completed = true;
-            Audio audio = ctx->sounds.challenges[ctx->challenge_index];
-            al_play_sample(audio.sample, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, NULL);
+            ALLEGRO_SAMPLE* audio = ctx->sounds.challenges[ctx->challenge_index];
+            al_play_sample(audio, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, NULL);
         } else {
             al_start_video(next_video, al_get_default_mixer());
             al_play_sample(ctx->sounds.typing, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
