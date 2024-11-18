@@ -181,6 +181,8 @@ void set_context_to_default(Context* ctx) {
         }
     }
 
+    ctx->sounds.panting.is_playing = false;
+
     // Obstaculos
     ctx->obstacles[0].position.x = 1000;
     ctx->obstacles[0].position.y = 1175;
@@ -817,6 +819,7 @@ void free_context(Context* ctx) {
     al_destroy_sample(ctx->sounds.footstep[1]);
     al_destroy_sample(ctx->sounds.typing);
     al_destroy_sample(ctx->sounds.hurting);
+    al_destroy_sample(ctx->sounds.panting.sample);
 
     for (int i = 0; i < 5; i++) {
         al_destroy_sample(ctx->sounds.challenges[i]);
@@ -1277,11 +1280,9 @@ void change_character_sprite(Context* ctx) {
 
     float cyclic_timer = al_get_timer_count(ctx->timer) % FPS;
     if (cyclic_timer == 10) {
-        al_stop_samples();
         play_sound(ctx->sounds_muted, ctx->sounds.footstep[0], 0.7, 1, 1.5, false);
     }
     if (cyclic_timer == 25) {
-        al_stop_samples();
         play_sound(ctx->sounds_muted, ctx->sounds.footstep[1], 0.7, -1, 1.5, false);
     }
 }
@@ -1300,7 +1301,6 @@ void change_animals_sprite(Context* ctx) {
         } else if (random == 0) {
             a->sort_destination(a);
             a->is_moving = true;
-            ctx->is_snake_hunting = false;
         }
 
         if (a->type == SNAKE && !ctx->is_snake_idle) {
@@ -1318,17 +1318,30 @@ void change_animals_sprite(Context* ctx) {
                  check_collision(&player_top_right, x1, x2, y1, y2) ||
                  check_collision(&player_bottom_left, x1, x2, y1, y2) ||
                  check_collision(&player_bottom_right, x1, x2, y1, y2);
-
-            if (a->type == SNAKE && is_player_near_animal) {
+          
+            if (is_player_near_animal) {
                 a->destination.x = ctx->player.x;
                 a->destination.y = ctx->player.y;
                 a->is_moving = true;
+                if (!ctx->is_snake_hunting && !ctx->sounds_muted) {
+                    if (ctx->sounds.panting.is_playing) {
+                        al_stop_sample(&ctx->sounds.panting.id);
+                        ctx->sounds.panting.is_playing = false;
+                    }
+                    al_play_sample(ctx->sounds.panting.sample, 2, 0, 1.1, ALLEGRO_PLAYMODE_ONCE, &ctx->sounds.panting.id);
+                    ctx->sounds.panting.is_playing = true;
+                }
                 ctx->is_snake_hunting = true;
+            } else {
+                ctx->is_snake_hunting = false;
             }
 
             if (a->type == SNAKE && check_collision(&ctx->player, a->position.x, a->position.x + 10, a->position.y, a->position.y + 10)) {
                 ctx->life_counter--;
+                play_sound(ctx->sounds_muted, ctx->sounds.hurting, 1, 0, 1, false);
+                al_rest(1);
                 ctx->is_snake_idle = true;
+                ctx->is_snake_hunting = false;
             }
         }
 

@@ -306,6 +306,8 @@ void load_sounds(Sounds* sounds) {
     must_init(sounds->challenges[4], "challenge 5 sound");
     sounds->hurting = al_load_sample("sounds/hurting.wav");
     must_init(sounds->hurting, "hurting sound");
+    sounds->panting.sample = al_load_sample("sounds/PRE-RI-GO.wav");
+    must_init(sounds->panting.sample, "panting sound");
 }
 
 void load_videos(Videos* videos) {
