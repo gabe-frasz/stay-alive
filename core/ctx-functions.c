@@ -84,11 +84,15 @@ void set_context_to_default(Context* ctx) {
     ctx->is_user_hallucinated = false;
     ctx->is_snake_idle = false;
     ctx->is_snake_hunting = false;
+    ctx->is_half_water = false;
+    ctx->is_underwater = false;
     ctx->sounds_muted = false;
     ctx->challenge_index = 0; // 0 até 4
     ctx->tutorial_index = 0; 
     ctx->life_counter = 3; // 3 até 0
     ctx->hunger_counter = 3; // 3 até 0
+    ctx->oxygen_counter = 3; // 3 até 0
+    ctx->oxygen_start_time = -1;
     ctx->state = MENU;
     ctx->redraw = true;
     ctx->done = false;
@@ -182,6 +186,7 @@ void set_context_to_default(Context* ctx) {
     }
 
     ctx->sounds.panting.is_playing = false;
+    ctx->sounds.water_bubbles.is_playing = false;
 
     // Obstaculos
     ctx->obstacles[0].position.x = 1000;
@@ -464,118 +469,36 @@ void set_context_to_default(Context* ctx) {
     ctx->obstacles[69].position.y = 1840;
     ctx->obstacles[69].width = 100;
     ctx->obstacles[69].height = 40;
-    ctx->obstacles[70].position.x = -300;
-    ctx->obstacles[70].position.y = 1100;
-    ctx->obstacles[70].width = 100;
-    ctx->obstacles[70].height = 100;
-    ctx->obstacles[71].position.x = -200;
-    ctx->obstacles[71].position.y = 1100;
-    ctx->obstacles[71].width = 100;
-    ctx->obstacles[71].height = 100;
-    ctx->obstacles[72].position.x = -100;
-    ctx->obstacles[72].position.y = 1100;
-    ctx->obstacles[72].width = 100;
-    ctx->obstacles[72].height = 100;
-    ctx->obstacles[73].position.x = -200;
-    ctx->obstacles[73].position.y = 1000;
-    ctx->obstacles[73].width = 100;
-    ctx->obstacles[73].height = 100;
-    ctx->obstacles[74].position.x = -100;
-    ctx->obstacles[74].position.y = 1050;
-    ctx->obstacles[74].width = 50;
-    ctx->obstacles[74].height = 50;
-    ctx->obstacles[75].position.x = -300;
-    ctx->obstacles[75].position.y = 900;
-    ctx->obstacles[75].width = 100;
-    ctx->obstacles[75].height = 100;
-    ctx->obstacles[76].position.x = -200;
-    ctx->obstacles[76].position.y = 950;
-    ctx->obstacles[76].width = 50;
-    ctx->obstacles[76].height = 50;
-    ctx->obstacles[77].position.x = -300;
-    ctx->obstacles[77].position.y = 800;
-    ctx->obstacles[77].width = 100;
-    ctx->obstacles[77].height = 100;
-    ctx->obstacles[78].position.x = -300;
-    ctx->obstacles[78].position.y = 700;
-    ctx->obstacles[78].width = 100;
-    ctx->obstacles[78].height = 100;
-    ctx->obstacles[79].position.x = -300;
-    ctx->obstacles[79].position.y = 600;
-    ctx->obstacles[79].width = 100;
-    ctx->obstacles[79].height = 100;
-    ctx->obstacles[80].position.x = -200;
-    ctx->obstacles[80].position.y = 725;
-    ctx->obstacles[80].width = 50;
-    ctx->obstacles[80].height = 50;
-    ctx->obstacles[81].position.x = -200;
-    ctx->obstacles[81].position.y = 550;
-    ctx->obstacles[81].width = 50;
-    ctx->obstacles[81].height = 50;
-    ctx->obstacles[82].position.x = -150;
-    ctx->obstacles[82].position.y = 450;
-    ctx->obstacles[82].width = 100;
-    ctx->obstacles[82].height = 100;
-    ctx->obstacles[83].position.x = -50;
-    ctx->obstacles[83].position.y = 450;
-    ctx->obstacles[83].width = 100;
-    ctx->obstacles[83].height = 100;
-    ctx->obstacles[84].position.x = 50;
-    ctx->obstacles[84].position.y = 450;
-    ctx->obstacles[84].width = 50;
-    ctx->obstacles[84].height = 50;
-    ctx->obstacles[85].position.x = 100;
-    ctx->obstacles[85].position.y = 350;
-    ctx->obstacles[85].width = 100;
-    ctx->obstacles[85].height = 100;
-    ctx->obstacles[86].position.x = 200;
-    ctx->obstacles[86].position.y = 350;
-    ctx->obstacles[86].width = 100;
-    ctx->obstacles[86].height = 100;
-    ctx->obstacles[87].position.x = 300;
-    ctx->obstacles[87].position.y = 350;
-    ctx->obstacles[87].width = 50;
-    ctx->obstacles[87].height = 50;
-    ctx->obstacles[88].position.x = 350;
-    ctx->obstacles[88].position.y = 250;
-    ctx->obstacles[88].width = 100;
-    ctx->obstacles[88].height = 100;
-    ctx->obstacles[89].position.x = 450;
-    ctx->obstacles[89].position.y = 250;
-    ctx->obstacles[89].width = 50;
-    ctx->obstacles[89].height = 50;
-    ctx->obstacles[90].position.x = 500;
-    ctx->obstacles[90].position.y = 150;
-    ctx->obstacles[90].width = 100;
-    ctx->obstacles[90].height = 100;
-    ctx->obstacles[91].position.x = 500;
-    ctx->obstacles[91].position.y = 50;
-    ctx->obstacles[91].width = 100;
-    ctx->obstacles[91].height = 100;
-    ctx->obstacles[92].position.x = 600;
-    ctx->obstacles[92].position.y = 50;
-    ctx->obstacles[92].width = 50;
-    ctx->obstacles[92].height = 50;
-    ctx->obstacles[93].position.x = 650;
-    ctx->obstacles[93].position.y = -50;
-    ctx->obstacles[93].width = 100;
-    ctx->obstacles[93].height = 100;
-    ctx->obstacles[94].position.x = 750;
-    ctx->obstacles[94].position.y = 50;
-    ctx->obstacles[94].width = 50;
-    ctx->obstacles[94].height = 50;
-    ctx->obstacles[95].position.x = 800;
-    ctx->obstacles[95].position.y = 0;
-    ctx->obstacles[95].width = 50;
-    ctx->obstacles[95].height = 50;
-    ctx->obstacles[96].position.x = 850;
-    ctx->obstacles[96].position.y = -100;
-    ctx->obstacles[96].width = 100;
-    ctx->obstacles[96].height = 100;
-    ctx->obstacles[97].position.x = 950;
-    ctx->obstacles[97].position.y = -100;
-    ctx->obstacles[97].width = 100;
-    ctx->obstacles[97].height = 100;
+
+    ctx->shallow_water_areas[0].x1 = INITIAL_MAP_X;
+    ctx->shallow_water_areas[0].x2 = INITIAL_MAP_X + 750;
+    ctx->shallow_water_areas[0].y1 = INITIAL_MAP_Y;
+    ctx->shallow_water_areas[0].y2 = INITIAL_MAP_Y + 500;
+    ctx->shallow_water_areas[1].x1 = INITIAL_MAP_X + 750;
+    ctx->shallow_water_areas[1].x2 = INITIAL_MAP_X + 1125;
+    ctx->shallow_water_areas[1].y1 = INITIAL_MAP_Y;
+    ctx->shallow_water_areas[1].y2 = INITIAL_MAP_Y + 180;
+    ctx->shallow_water_areas[2].x1 = INITIAL_MAP_X;
+    ctx->shallow_water_areas[2].x2 = INITIAL_MAP_X + 100;
+    ctx->shallow_water_areas[2].y1 = INITIAL_MAP_Y + 500;
+    ctx->shallow_water_areas[2].y2 = INITIAL_MAP_Y + 1270;
+    ctx->shallow_water_areas[3].x1 = INITIAL_MAP_X + 750;
+    ctx->shallow_water_areas[3].x2 = INITIAL_MAP_X + 900;
+    ctx->shallow_water_areas[3].y1 = INITIAL_MAP_Y + 180;
+    ctx->shallow_water_areas[3].y2 = INITIAL_MAP_Y + 330;
+    ctx->shallow_water_areas[4].x1 = INITIAL_MAP_X + 100;
+    ctx->shallow_water_areas[4].x2 = INITIAL_MAP_X + 500;
+    ctx->shallow_water_areas[4].y1 = INITIAL_MAP_Y + 500;
+    ctx->shallow_water_areas[4].y2 = INITIAL_MAP_Y + 600;
+    ctx->shallow_water_areas[5].x1 = INITIAL_MAP_X + 100;
+    ctx->shallow_water_areas[5].x2 = INITIAL_MAP_X + 270;
+    ctx->shallow_water_areas[5].y1 = INITIAL_MAP_Y + 1150;
+    ctx->shallow_water_areas[5].y2 = INITIAL_MAP_Y + 1270;
+
+    ctx->deep_water_area.x1 = INITIAL_MAP_X;
+    ctx->deep_water_area.x2 = INITIAL_MAP_X + 550;
+    ctx->deep_water_area.y1 = INITIAL_MAP_Y;
+    ctx->deep_water_area.y2 = INITIAL_MAP_Y + 300;
 }
 
 void init_context(Context* ctx) {
@@ -792,6 +715,7 @@ void free_context(Context* ctx) {
     al_destroy_bitmap(ctx->imgs.heart_filled);
     al_destroy_bitmap(ctx->imgs.hunger_empty);
     al_destroy_bitmap(ctx->imgs.hunger_filled);
+    al_destroy_bitmap(ctx->imgs.water_bubble);
     al_destroy_bitmap(ctx->imgs.apple);
     al_destroy_bitmap(ctx->imgs.mushroom);
     al_destroy_bitmap(ctx->imgs.char_with_basket);
@@ -817,9 +741,12 @@ void free_context(Context* ctx) {
 
     al_destroy_sample(ctx->sounds.footstep[0]);
     al_destroy_sample(ctx->sounds.footstep[1]);
+    al_destroy_sample(ctx->sounds.water_footstep[0]);
+    al_destroy_sample(ctx->sounds.water_footstep[1]);
     al_destroy_sample(ctx->sounds.typing);
     al_destroy_sample(ctx->sounds.hurting);
     al_destroy_sample(ctx->sounds.panting.sample);
+    al_destroy_sample(ctx->sounds.water_bubbles.sample);
 
     for (int i = 0; i < 5; i++) {
         al_destroy_sample(ctx->sounds.challenges[i]);
@@ -916,6 +843,9 @@ void draw_context(Context* ctx) {
             }
             else {
                 al_draw_bitmap(ctx->imgs.hunger_empty, 5 + i * HUNGER_WIDTH, HEART_HEIGHT + 15, 0);
+            }
+            if (ctx->oxygen_counter > i && ctx->is_underwater) {
+                al_draw_bitmap(ctx->imgs.water_bubble, 5 + i * OXYGEN_WIDTH, HEART_HEIGHT + HUNGER_HEIGHT + 15, 0);
             }
         }
 
@@ -1041,20 +971,19 @@ void draw_context(Context* ctx) {
 
         if (ctx->challenge_index == 0 || ctx->challenge_index == 1 || (ctx->challenge_index == 4 && !ctx->c5.bonfire_scene)) {
             al_draw_bitmap(ctx->imgs.small_next_btn, 1130, 630, 0);
-            al_draw_rectangle(1130, 630, 1232, 677, al_map_rgb(255, 255, 255), 1);
         }
         break;
     case GAME_OVER:
-        ALLEGRO_VIDEO* video = ctx->videos.rescue;
-        if (al_is_video_playing(video)) {
-            ALLEGRO_BITMAP* frame = al_get_video_frame(video);
-            if (frame) al_draw_bitmap(frame, 0, 0, 0);
-            return;
-        }
-
         if (ctx->has_user_lost) {
             al_draw_bitmap(ctx->imgs.game_over, 0, 0, 0);
         } else {
+            ALLEGRO_VIDEO* video = ctx->videos.rescue;
+            if (al_is_video_playing(video)) {
+                ALLEGRO_BITMAP* frame = al_get_video_frame(video);
+                if (frame) al_draw_bitmap(frame, 0, 0, 0);
+                return;
+            }
+
             al_draw_bitmap(ctx->imgs.end_game, 0, 0, 0);
         }
         al_draw_bitmap(ctx->imgs.menu_btn, RETURN_TO_MENU_BTN_X, RETURN_TO_MENU_BTN_Y, 0);
@@ -1084,6 +1013,25 @@ bool check_obstacles_collision(Context* ctx) {
     return is_colliding;
 }
 
+bool check_water_collision(Context* ctx) {
+    bool is_colliding = false;
+
+    for (int i = 0; i < SHALLOW_WATER_AREAS_LENGTH; i++) {
+        Rectangle* r = &ctx->shallow_water_areas[i];
+
+        Coordinate player_bottom_left = {ctx->player.x + 25, ctx->player.y + PLAYER_HEIGHT - 10},
+                   player_bottom_right = {ctx->player.x + PLAYER_WIDTH - 25, ctx->player.y + PLAYER_HEIGHT - 10};
+
+        if (check_collision(&player_bottom_left, r->x1, r->x2, r->y1, r->y2) ||
+            check_collision(&player_bottom_right, r->x1, r->x2, r->y1, r->y2)) {
+            is_colliding = true;
+            break;
+        }
+    }
+
+    return is_colliding;
+}
+
 void move_camera(Context* ctx) {
     bool is_player_y_centered = ctx->player.y == (DISPLAY_HEIGHT/2.0 - PLAYER_HEIGHT/2);
     bool is_player_x_centered = ctx->player.x == (DISPLAY_WIDTH/2.0 - PLAYER_WIDTH/2);
@@ -1094,6 +1042,8 @@ void move_camera(Context* ctx) {
     Coordinate animals_positions[ANIMALS_LENGTH];
     Coordinate animals_destinations[ANIMALS_LENGTH];
     Rectangle animals_bounds[ANIMALS_LENGTH];
+    Rectangle shallow_water_areas[SHALLOW_WATER_AREAS_LENGTH];
+    Rectangle deep_water_area = ctx->deep_water_area;
 
     for (int i = 0; i < OBSTACLES_LENGTH; i++) {
         obstacles[i] = ctx->obstacles[i].position;
@@ -1109,83 +1059,126 @@ void move_camera(Context* ctx) {
             animals_bounds[i].y1 = a->bounds.y1;
             animals_bounds[i].y2 = a->bounds.y2;
         }
+
+        if (i < SHALLOW_WATER_AREAS_LENGTH) {
+            shallow_water_areas[i].x1 = ctx->shallow_water_areas[i].x1;
+            shallow_water_areas[i].x2 = ctx->shallow_water_areas[i].x2;
+            shallow_water_areas[i].y1 = ctx->shallow_water_areas[i].y1;
+            shallow_water_areas[i].y2 = ctx->shallow_water_areas[i].y2;
+        }
+    }
+
+    int speed = PLAYER_SPEED;
+    if (check_water_collision(ctx)) {
+        speed *= 0.5;
+        ctx->is_half_water = true;
+    } else {
+        ctx->is_half_water = false;
     }
 
     switch (ctx->event.keyboard.keycode) {
     case ALLEGRO_KEY_UP:
     case ALLEGRO_KEY_W:
         if (ctx->map.y < 0 && is_player_y_centered) {
-            ctx->map.y += PLAYER_SPEED;
+            ctx->map.y += speed;
+            ctx->deep_water_area.y1 += speed;
+            ctx->deep_water_area.y2 += speed;
             for (int i = 0; i < OBSTACLES_LENGTH; i++) {
-                ctx->obstacles[i].position.y += PLAYER_SPEED;
+                ctx->obstacles[i].position.y += speed;
                 
                 if (i < ANIMALS_LENGTH) {
                     Animal* a = &ctx->animals[i];
-                    a->position.y += PLAYER_SPEED;
-                    a->destination.y += PLAYER_SPEED;
-                    a->bounds.y1 += PLAYER_SPEED;
-                    a->bounds.y2 += PLAYER_SPEED;
+                    a->position.y += speed;
+                    a->destination.y += speed;
+                    a->bounds.y1 += speed;
+                    a->bounds.y2 += speed;
+                }
+
+                if (i < SHALLOW_WATER_AREAS_LENGTH) {
+                    ctx->shallow_water_areas[i].y1 += speed;
+                    ctx->shallow_water_areas[i].y2 += speed;
                 }
             }
         } else if (ctx->player.y >= ctx->map.y) {
-            ctx->player.y -= PLAYER_SPEED;
+            ctx->player.y -= speed;
         }
         break;
     case ALLEGRO_KEY_DOWN:
     case ALLEGRO_KEY_S:
         if (ctx->map.y + MAP_SIZE > DISPLAY_HEIGHT && is_player_y_centered) {
-            ctx->map.y -= PLAYER_SPEED;
+            ctx->map.y -= speed;
+            ctx->deep_water_area.y1 -= speed;
+            ctx->deep_water_area.y2 -= speed;
             for (int i = 0; i < OBSTACLES_LENGTH; i++) {
-                ctx->obstacles[i].position.y -= PLAYER_SPEED;
+                ctx->obstacles[i].position.y -= speed;
             
                 if (i < ANIMALS_LENGTH) {
                     Animal* a = &ctx->animals[i];
-                    a->position.y -= PLAYER_SPEED;
-                    a->destination.y -= PLAYER_SPEED;
-                    a->bounds.y1 -= PLAYER_SPEED;
-                    a->bounds.y2 -= PLAYER_SPEED;
+                    a->position.y -= speed;
+                    a->destination.y -= speed;
+                    a->bounds.y1 -= speed;
+                    a->bounds.y2 -= speed;
+                }
+
+                if (i < SHALLOW_WATER_AREAS_LENGTH) {
+                    ctx->shallow_water_areas[i].y1 -= speed;
+                    ctx->shallow_water_areas[i].y2 -= speed;
                 }
             }
         } else if (ctx->player.y + PLAYER_HEIGHT <= ctx->map.y + MAP_SIZE) {
-            ctx->player.y += PLAYER_SPEED;
+            ctx->player.y += speed;
         }
         break;
     case ALLEGRO_KEY_LEFT:
     case ALLEGRO_KEY_A:
         if (ctx->map.x < 0 && is_player_x_centered) {
-            ctx->map.x += PLAYER_SPEED;
+            ctx->map.x += speed;
+            ctx->deep_water_area.x1 += speed;
+            ctx->deep_water_area.x2 += speed;
             for (int i = 0; i < OBSTACLES_LENGTH; i++) {
-                ctx->obstacles[i].position.x += PLAYER_SPEED;
+                ctx->obstacles[i].position.x += speed;
 
                 if (i < ANIMALS_LENGTH) {
                     Animal* a = &ctx->animals[i];
-                    a->position.x += PLAYER_SPEED;
-                    a->destination.x += PLAYER_SPEED;
-                    a->bounds.x1 += PLAYER_SPEED;
-                    a->bounds.x2 += PLAYER_SPEED;
+                    a->position.x += speed;
+                    a->destination.x += speed;
+                    a->bounds.x1 += speed;
+                    a->bounds.x2 += speed;
+                }
+
+                if (i < SHALLOW_WATER_AREAS_LENGTH) {
+                    ctx->shallow_water_areas[i].x1 += speed;
+                    ctx->shallow_water_areas[i].x2 += speed;
                 }
             }
         } else if (ctx->player.x >= ctx->map.x) {
-            ctx->player.x -= PLAYER_SPEED;
+            ctx->player.x -= speed;
         }
         break;
     case ALLEGRO_KEY_RIGHT:
     case ALLEGRO_KEY_D:
         if (ctx->map.x + MAP_SIZE > DISPLAY_WIDTH && is_player_x_centered) {
-            ctx->map.x -= PLAYER_SPEED;
+            ctx->map.x -= speed;
+            ctx->deep_water_area.x1 -= speed;
+            ctx->deep_water_area.x2 -= speed;
             for (int i = 0; i < OBSTACLES_LENGTH; i++) {
-                ctx->obstacles[i].position.x -= PLAYER_SPEED;
+                ctx->obstacles[i].position.x -= speed;
             
                 if (i < ANIMALS_LENGTH) {
                     Animal* a = &ctx->animals[i];
-                    a->position.x -= PLAYER_SPEED;
-                    a->destination.x -= PLAYER_SPEED;
-                    a->bounds.x1 -= PLAYER_SPEED;
-                    a->bounds.x2 -= PLAYER_SPEED;
+                    a->position.x -= speed;
+                    a->destination.x -= speed;
+                    a->bounds.x1 -= speed;
+                    a->bounds.x2 -= speed;
+                }
+
+                if (i < SHALLOW_WATER_AREAS_LENGTH) {
+                    ctx->shallow_water_areas[i].x1 -= speed;
+                    ctx->shallow_water_areas[i].x2 -= speed;
                 }
             }
         } else if (ctx->player.x + PLAYER_WIDTH <= ctx->map.x + MAP_SIZE) {
-            ctx->player.x += PLAYER_SPEED;
+            ctx->player.x += speed;
         }
         break;
     }
@@ -1195,6 +1188,7 @@ void move_camera(Context* ctx) {
         ctx->player.y = player.y;
         ctx->map.x = map.x;
         ctx->map.y = map.y;
+        ctx->deep_water_area = deep_water_area;
         for (int i = 0; i < OBSTACLES_LENGTH; i++) {
             ctx->obstacles[i].position.x = obstacles[i].x;
             ctx->obstacles[i].position.y = obstacles[i].y;
@@ -1209,6 +1203,13 @@ void move_camera(Context* ctx) {
                 a->bounds.x2 = animals_bounds[i].x2;
                 a->bounds.y1 = animals_bounds[i].y1;
                 a->bounds.y2 = animals_bounds[i].y2;
+            }
+
+            if (i < SHALLOW_WATER_AREAS_LENGTH) {
+                ctx->shallow_water_areas[i].x1 = shallow_water_areas[i].x1;
+                ctx->shallow_water_areas[i].x2 = shallow_water_areas[i].x2;
+                ctx->shallow_water_areas[i].y1 = shallow_water_areas[i].y1;
+                ctx->shallow_water_areas[i].y2 = shallow_water_areas[i].y2;
             }
         }
     }
@@ -1241,6 +1242,36 @@ void check_player_position(Context* ctx) {
         al_start_video(ctx->videos.tutorials[ctx->tutorial_index], al_get_default_mixer());
         play_sound(ctx->sounds_muted, ctx->sounds.typing, 1, 0, 1, false);
     }
+
+    if (ctx->is_underwater) {
+        if (!ctx->sounds_muted && !ctx->sounds.water_bubbles.is_playing) {
+            al_play_sample(ctx->sounds.water_bubbles.sample, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, &ctx->sounds.water_bubbles.id);
+            ctx->sounds.water_bubbles.is_playing = true;
+        }
+        if (ctx->oxygen_start_time == -1) ctx->oxygen_start_time = time(0);
+        if (time(0) - ctx->oxygen_start_time >= OXYGEN_UNIT_DURATION) {
+            ctx->oxygen_counter--;
+            if (ctx->oxygen_counter <= 0) {
+                ctx->oxygen_counter = 0;
+                ctx->life_counter--;
+                play_sound(ctx->sounds_muted, ctx->sounds.hurting, 1, 0, 1, false);
+                if (ctx->life_counter <= 0) {
+                    ctx->has_user_lost = true;
+                    ctx->state = GAME_OVER;
+                    al_rest(1);
+                    al_stop_samples();
+                }
+            }
+            ctx->oxygen_start_time = -1;
+        }
+    } else {
+        if (ctx->sounds.water_bubbles.is_playing) {
+            al_stop_sample(&ctx->sounds.water_bubbles.id);
+            ctx->sounds.water_bubbles.is_playing = false;
+        }
+        ctx->oxygen_start_time = -1;
+        ctx->oxygen_counter = 3;
+    }
 }
 
 void change_character_sprite(Context* ctx) {
@@ -1248,42 +1279,69 @@ void change_character_sprite(Context* ctx) {
     if (quarter == -1) return;
 
     bool is_player_standing = ctx->event.type == ALLEGRO_EVENT_KEY_UP;
+    Rectangle deep_water = ctx->deep_water_area;
+    Coordinate player_bottom_left = {ctx->player.x + 25, ctx->player.y + PLAYER_HEIGHT - 10},
+               player_bottom_right = {ctx->player.x + PLAYER_WIDTH - 25, ctx->player.y + PLAYER_HEIGHT - 10};
+    if (check_collision(&player_bottom_left, deep_water.x1, deep_water.x2, deep_water.y1, deep_water.y2) ||
+        check_collision(&player_bottom_right, deep_water.x1, deep_water.x2, deep_water.y1, deep_water.y2)) {
+        ctx->is_underwater = true;
+    } else {
+        ctx->is_underwater = false;
+    }
 
     ALLEGRO_BITMAP* current = ctx->imgs.char_sprites.current;
     switch (ctx->event.keyboard.keycode) {
     case ALLEGRO_KEY_UP:
     case ALLEGRO_KEY_W:
-        if (quarter == 2) current = ctx->imgs.char_sprites.back[1];
-        if (quarter == 4) current = ctx->imgs.char_sprites.back[2];
-        if (quarter == 1 || quarter == 3 || is_player_standing) current = ctx->imgs.char_sprites.back[0];
+        if (quarter == 2 && !ctx->is_half_water) current = ctx->imgs.char_sprites.back[1];
+        if (quarter == 4 && !ctx->is_half_water) current = ctx->imgs.char_sprites.back[2];
+        if ((quarter == 1 || quarter == 3 || is_player_standing) && !ctx->is_half_water) current = ctx->imgs.char_sprites.back[0];
+        if (quarter == 2 && ctx->is_half_water) current = ctx->imgs.char_sprites_half_water.back[1];
+        if (quarter == 4 && ctx->is_half_water) current = ctx->imgs.char_sprites_half_water.back[2];
+        if ((quarter == 1 || quarter == 3 || is_player_standing) && ctx->is_half_water) current = ctx->imgs.char_sprites_half_water.back[0];
+        if ( ctx->is_underwater) current = ctx->imgs.char_sprites_underwater.back;
         break;
     case ALLEGRO_KEY_DOWN:
     case ALLEGRO_KEY_S:
-        if (quarter == 2) current = ctx->imgs.char_sprites.front[1];
-        if (quarter == 4) current = ctx->imgs.char_sprites.front[2];
-        if (quarter == 1 || quarter == 3 || is_player_standing) current = ctx->imgs.char_sprites.front[0];
+        if (quarter == 2 && !ctx->is_half_water) current = ctx->imgs.char_sprites.front[1];
+        if (quarter == 4 && !ctx->is_half_water) current = ctx->imgs.char_sprites.front[2];
+        if ((quarter == 1 || quarter == 3 || is_player_standing) && !ctx->is_half_water) current = ctx->imgs.char_sprites.front[0];
+        if (quarter == 2 && ctx->is_half_water) current = ctx->imgs.char_sprites_half_water.front[1];
+        if (quarter == 4 && ctx->is_half_water) current = ctx->imgs.char_sprites_half_water.front[2];
+        if ((quarter == 1 || quarter == 3 || is_player_standing) && ctx->is_half_water) current = ctx->imgs.char_sprites_half_water.front[0];
+        if (ctx->is_underwater) current = ctx->imgs.char_sprites_underwater.front;
         break;
     case ALLEGRO_KEY_LEFT:
     case ALLEGRO_KEY_A:
-        if (quarter == 2) current = ctx->imgs.char_sprites.left[1];
-        if (quarter == 4) current = ctx->imgs.char_sprites.left[2];
-        if (quarter == 1 || quarter == 3 || is_player_standing) current = ctx->imgs.char_sprites.left[0];
+        if (quarter == 2 && !ctx->is_half_water) current = ctx->imgs.char_sprites.left[1];
+        if (quarter == 4 && !ctx->is_half_water) current = ctx->imgs.char_sprites.left[2];
+        if ((quarter == 1 || quarter == 3 || is_player_standing) && !ctx->is_half_water) current = ctx->imgs.char_sprites.left[0];
+        if (quarter == 2 && ctx->is_half_water) current = ctx->imgs.char_sprites_half_water.left[1];
+        if (quarter == 4 && ctx->is_half_water) current = ctx->imgs.char_sprites_half_water.left[2];
+        if ((quarter == 1 || quarter == 3 || is_player_standing) && ctx->is_half_water) current = ctx->imgs.char_sprites_half_water.left[0];
+        if (ctx->is_underwater) current = ctx->imgs.char_sprites_underwater.left;
         break;
     case ALLEGRO_KEY_RIGHT:
     case ALLEGRO_KEY_D:
-        if (quarter == 2) current = ctx->imgs.char_sprites.right[1];
-        if (quarter == 4) current = ctx->imgs.char_sprites.right[2];
-        if (quarter == 1 || quarter == 3 || is_player_standing) current = ctx->imgs.char_sprites.right[0];
+        if (quarter == 2 && !ctx->is_half_water) current = ctx->imgs.char_sprites.right[1];
+        if (quarter == 4 && !ctx->is_half_water) current = ctx->imgs.char_sprites.right[2];
+        if ((quarter == 1 || quarter == 3 || is_player_standing) && !ctx->is_half_water) current = ctx->imgs.char_sprites.right[0];
+        if (quarter == 2 && ctx->is_half_water) current = ctx->imgs.char_sprites_half_water.right[1];
+        if (quarter == 4 && ctx->is_half_water) current = ctx->imgs.char_sprites_half_water.right[2];
+        if ((quarter == 1 || quarter == 3 || is_player_standing) && ctx->is_half_water) current = ctx->imgs.char_sprites_half_water.right[0];
+        if (ctx->is_underwater) current = ctx->imgs.char_sprites_underwater.right;
         break;
     } 
     ctx->imgs.char_sprites.current = current;
 
     float cyclic_timer = al_get_timer_count(ctx->timer) % FPS;
     if (cyclic_timer == 10) {
-        play_sound(ctx->sounds_muted, ctx->sounds.footstep[0], 0.7, 1, 1.5, false);
+        if (ctx->is_half_water) play_sound(ctx->sounds_muted, ctx->sounds.water_footstep[0], 0.7, 0.5, 1.1, false);
+        else play_sound(ctx->sounds_muted, ctx->sounds.footstep[0], 0.7, 0.5, 1.5, false);
     }
     if (cyclic_timer == 25) {
-        play_sound(ctx->sounds_muted, ctx->sounds.footstep[1], 0.7, -1, 1.5, false);
+        if (ctx->is_half_water) play_sound(ctx->sounds_muted, ctx->sounds.water_footstep[1], 0.7, -0.5, 1.1, false);
+        else play_sound(ctx->sounds_muted, ctx->sounds.footstep[1], 0.7, -0.5, 1.5, false);
     }
 }
 

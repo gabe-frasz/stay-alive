@@ -14,7 +14,8 @@
 #define SELECTABLE_OBJECTS_LENGTH_C5 10
 #define FALLING_OBJECTS_LENGTH 16
 #define WANTED_OBJECTS_LENGTH 5
-#define OBSTACLES_LENGTH 98
+#define OBSTACLES_LENGTH 70
+#define SHALLOW_WATER_AREAS_LENGTH 6
 #define ANIMALS_LENGTH 8 // 2 grupos de aves, 2 coelhos, 1 ovelha, bode, gato, cobra
 #define TUTORIALS_LENGTH 16
 
@@ -37,6 +38,13 @@ typedef struct {
 } Sprites;
 
 typedef struct {
+    ALLEGRO_BITMAP* front;
+    ALLEGRO_BITMAP* back;
+    ALLEGRO_BITMAP* left;
+    ALLEGRO_BITMAP* right;
+} Simple_Sprites;
+
+typedef struct {
     ALLEGRO_BITMAP* map;
     ALLEGRO_BITMAP* menu;
     ALLEGRO_BITMAP* end_game;
@@ -51,12 +59,15 @@ typedef struct {
     ALLEGRO_BITMAP* unmute_btn;
     Sprites char_sprites;
     ALLEGRO_BITMAP* char_with_basket;
+    Sprites char_sprites_half_water;
+    Simple_Sprites char_sprites_underwater;
     Sprites animals[ANIMAL_TYPE_LENGTH];
     ALLEGRO_BITMAP* medicinal_plants[5];
     ALLEGRO_BITMAP* heart_empty;
     ALLEGRO_BITMAP* heart_filled;
     ALLEGRO_BITMAP* hunger_empty;
     ALLEGRO_BITMAP* hunger_filled;
+    ALLEGRO_BITMAP* water_bubble;
     ALLEGRO_BITMAP* snake_alert;
     ALLEGRO_BITMAP* c1_placeable_objects[PLACEABLE_OBJECTS_LENGTH];
     ALLEGRO_BITMAP* c2_selectable_objects[SELECTABLE_OBJECTS_LENGTH_C2];
@@ -74,10 +85,11 @@ typedef struct {
 
 typedef struct {
     ALLEGRO_SAMPLE* footstep[2];
+    ALLEGRO_SAMPLE* water_footstep[2];
     ALLEGRO_SAMPLE* typing;
     ALLEGRO_SAMPLE* challenges[5];
     ALLEGRO_SAMPLE* hurting;
-    Audio panting;
+    Audio panting, water_bubbles;
 } Sounds;
 
 typedef struct {
@@ -193,10 +205,14 @@ typedef struct {
     Challenge_5 c5;
     Rectangle challenges_areas[5];
     Obstacle obstacles[OBSTACLES_LENGTH];
+    Rectangle shallow_water_areas[SHALLOW_WATER_AREAS_LENGTH];
+    Rectangle deep_water_area;
     Animal animals[ANIMALS_LENGTH];
-    int challenge_index, tutorial_index, life_counter, hunger_counter;
+    int challenge_index, tutorial_index, life_counter, hunger_counter, oxygen_counter;
+    time_t oxygen_start_time;
     enum Game_State state;
-    bool redraw, done, has_user_lost, is_user_hallucinated, is_snake_idle, is_snake_hunting, sounds_muted;
+    bool has_user_lost, is_user_hallucinated, is_snake_idle, is_snake_hunting, is_half_water, is_underwater; 
+    bool redraw, done, sounds_muted;
 } Context;
 
 #endif

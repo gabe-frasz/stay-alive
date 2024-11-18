@@ -87,6 +87,38 @@ void load_images(Images* imgs) {
     must_init(imgs->char_sprites.right[2], "char walking 2 right image");
     imgs->char_with_basket = al_load_bitmap("images/char_with_basket.png");
     must_init(imgs->char_with_basket, "char with basket image");
+    imgs->char_sprites_half_water.front[0] = al_load_bitmap("images/standing-front-half-water.png");
+    must_init(imgs->char_sprites_half_water.front[0], "char front half water image");
+    imgs->char_sprites_half_water.front[1] = al_load_bitmap("images/walking-front-1-half-water.png");
+    must_init(imgs->char_sprites_half_water.front[1], "char walking 1 front half water image");
+    imgs->char_sprites_half_water.front[2] = al_load_bitmap("images/walking-front-2-half-water.png");
+    must_init(imgs->char_sprites_half_water.front[2], "char walking 2 front half water image");
+    imgs->char_sprites_half_water.back[0] = al_load_bitmap("images/standing-back-half-water.png");
+    must_init(imgs->char_sprites_half_water.back[0], "char back half water image");
+    imgs->char_sprites_half_water.back[1] = al_load_bitmap("images/walking-back-1-half-water.png");
+    must_init(imgs->char_sprites_half_water.back[1], "char walking 1 back half water image");
+    imgs->char_sprites_half_water.back[2] = al_load_bitmap("images/walking-back-2-half-water.png");
+    must_init(imgs->char_sprites_half_water.back[2], "char walking 2 back half water image");
+    imgs->char_sprites_half_water.left[0] = al_load_bitmap("images/standing-left-half-water.png");
+    must_init(imgs->char_sprites_half_water.left[0], "char left half water image");
+    imgs->char_sprites_half_water.left[1] = al_load_bitmap("images/walking-left-1-half-water.png");
+    must_init(imgs->char_sprites_half_water.left[1], "char walking 1 left half water image");
+    imgs->char_sprites_half_water.left[2] = al_load_bitmap("images/walking-left-2-half-water.png");
+    must_init(imgs->char_sprites_half_water.left[2], "char walking 2 left half water image");
+    imgs->char_sprites_half_water.right[0] = al_load_bitmap("images/standing-right-half-water.png");
+    must_init(imgs->char_sprites_half_water.right[0], "char right half water image");
+    imgs->char_sprites_half_water.right[1] = al_load_bitmap("images/walking-right-1-half-water.png");
+    must_init(imgs->char_sprites_half_water.right[1], "char walking 1 right half water image");
+    imgs->char_sprites_half_water.right[2] = al_load_bitmap("images/walking-right-2-half-water.png");
+    must_init(imgs->char_sprites_half_water.right[2], "char walking 2 right half water image");
+    imgs->char_sprites_underwater.front = al_load_bitmap("images/underwater-front.png");
+    must_init(imgs->char_sprites_underwater.front, "char front underwater image");
+    imgs->char_sprites_underwater.back = al_load_bitmap("images/underwater-back.png");
+    must_init(imgs->char_sprites_underwater.back, "char back underwater image");
+    imgs->char_sprites_underwater.left = al_load_bitmap("images/underwater-left.png");
+    must_init(imgs->char_sprites_underwater.left, "char left underwater image");
+    imgs->char_sprites_underwater.right = al_load_bitmap("images/underwater-right.png");
+    must_init(imgs->char_sprites_underwater.right, "char right underwater image");
     imgs->heart_empty = al_load_bitmap("images/heart_empty.png");
     must_init(imgs->heart_empty, "heart empty image");
     imgs->heart_filled = al_load_bitmap("images/heart.png");
@@ -95,6 +127,8 @@ void load_images(Images* imgs) {
     must_init(imgs->hunger_empty, "hunger empty image");
     imgs->hunger_filled = al_load_bitmap("images/hunger.png");
     must_init(imgs->hunger_filled, "hunger filled image");
+    imgs->water_bubble = al_load_bitmap("images/water-bubble.png");
+    must_init(imgs->water_bubble, "water bubble image");
     imgs->animals[BIRD].front[0] = al_load_bitmap("images/bird-front-1.png");
     must_init(imgs->animals[BIRD].front[0], "bird front 1 image");
     imgs->animals[BIRD].front[1] = al_load_bitmap("images/bird-front-2.png");
@@ -292,6 +326,10 @@ void load_sounds(Sounds* sounds) {
     must_init(sounds->footstep[0], "footstep 1 sound");
     sounds->footstep[1] = al_load_sample("sounds/footstep-2.wav");
     must_init(sounds->footstep[1], "footstep 2 sound");
+    sounds->water_footstep[0] = al_load_sample("sounds/water-footstep-1.wav");
+    must_init(sounds->water_footstep[0], "water footstep 1 sound");
+    sounds->water_footstep[1] = al_load_sample("sounds/water-footstep-2.wav");
+    must_init(sounds->water_footstep[1], "water footstep 2 sound");
     sounds->typing = al_load_sample("sounds/typing.wav");
     must_init(sounds->typing, "typing sound");
     sounds->challenges[0] = al_load_sample("sounds/challenge-1.wav");
@@ -308,6 +346,8 @@ void load_sounds(Sounds* sounds) {
     must_init(sounds->hurting, "hurting sound");
     sounds->panting.sample = al_load_sample("sounds/PRE-RI-GO.wav");
     must_init(sounds->panting.sample, "panting sound");
+    sounds->water_bubbles.sample = al_load_sample("sounds/water-bubbles.wav");
+    must_init(sounds->water_bubbles.sample, "water bubbles sound");
 }
 
 void load_videos(Videos* videos) {
