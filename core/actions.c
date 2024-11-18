@@ -44,6 +44,9 @@ static void timer_challenge(Context* ctx) {
         if (ctx->c4.start_time == -1) ctx->c4.start_time = time(0);
         verify_challenge_4(ctx);
         break;
+    case 4:
+        verify_challenge_5(ctx);
+        break;
     }
 }
 static void keydown_challenge(Context* ctx) {
@@ -55,6 +58,8 @@ static void keydown_challenge(Context* ctx) {
     case 2:
         move_character_sideways(ctx);
         break;
+    case 4:
+        rub_bonfire(ctx);
     }
 }
 static void mouseup_challenge(Context* ctx) {
@@ -83,6 +88,9 @@ static void mouseup_challenge(Context* ctx) {
         break;
     case 3:
         handle_challenge_4(ctx, &mouse);
+        break;
+    case 4:
+        handle_challenge_5(ctx, &mouse);
         break;
     }
 }

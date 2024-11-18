@@ -42,6 +42,7 @@ typedef struct {
     ALLEGRO_BITMAP* end_game;
     ALLEGRO_BITMAP* game_over;
     ALLEGRO_BITMAP* challenges[5];
+    ALLEGRO_BITMAP* c5_bonfire;
     ALLEGRO_BITMAP* play_btn;
     ALLEGRO_BITMAP* menu_btn;
     ALLEGRO_BITMAP* small_play_btn;
@@ -59,6 +60,7 @@ typedef struct {
     ALLEGRO_BITMAP* c2_selectable_objects[SELECTABLE_OBJECTS_LENGTH_C2];
     ALLEGRO_BITMAP* apple;
     ALLEGRO_BITMAP* mushroom;
+    ALLEGRO_BITMAP* rub_sprites[4];
     ALLEGRO_BITMAP* current_video_frame;
 } Images;
 
@@ -70,6 +72,7 @@ typedef struct {
 typedef struct {
     ALLEGRO_VIDEO* tutorials[TUTORIALS_LENGTH];
     ALLEGRO_VIDEO* c2_distillation;
+    ALLEGRO_VIDEO* rescue;
 } Videos;
 
 enum Game_State {
@@ -152,7 +155,8 @@ typedef struct {
 typedef struct {
     Selectable_Object selectable_objects[SELECTABLE_OBJECTS_LENGTH_C5];
     time_t start_time;
-    int duration_in_seconds;
+    int duration_in_seconds, action_bar, rub_sprite_index;
+    bool bonfire_scene, correct_objects;
 } Challenge_5;
 
 typedef struct {

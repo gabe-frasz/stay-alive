@@ -23,5 +23,8 @@ void handle_challenge_3(Context* ctx);
 void move_character_sideways(Context* ctx);
 void handle_challenge_4(Context* ctx, Coordinate* mouse);
 void verify_challenge_4(Context* ctx);
+void handle_challenge_5(Context* ctx, Coordinate* mouse);
+void rub_bonfire(Context* ctx);
+void verify_challenge_5(Context* ctx);
 
 #endif

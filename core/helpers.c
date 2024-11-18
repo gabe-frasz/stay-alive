@@ -47,6 +47,8 @@ void load_images(Images* imgs) {
     must_init(imgs->challenges[3], "challenge 4 image");
     imgs->challenges[4] = al_load_bitmap("images/challenge-5.png");
     must_init(imgs->challenges[4], "challenge 5 image");
+    imgs->c5_bonfire = al_load_bitmap("images/challenge-5-bonfire.png");
+    must_init(imgs->c5_bonfire, "c5 bonfire image");
     imgs->play_btn = al_load_bitmap("images/play-btn.png");
     must_init(imgs->play_btn, "play button image");
     imgs->menu_btn = al_load_bitmap("images/menu-btn.png");
@@ -271,6 +273,14 @@ void load_images(Images* imgs) {
     must_init(imgs->apple, "apple image");
     imgs->mushroom = al_load_bitmap("images/mushroom.png");
     must_init(imgs->mushroom, "mushroom image");
+    imgs->rub_sprites[0] = al_load_bitmap("images/rub-bonfire-1.png");
+    must_init(imgs->rub_sprites[0], "rub bonfire 1 image");
+    imgs->rub_sprites[1] = al_load_bitmap("images/rub-bonfire-2.png");
+    must_init(imgs->rub_sprites[1], "rub bonfire 2 image");
+    imgs->rub_sprites[2] = al_load_bitmap("images/rub-bonfire-3.png");
+    must_init(imgs->rub_sprites[2], "rub bonfire 3 image");
+    imgs->rub_sprites[3] = al_load_bitmap("images/rub-bonfire-4.png");
+    must_init(imgs->rub_sprites[3], "rub bonfire 4 image");
 }
 
 void load_sounds(Sounds* sounds) {
@@ -317,6 +327,8 @@ void load_videos(Videos* videos) {
     must_init(videos->tutorials[15], "challenge 5 out video");
     videos->c2_distillation = al_open_video("videos/distillation.ogv");
     must_init(videos->c2_distillation, "c2 distilation video");
+    videos->rescue = al_open_video("videos/rescue.ogv");
+    must_init(videos->rescue, "rescue video");
 }
 
 void move_animal(Animal* self) {

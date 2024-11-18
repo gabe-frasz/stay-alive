@@ -5,6 +5,7 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_video.h>
+#include <allegro5/keycodes.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -67,6 +68,16 @@ void set_context_to_default(Context* ctx) {
     for (int i = 0; i < WANTED_OBJECTS_LENGTH; i++) {
         ctx->c4.wanted_objects[i].selected = false;
         ctx->c4.fake_wanted_objects[i].selected = false;
+    }
+
+    ctx->c5.bonfire_scene = false;
+    ctx->c5.correct_objects = false;
+    ctx->c5.action_bar = 1200;
+    ctx->c5.rub_sprite_index = 0;
+    ctx->c5.start_time = -1;
+
+    for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C5; i++) {
+        ctx->c5.selectable_objects[i].selected = false;
     }
 
     ctx->has_user_lost = false;
@@ -697,6 +708,59 @@ void init_context(Context* ctx) {
     ctx->c4.fake_wanted_objects[3].position.y = 480;
     ctx->c4.fake_wanted_objects[4].position.x = 770;
     ctx->c4.fake_wanted_objects[4].position.y = 30;
+
+    // Challenge 5
+    ctx->c5.duration_in_seconds = 10;
+    ctx->c5.selectable_objects[0].position.x = 0;
+    ctx->c5.selectable_objects[0].position.y = 0;
+    ctx->c5.selectable_objects[0].width = 101;
+    ctx->c5.selectable_objects[0].height = 180;
+    ctx->c5.selectable_objects[0].correct = true;
+    ctx->c5.selectable_objects[1].position.x = 200;
+    ctx->c5.selectable_objects[1].position.y = 0;
+    ctx->c5.selectable_objects[1].width = 102;
+    ctx->c5.selectable_objects[1].height = 80;
+    ctx->c5.selectable_objects[1].correct = true;
+    ctx->c5.selectable_objects[2].position.x = 400;
+    ctx->c5.selectable_objects[2].position.y = 0;
+    ctx->c5.selectable_objects[2].width = 120;
+    ctx->c5.selectable_objects[2].height = 99;
+    ctx->c5.selectable_objects[2].correct = true;
+    ctx->c5.selectable_objects[3].position.x = 600;
+    ctx->c5.selectable_objects[3].position.y = 0;
+    ctx->c5.selectable_objects[3].width = 50;
+    ctx->c5.selectable_objects[3].height = 50;
+    ctx->c5.selectable_objects[3].correct = true;
+    ctx->c5.selectable_objects[4].position.x = 800;
+    ctx->c5.selectable_objects[4].position.y = 0;
+    ctx->c5.selectable_objects[4].width = 100;
+    ctx->c5.selectable_objects[4].height = 100;
+    ctx->c5.selectable_objects[4].correct = true;
+    ctx->c5.selectable_objects[5].position.x = 1000;
+    ctx->c5.selectable_objects[5].position.y = 600;
+    ctx->c5.selectable_objects[5].width = 50;
+    ctx->c5.selectable_objects[5].height = 50;
+    ctx->c5.selectable_objects[5].correct = false;
+    ctx->c5.selectable_objects[6].position.x = 1160;
+    ctx->c5.selectable_objects[6].position.y = 600;
+    ctx->c5.selectable_objects[6].width = 102;
+    ctx->c5.selectable_objects[6].height = 80;
+    ctx->c5.selectable_objects[6].correct = false;
+    ctx->c5.selectable_objects[7].position.x = 630;
+    ctx->c5.selectable_objects[7].position.y = 330;
+    ctx->c5.selectable_objects[7].width = 120;
+    ctx->c5.selectable_objects[7].height = 99;
+    ctx->c5.selectable_objects[7].correct = false;
+    ctx->c5.selectable_objects[8].position.x = 0;
+    ctx->c5.selectable_objects[8].position.y = 480;
+    ctx->c5.selectable_objects[8].width = 50;
+    ctx->c5.selectable_objects[8].height = 50;
+    ctx->c5.selectable_objects[8].correct = false;
+    ctx->c5.selectable_objects[9].position.x = 770;
+    ctx->c5.selectable_objects[9].position.y = 300;
+    ctx->c5.selectable_objects[9].width = 100;
+    ctx->c5.selectable_objects[9].height = 100;
+    ctx->c5.selectable_objects[9].correct = false;
 }
 
 void free_context(Context* ctx) {
@@ -707,14 +771,26 @@ void free_context(Context* ctx) {
 
     for (int i = 0; i < 5; i++) {
         al_destroy_bitmap(ctx->imgs.challenges[i]);
+        al_destroy_bitmap(ctx->imgs.medicinal_plants[i]);
+
+        if (i < 4) {
+            al_destroy_bitmap(ctx->imgs.rub_sprites[i]);
+        }
     }
 
+    al_destroy_bitmap(ctx->imgs.c5_bonfire);
     al_destroy_bitmap(ctx->imgs.play_btn);
     al_destroy_bitmap(ctx->imgs.menu_btn);
+    al_destroy_bitmap(ctx->imgs.small_next_btn);
+    al_destroy_bitmap(ctx->imgs.small_play_btn);
     al_destroy_bitmap(ctx->imgs.heart_empty);
     al_destroy_bitmap(ctx->imgs.heart_filled);
     al_destroy_bitmap(ctx->imgs.hunger_empty);
     al_destroy_bitmap(ctx->imgs.hunger_filled);
+    al_destroy_bitmap(ctx->imgs.apple);
+    al_destroy_bitmap(ctx->imgs.mushroom);
+    al_destroy_bitmap(ctx->imgs.char_with_basket);
+    al_destroy_bitmap(ctx->imgs.snake_alert);
 
     for (int i = 0; i < SPRITES_LENGTH; i++) {
         al_destroy_bitmap(ctx->imgs.char_sprites.front[i]);
@@ -730,23 +806,25 @@ void free_context(Context* ctx) {
         }
     }
 
+    for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C2; i++) {
+        al_destroy_bitmap(ctx->imgs.c2_selectable_objects[i]);
+    }
+
     al_destroy_sample(ctx->sounds.footstep[0]);
     al_destroy_sample(ctx->sounds.footstep[1]);
+    al_destroy_sample(ctx->sounds.typing);
 
     for (int i = 0; i < TUTORIALS_LENGTH; i++) {
         al_close_video(ctx->videos.tutorials[i]);
     }
 
     al_close_video(ctx->videos.c2_distillation);
+    al_close_video(ctx->videos.rescue);
 
     al_destroy_font(ctx->font);
     al_destroy_display(ctx->disp);
     al_destroy_timer(ctx->timer);
     al_destroy_event_queue(ctx->queue);
-    al_shutdown_font_addon();
-    al_shutdown_primitives_addon();
-    al_shutdown_video_addon();
-    al_shutdown_image_addon();;
     al_uninstall_keyboard();
     al_uninstall_mouse();
     al_uninstall_audio();
@@ -922,8 +1000,37 @@ void draw_context(Context* ctx) {
             al_draw_filled_rectangle(0, 0, 150, 50, al_map_rgb(0, 0, 0));
             al_draw_textf(ctx->font, al_map_rgb(255, 255, 255), 0, 20, 0, "Tempo: %d segundos", seconds_left);
         }
+
+        if (ctx->challenge_index == 4) {
+            if (!ctx->c5.bonfire_scene) {
+                for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C5; i++) {
+                    Selectable_Object* obj = &ctx->c5.selectable_objects[i];
+                    int w = obj->width,
+                        h = obj->height;
+
+                    // al_draw_bitmap(ctx->imgs.c5_selectable_objects[i], obj->position.x, obj->position.y, 0);
+                    al_draw_filled_rectangle(obj->position.x, obj->position.y, obj->position.x + w, obj->position.y + h, al_map_rgb(255, 0, 0));
+                    if (obj->selected) {
+                        al_draw_rectangle(obj->position.x - 5, obj->position.y - 5, obj->position.x + w + 5, obj->position.y + h + 5, al_map_rgb(255, 0, 0), 1);
+                    }
+                }
+            }
+
+            if (ctx->c5.bonfire_scene) {
+                al_draw_bitmap(ctx->imgs.rub_sprites[ctx->c5.rub_sprite_index], 0, 0, 0);
+                al_draw_filled_rectangle(40, 0, ctx->c5.action_bar, 50, al_map_rgb(255, 255, 255));
+                al_draw_textf(ctx->font, al_map_rgb(0, 0, 0), 40, 20, 0, "Tempo restante: %d segundos", ctx->c5.duration_in_seconds - (time(0) - ctx->c5.start_time));
+            }
+        }
         break;
     case GAME_OVER:
+        ALLEGRO_VIDEO* video = ctx->videos.rescue;
+        if (al_is_video_playing(video)) {
+            ALLEGRO_BITMAP* frame = al_get_video_frame(video);
+            if (frame) al_draw_bitmap(frame, 0, 0, 0);
+            return;
+        }
+
         if (ctx->has_user_lost) {
             al_draw_bitmap(ctx->imgs.game_over, 0, 0, 0);
         } else {
@@ -1247,7 +1354,17 @@ void finish_challenge(bool success, Context* ctx) {
     if (ctx->challenge_index == 1 && success && ctx->life_counter < 3) ctx->life_counter++;
 
     if (ctx->challenge_index == 4) {
-        ctx->state = GAME_OVER;
+        if (success) {
+            al_draw_bitmap(ctx->imgs.c5_bonfire, 0, 0, 0);
+            al_flip_display();
+            al_rest(2);
+            ctx->state = GAME_OVER;
+            al_start_video(ctx->videos.rescue, al_get_default_mixer());
+        } else {
+            ctx->c5.bonfire_scene = false;
+            ctx->c5.start_time = time(0);
+            ctx->c5.action_bar = 1200;
+        }
         return;
     }
 
@@ -1353,8 +1470,8 @@ void handle_challenge_2(Context* ctx, Coordinate* mouse) {
     // Verifica se o jogador conseguiu completar o desafio
     if (check_collision(mouse, 1000, 1200, 600, 700)) {
         for (int i = 0; i < 7; i++) {
-            if ((c2->selectable_objects[i].selected && !c2->selectable_objects[i].correct) || 
-                (!c2->selectable_objects[i].selected && c2->selectable_objects[i].correct)) {
+            Selectable_Object* obj = &c2->selectable_objects[i];
+            if ((obj->selected && !obj->correct) || (!obj->selected && obj->correct)) {
                 finish_challenge(false, ctx);
                 break;
             }
@@ -1451,4 +1568,61 @@ void verify_challenge_4(Context* ctx) {
     bool time_is_up = current_time - c4->start_time >= c4->duration_in_seconds;
     
     if (time_is_up || success) finish_challenge(success, ctx);
+}
+
+void handle_challenge_5(Context* ctx, Coordinate* mouse) {
+    Challenge_5* c5 = &ctx->c5;
+
+    // Seleciona ou desmarca os objetos clicados
+    for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C5; i++) {
+        Selectable_Object* obj = &c5->selectable_objects[i];
+
+        if (check_collision(mouse, obj->position.x, obj->position.x + obj->width, obj->position.y, obj->position.y + obj->height)) {
+            obj->selected = !obj->selected;
+        }
+    }
+    
+    // Verifica se o jogador conseguiu completar o desafio
+    if (check_collision(mouse, 1000, 1200, 600, 700)) {
+        ctx->c5.correct_objects = true;
+        for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C5; i++) {
+            Selectable_Object* obj = &c5->selectable_objects[i];
+            if ((obj->selected && !obj->correct) || (!obj->selected && obj->correct)) {
+                ctx->c5.correct_objects = false;
+                break;
+            }
+        }
+        ctx->c5.bonfire_scene = true;
+        ctx->c5.start_time = time(0);
+    }
+}
+
+void rub_bonfire(Context* ctx) {
+    Challenge_5* c5 = &ctx->c5;
+
+    if (!c5->bonfire_scene) return;
+
+    if (ctx->event.keyboard.keycode == ALLEGRO_KEY_SPACE) {
+        c5->action_bar += 70;
+        c5->rub_sprite_index++;
+        if (c5->rub_sprite_index > 3) c5->rub_sprite_index = 0;
+    }
+}
+
+void verify_challenge_5(Context* ctx) {
+    Challenge_5* c5 = &ctx->c5;
+
+    if (!c5->bonfire_scene) return;
+
+    c5->action_bar -= 20;
+
+    if (c5->action_bar <= 0) {
+        finish_challenge(false, ctx);
+        return;
+    }
+
+    time_t now = time(0);
+    if (now - c5->start_time >= c5->duration_in_seconds) {
+        finish_challenge(c5->correct_objects, ctx);
+    }
 }
