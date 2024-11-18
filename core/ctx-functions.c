@@ -814,6 +814,10 @@ void free_context(Context* ctx) {
     al_destroy_sample(ctx->sounds.footstep[1]);
     al_destroy_sample(ctx->sounds.typing);
 
+    for (int i = 0; i < 5; i++) {
+        al_destroy_sample(ctx->sounds.challenges[i].sample);
+    }
+
     for (int i = 0; i < TUTORIALS_LENGTH; i++) {
         al_close_video(ctx->videos.tutorials[i]);
     }
@@ -1348,6 +1352,7 @@ void finish_challenge(bool success, Context* ctx) {
     if (ctx->life_counter <= 0) {
         ctx->state = GAME_OVER;
         ctx->has_user_lost = true;
+        al_stop_samples();
         return;
     }
 
@@ -1355,6 +1360,7 @@ void finish_challenge(bool success, Context* ctx) {
 
     if (ctx->challenge_index == 4) {
         if (success) {
+            al_stop_samples();
             al_draw_bitmap(ctx->imgs.c5_bonfire, 0, 0, 0);
             al_flip_display();
             al_rest(2);
@@ -1382,6 +1388,7 @@ void finish_challenge(bool success, Context* ctx) {
     }
 
     ctx->state = OPEN_MAP;
+    al_stop_samples();
 }
 
 void play_tutorial(Context* ctx) {
@@ -1394,6 +1401,8 @@ void play_tutorial(Context* ctx) {
     if (!al_is_video_playing(current_video) && ctx->tutorial_index % 2 != 0) {
         if (ctx->tutorial_index == t->last_step_index) {
             t->is_completed = true;
+            Audio audio = ctx->sounds.challenges[ctx->challenge_index];
+            al_play_sample(audio.sample, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, NULL);
         } else {
             al_start_video(next_video, al_get_default_mixer());
             al_play_sample(ctx->sounds.typing, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);

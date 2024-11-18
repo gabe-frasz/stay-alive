@@ -65,8 +65,14 @@ typedef struct {
 } Images;
 
 typedef struct {
+    ALLEGRO_SAMPLE* sample;
+    ALLEGRO_SAMPLE_ID* id;
+} Audio;
+
+typedef struct {
     ALLEGRO_SAMPLE* footstep[2];
     ALLEGRO_SAMPLE* typing;
+    Audio challenges[5];
 } Sounds;
 
 typedef struct {
