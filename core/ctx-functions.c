@@ -1027,6 +1027,11 @@ void draw_context(Context* ctx) {
                 al_draw_textf(ctx->font, al_map_rgb(0, 0, 0), 40, 20, 0, "Tempo restante: %d segundos", ctx->c5.duration_in_seconds - (time(0) - ctx->c5.start_time));
             }
         }
+
+        if (ctx->challenge_index == 0 || ctx->challenge_index == 1 || (ctx->challenge_index == 4 && !ctx->c5.bonfire_scene)) {
+            al_draw_bitmap(ctx->imgs.small_next_btn, 1130, 630, 0);
+            al_draw_rectangle(1130, 630, 1232, 677, al_map_rgb(255, 255, 255), 1);
+        }
         break;
     case GAME_OVER:
         ALLEGRO_VIDEO* video = ctx->videos.rescue;
@@ -1455,7 +1460,7 @@ void handle_challenge_1(Context* ctx, Coordinate* mouse) {
     if (c1->selected_object_index != -1) c1->selected_object_index = -1;
 
     // Verifica se o jogador conseguiu completar o desafio
-    if (check_collision(mouse, 1000, 1200, 600, 700)) {
+    if (check_collision(mouse, 1130, 1232, 630, 677)) {
         bool success = true;
         for (int i = 0; i < PLACEABLE_OBJECTS_LENGTH; i++) {
             Placeable_Object* obj = &c1->placeable_objects[i];
@@ -1480,7 +1485,7 @@ void handle_challenge_2(Context* ctx, Coordinate* mouse) {
     }
 
     // Verifica se o jogador conseguiu completar o desafio
-    if (check_collision(mouse, 1000, 1200, 600, 700)) {
+    if (check_collision(mouse, 1130, 1232, 630, 677)) {
         for (int i = 0; i < 7; i++) {
             Selectable_Object* obj = &c2->selectable_objects[i];
             if ((obj->selected && !obj->correct) || (!obj->selected && obj->correct)) {
@@ -1595,7 +1600,7 @@ void handle_challenge_5(Context* ctx, Coordinate* mouse) {
     }
     
     // Verifica se o jogador conseguiu completar o desafio
-    if (check_collision(mouse, 1000, 1200, 600, 700)) {
+    if (check_collision(mouse, 1130, 1232, 630, 677)) {
         ctx->c5.correct_objects = true;
         for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C5; i++) {
             Selectable_Object* obj = &c5->selectable_objects[i];
