@@ -57,6 +57,10 @@ void load_images(Images* imgs) {
     must_init(imgs->small_next_btn, "small next button image");
     imgs->small_play_btn = al_load_bitmap("images/small-play-btn.png");
     must_init(imgs->small_play_btn, "small play button image");
+    imgs->mute_btn = al_load_bitmap("images/mute-btn.png");
+    must_init(imgs->mute_btn, "mute button image");
+    imgs->unmute_btn = al_load_bitmap("images/unmute-btn.png");
+    must_init(imgs->unmute_btn, "unmute button image");
     imgs->char_sprites.front[0] = al_load_bitmap("images/parado_frente.png");
     must_init(imgs->char_sprites.front[0], "char front image");
     imgs->char_sprites.front[1] = al_load_bitmap("images/andando_frente1.png");

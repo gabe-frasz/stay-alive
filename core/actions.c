@@ -13,7 +13,9 @@ static void mouseup_menu(Context* ctx) {
           w = BUTTON_WIDTH,
           h = BUTTON_HEIGHT;
     bool play = check_collision(&mouse, x, x + w, y, y + h);
+    bool mute = check_collision(&mouse, VOLUME_BTN_X, VOLUME_BTN_X + 50, VOLUME_BTN_Y, VOLUME_BTN_Y + 47);
     if (play) ctx->state = OPEN_MAP;
+    if (mute) ctx->sounds_muted = !ctx->sounds_muted;
 }
 static void timer_map(Context* ctx) {
     check_player_position(ctx);

@@ -84,7 +84,7 @@ void set_context_to_default(Context* ctx) {
     ctx->is_user_hallucinated = false;
     ctx->is_snake_idle = false;
     ctx->is_snake_hunting = false;
-    ctx->mute_sounds = false;
+    ctx->sounds_muted = false;
     ctx->challenge_index = 0; // 0 até 4
     ctx->tutorial_index = 0; 
     ctx->life_counter = 3; // 3 até 0
@@ -784,6 +784,8 @@ void free_context(Context* ctx) {
     al_destroy_bitmap(ctx->imgs.menu_btn);
     al_destroy_bitmap(ctx->imgs.small_next_btn);
     al_destroy_bitmap(ctx->imgs.small_play_btn);
+    al_destroy_bitmap(ctx->imgs.mute_btn);
+    al_destroy_bitmap(ctx->imgs.unmute_btn);
     al_destroy_bitmap(ctx->imgs.heart_empty);
     al_destroy_bitmap(ctx->imgs.heart_filled);
     al_destroy_bitmap(ctx->imgs.hunger_empty);
@@ -814,6 +816,7 @@ void free_context(Context* ctx) {
     al_destroy_sample(ctx->sounds.footstep[0]);
     al_destroy_sample(ctx->sounds.footstep[1]);
     al_destroy_sample(ctx->sounds.typing);
+    al_destroy_sample(ctx->sounds.hurting);
 
     for (int i = 0; i < 5; i++) {
         al_destroy_sample(ctx->sounds.challenges[i]);
@@ -842,6 +845,11 @@ void draw_context(Context* ctx) {
     case MENU:
         al_draw_bitmap(ctx->imgs.menu, 0, 0, 0);
         al_draw_bitmap(ctx->imgs.play_btn, PLAY_BTN_X, PLAY_BTN_Y, 0);
+        if (ctx->sounds_muted) {
+            al_draw_bitmap(ctx->imgs.unmute_btn, VOLUME_BTN_X, VOLUME_BTN_Y, 0);
+        } else {
+            al_draw_bitmap(ctx->imgs.mute_btn, VOLUME_BTN_X, VOLUME_BTN_Y, 0);
+        }
         break;
     case OPEN_MAP:
         al_draw_bitmap(ctx->imgs.map, ctx->map.x, ctx->map.y, 0);
@@ -1228,7 +1236,7 @@ void check_player_position(Context* ctx) {
         is_player_bottom_left_colliding || is_player_bottom_right_colliding) {
         ctx->state = CHALLENGE;
         al_start_video(ctx->videos.tutorials[ctx->tutorial_index], al_get_default_mixer());
-        play_sound(ctx->mute_sounds, ctx->sounds.typing, 1, 0, 1, false);
+        play_sound(ctx->sounds_muted, ctx->sounds.typing, 1, 0, 1, false);
     }
 }
 
@@ -1270,11 +1278,11 @@ void change_character_sprite(Context* ctx) {
     float cyclic_timer = al_get_timer_count(ctx->timer) % FPS;
     if (cyclic_timer == 10) {
         al_stop_samples();
-        play_sound(ctx->mute_sounds, ctx->sounds.footstep[0], 0.7, 1, 1.5, false);
+        play_sound(ctx->sounds_muted, ctx->sounds.footstep[0], 0.7, 1, 1.5, false);
     }
     if (cyclic_timer == 25) {
         al_stop_samples();
-        play_sound(ctx->mute_sounds, ctx->sounds.footstep[1], 0.7, -1, 1.5, false);
+        play_sound(ctx->sounds_muted, ctx->sounds.footstep[1], 0.7, -1, 1.5, false);
     }
 }
 
@@ -1353,7 +1361,7 @@ void change_animals_sprite(Context* ctx) {
 void finish_challenge(bool success, Context* ctx) {
     if (!success || ctx->hunger_counter == 0) {
         ctx->life_counter--;
-        play_sound(ctx->mute_sounds, ctx->sounds.hurting, 1, 0, 1, false);
+        play_sound(ctx->sounds_muted, ctx->sounds.hurting, 1, 0, 1, false);
         al_rest(1);
     }
 
@@ -1410,10 +1418,10 @@ void play_tutorial(Context* ctx) {
         if (ctx->tutorial_index == t->last_step_index) {
             t->is_completed = true;
             ALLEGRO_SAMPLE* audio = ctx->sounds.challenges[ctx->challenge_index];
-            play_sound(ctx->mute_sounds, audio, 1, 0, 1, true);
+            play_sound(ctx->sounds_muted, audio, 1, 0, 1, true);
         } else {
             al_start_video(next_video, al_get_default_mixer());
-            play_sound(ctx->mute_sounds, ctx->sounds.typing, 1, 0, 1, false);
+            play_sound(ctx->sounds_muted, ctx->sounds.typing, 1, 0, 1, false);
         }
         ctx->tutorial_index++;
     }

@@ -28,5 +28,7 @@
 #define PLAY_BTN_Y 600
 #define RETURN_TO_MENU_BTN_X PLAY_BTN_X
 #define RETURN_TO_MENU_BTN_Y PLAY_BTN_Y
+#define VOLUME_BTN_X 1200
+#define VOLUME_BTN_Y 640
 
 #endif
