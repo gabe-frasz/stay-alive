@@ -433,3 +433,10 @@ int get_quarter_from_timer(ALLEGRO_TIMER* timer) {
 
     return -1;
 }
+
+void play_sound(bool mute, ALLEGRO_SAMPLE* sample, float volume, float pan, float speed, bool loop) {
+    if (mute) return;
+    
+    if (loop) al_play_sample(sample, volume, pan, speed, ALLEGRO_PLAYMODE_LOOP, NULL);
+    else al_play_sample(sample, volume, pan, speed, ALLEGRO_PLAYMODE_ONCE, NULL);
+}

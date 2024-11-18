@@ -84,6 +84,7 @@ void set_context_to_default(Context* ctx) {
     ctx->is_user_hallucinated = false;
     ctx->is_snake_idle = false;
     ctx->is_snake_hunting = false;
+    ctx->mute_sounds = false;
     ctx->challenge_index = 0; // 0 até 4
     ctx->tutorial_index = 0; 
     ctx->life_counter = 3; // 3 até 0
@@ -1222,7 +1223,7 @@ void check_player_position(Context* ctx) {
         is_player_bottom_left_colliding || is_player_bottom_right_colliding) {
         ctx->state = CHALLENGE;
         al_start_video(ctx->videos.tutorials[ctx->tutorial_index], al_get_default_mixer());
-        al_play_sample(ctx->sounds.typing, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+        play_sound(ctx->mute_sounds, ctx->sounds.typing, 1, 0, 1, false);
     }
 }
 
@@ -1264,11 +1265,11 @@ void change_character_sprite(Context* ctx) {
     float cyclic_timer = al_get_timer_count(ctx->timer) % FPS;
     if (cyclic_timer == 10) {
         al_stop_samples();
-        al_play_sample(ctx->sounds.footstep[0], 0.7, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+        play_sound(ctx->mute_sounds, ctx->sounds.footstep[0], 0.7, 1, 1.5, false);
     }
     if (cyclic_timer == 25) {
         al_stop_samples();
-        al_play_sample(ctx->sounds.footstep[1], 0.7, 0.0, 1.5, ALLEGRO_PLAYMODE_ONCE, NULL);
+        play_sound(ctx->mute_sounds, ctx->sounds.footstep[1], 0.7, -1, 1.5, false);
     }
 }
 
@@ -1402,10 +1403,10 @@ void play_tutorial(Context* ctx) {
         if (ctx->tutorial_index == t->last_step_index) {
             t->is_completed = true;
             ALLEGRO_SAMPLE* audio = ctx->sounds.challenges[ctx->challenge_index];
-            al_play_sample(audio, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, NULL);
+            play_sound(ctx->mute_sounds, audio, 1, 0, 1, true);
         } else {
             al_start_video(next_video, al_get_default_mixer());
-            al_play_sample(ctx->sounds.typing, 1, 0, 1, ALLEGRO_PLAYMODE_ONCE, NULL);
+            play_sound(ctx->mute_sounds, ctx->sounds.typing, 1, 0, 1, false);
         }
         ctx->tutorial_index++;
     }

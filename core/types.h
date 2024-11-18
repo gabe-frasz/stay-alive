@@ -186,7 +186,7 @@ typedef struct {
     Animal animals[ANIMALS_LENGTH];
     int challenge_index, tutorial_index, life_counter, hunger_counter;
     enum Game_State state;
-    bool redraw, done, has_user_lost, is_user_hallucinated, is_snake_idle, is_snake_hunting;
+    bool redraw, done, has_user_lost, is_user_hallucinated, is_snake_idle, is_snake_hunting, mute_sounds;
 } Context;
 
 #endif
