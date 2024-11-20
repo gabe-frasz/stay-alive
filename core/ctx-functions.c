@@ -185,290 +185,91 @@ void set_context_to_default(Context* ctx) {
         }
     }
 
+    ctx->sounds.footstep[0].is_playing = false;
+    ctx->sounds.footstep[1].is_playing = false;
+    ctx->sounds.water_footstep[0].is_playing = false;
+    ctx->sounds.water_footstep[1].is_playing = false;
+    ctx->sounds.typing.is_playing = false;
+    ctx->sounds.hurting.is_playing = false;
+    ctx->sounds.challenges[0].is_playing = false;
+    ctx->sounds.challenges[1].is_playing = false;
+    ctx->sounds.challenges[2].is_playing = false;
+    ctx->sounds.challenges[3].is_playing = false;
+    ctx->sounds.challenges[4].is_playing = false;
     ctx->sounds.panting.is_playing = false;
     ctx->sounds.water_bubbles.is_playing = false;
 
     // Obstaculos
-    ctx->obstacles[0].position.x = 1000;
-    ctx->obstacles[0].position.y = 1175;
-    ctx->obstacles[0].width = 100;
-    ctx->obstacles[0].height = 200;
-    ctx->obstacles[1].position.x = 1070;
-    ctx->obstacles[1].position.y = 1190;
-    ctx->obstacles[1].width = 100;
-    ctx->obstacles[1].height = 100;
-    ctx->obstacles[2].position.x = 1100;
-    ctx->obstacles[2].position.y = 1225;
-    ctx->obstacles[2].width = 125;
-    ctx->obstacles[2].height = 150;
-    ctx->obstacles[3].position.x = 1800;
-    ctx->obstacles[3].position.y = 1740;
-    ctx->obstacles[3].width = 200;
-    ctx->obstacles[3].height = 150;
-    ctx->obstacles[4].position.x = 1700;
-    ctx->obstacles[4].position.y = 1680;
-    ctx->obstacles[4].width = 100;
-    ctx->obstacles[4].height = 150;
-    ctx->obstacles[5].position.x = 1600;
-    ctx->obstacles[5].position.y = 1660;
-    ctx->obstacles[5].width = 100;
-    ctx->obstacles[5].height = 150;
-    ctx->obstacles[6].position.x = 1550;
-    ctx->obstacles[6].position.y = 1590;
-    ctx->obstacles[6].width = 100;
-    ctx->obstacles[6].height = 150;
-    ctx->obstacles[7].position.x = 1500;
-    ctx->obstacles[7].position.y = 1700;
-    ctx->obstacles[7].width = 100;
-    ctx->obstacles[7].height = 100;
-    ctx->obstacles[8].position.x = 1570;
-    ctx->obstacles[8].position.y = 1410;
-    ctx->obstacles[8].width = 70;
-    ctx->obstacles[8].height = 90;
-    ctx->obstacles[9].position.x = 1380;
-    ctx->obstacles[9].position.y = 1735;
-    ctx->obstacles[9].width = 100;
-    ctx->obstacles[9].height = 150;
-    ctx->obstacles[10].position.x = 1310;
-    ctx->obstacles[10].position.y = 1760;
-    ctx->obstacles[10].width = 70;
-    ctx->obstacles[10].height = 90;
-    ctx->obstacles[11].position.x = 1450;
-    ctx->obstacles[11].position.y = 1885;
-    ctx->obstacles[11].width = 100;
-    ctx->obstacles[11].height = 150;
-    ctx->obstacles[12].position.x = 1550;
-    ctx->obstacles[12].position.y = 2035;
-    ctx->obstacles[12].width = 100;
-    ctx->obstacles[12].height = 100;
-    ctx->obstacles[13].position.x = 1610;
-    ctx->obstacles[13].position.y = 2135;
-    ctx->obstacles[13].width = 100;
-    ctx->obstacles[13].height = 150;
-    ctx->obstacles[14].position.x = 1950;
-    ctx->obstacles[14].position.y = -100;
-    ctx->obstacles[14].width = 100;
-    ctx->obstacles[14].height = 130;
-    ctx->obstacles[15].position.x = 1870;
-    ctx->obstacles[15].position.y = -30;
-    ctx->obstacles[15].width = 80;
-    ctx->obstacles[15].height = 130;
-    ctx->obstacles[16].position.x = 1750;
-    ctx->obstacles[16].position.y = 100;
-    ctx->obstacles[16].width = 130;
-    ctx->obstacles[16].height = 130;
-    ctx->obstacles[17].position.x = 1610;
-    ctx->obstacles[17].position.y = -100;
-    ctx->obstacles[17].width = 100;
-    ctx->obstacles[17].height = 90;
-    ctx->obstacles[18].position.x = 1490;
-    ctx->obstacles[18].position.y = -50;
-    ctx->obstacles[18].width = 120;
-    ctx->obstacles[18].height = 90;
-    ctx->obstacles[19].position.x = 1390;
-    ctx->obstacles[19].position.y = 30;
-    ctx->obstacles[19].width = 100;
-    ctx->obstacles[19].height = 90;
-    ctx->obstacles[20].position.x = 1290;
-    ctx->obstacles[20].position.y = 90;
-    ctx->obstacles[20].width = 100;
-    ctx->obstacles[20].height = 80;
-    ctx->obstacles[21].position.x = 1220;
-    ctx->obstacles[21].position.y = -100;
-    ctx->obstacles[21].width = 70;
-    ctx->obstacles[21].height = 300;
-    ctx->obstacles[22].position.x = 1200;
-    ctx->obstacles[22].position.y = 245;
-    ctx->obstacles[22].width = 70;
-    ctx->obstacles[22].height = 90;
-    ctx->obstacles[23].position.x = 1660;
-    ctx->obstacles[23].position.y = 220;
-    ctx->obstacles[23].width = 90;
-    ctx->obstacles[23].height = 100;
-    ctx->obstacles[24].position.x = 1570;
-    ctx->obstacles[24].position.y = 245;
-    ctx->obstacles[24].width = 90;
-    ctx->obstacles[24].height = 100;
-    ctx->obstacles[25].position.x = 1370;
-    ctx->obstacles[25].position.y = 300;
-    ctx->obstacles[25].width = 200;
-    ctx->obstacles[25].height = 100;
-    ctx->obstacles[26].position.x = 1340;
-    ctx->obstacles[26].position.y = 340;
-    ctx->obstacles[26].width = 30;
-    ctx->obstacles[26].height = 120;
-    ctx->obstacles[27].position.x = 1370;
-    ctx->obstacles[27].position.y = 460;
-    ctx->obstacles[27].width = 60;
-    ctx->obstacles[27].height = 60;
-    ctx->obstacles[28].position.x = 1430;
-    ctx->obstacles[28].position.y = 520;
-    ctx->obstacles[28].width = 120;
-    ctx->obstacles[28].height = 200;
-    ctx->obstacles[29].position.x = 1530;
-    ctx->obstacles[29].position.y = 720;
-    ctx->obstacles[29].width = 500;
-    ctx->obstacles[29].height = 70;
-    ctx->obstacles[30].position.x = 1670;
-    ctx->obstacles[30].position.y = 790;
-    ctx->obstacles[30].width = 50;
-    ctx->obstacles[30].height = 30;
-    ctx->obstacles[31].position.x = 1890;
-    ctx->obstacles[31].position.y = 790;
-    ctx->obstacles[31].width = 200;
-    ctx->obstacles[31].height = 30;
-    ctx->obstacles[32].position.x = 1455;
-    ctx->obstacles[32].position.y = 810;
-    ctx->obstacles[32].width = 70;
-    ctx->obstacles[32].height = 90;
-    ctx->obstacles[33].position.x = 1950;
-    ctx->obstacles[33].position.y = 990;
-    ctx->obstacles[33].width = 70;
-    ctx->obstacles[33].height = 90;
-    ctx->obstacles[34].position.x = 1850;
-    ctx->obstacles[34].position.y = 970;
-    ctx->obstacles[34].width = 100;
-    ctx->obstacles[34].height = 90;
-    ctx->obstacles[35].position.x = 1800;
-    ctx->obstacles[35].position.y = 1000;
-    ctx->obstacles[35].width = 50;
-    ctx->obstacles[35].height = 60;
-    ctx->obstacles[36].position.x = 1700;
-    ctx->obstacles[36].position.y = 970;
-    ctx->obstacles[36].width = 100;
-    ctx->obstacles[36].height = 90;
-    ctx->obstacles[37].position.x = 1600;
-    ctx->obstacles[37].position.y = 970;
-    ctx->obstacles[37].width = 100;
-    ctx->obstacles[37].height = 150;
-    ctx->obstacles[38].position.x = 1600;
-    ctx->obstacles[38].position.y = 1170;
-    ctx->obstacles[38].width = 100;
-    ctx->obstacles[38].height = 100;
-    ctx->obstacles[39].position.x = 1670;
-    ctx->obstacles[39].position.y = 1120;
-    ctx->obstacles[39].width = 30;
-    ctx->obstacles[39].height = 50;
-    ctx->obstacles[40].position.x = 1640;
-    ctx->obstacles[40].position.y = 1270;
-    ctx->obstacles[40].width = 150;
-    ctx->obstacles[40].height = 170;
-    ctx->obstacles[41].position.x = 1790;
-    ctx->obstacles[41].position.y = 1440;
-    ctx->obstacles[41].width = 90;
-    ctx->obstacles[41].height = 70;
-    ctx->obstacles[42].position.x = 1880;
-    ctx->obstacles[42].position.y = 1510;
-    ctx->obstacles[42].width = 150;
-    ctx->obstacles[42].height = 70;
-    ctx->obstacles[43].position.x = 1190;
-    ctx->obstacles[43].position.y = 2170;
-    ctx->obstacles[43].width = 100;
-    ctx->obstacles[43].height = 100;
-    ctx->obstacles[44].position.x = 1240;
-    ctx->obstacles[44].position.y = 2070;
-    ctx->obstacles[44].width = 100;
-    ctx->obstacles[44].height = 100;
-    ctx->obstacles[45].position.x = 1190;
-    ctx->obstacles[45].position.y = 2000;
-    ctx->obstacles[45].width = 50;
-    ctx->obstacles[45].height = 100;
-    ctx->obstacles[46].position.x = 1140;
-    ctx->obstacles[46].position.y = 1950;
-    ctx->obstacles[46].width = 50;
-    ctx->obstacles[46].height = 50;
-    ctx->obstacles[47].position.x = 1090;
-    ctx->obstacles[47].position.y = 1900;
-    ctx->obstacles[47].width = 120;
-    ctx->obstacles[47].height = 50;
-    ctx->obstacles[48].position.x = 1100;
-    ctx->obstacles[48].position.y = 1830;
-    ctx->obstacles[48].width = 100;
-    ctx->obstacles[48].height = 70;
-    ctx->obstacles[49].position.x = 970;
-    ctx->obstacles[49].position.y = 1870;
-    ctx->obstacles[49].width = 80;
-    ctx->obstacles[49].height = 70;
-    ctx->obstacles[50].position.x = 1030;
-    ctx->obstacles[50].position.y = 1940;
-    ctx->obstacles[50].width = 60;
-    ctx->obstacles[50].height = 50;
-    ctx->obstacles[51].position.x = 880;
-    ctx->obstacles[51].position.y = 1890;
-    ctx->obstacles[51].width = 90;
-    ctx->obstacles[51].height = 70;
-    ctx->obstacles[52].position.x = 850;
-    ctx->obstacles[52].position.y = 1920;
-    ctx->obstacles[52].width = 30;
-    ctx->obstacles[52].height = 150;
-    ctx->obstacles[53].position.x = 800;
-    ctx->obstacles[53].position.y = 2070;
-    ctx->obstacles[53].width = 50;
-    ctx->obstacles[53].height = 50;
-    ctx->obstacles[54].position.x = 700;
-    ctx->obstacles[54].position.y = 2010;
-    ctx->obstacles[54].width = 100;
-    ctx->obstacles[54].height = 60;
-    ctx->obstacles[55].position.x = 630;
-    ctx->obstacles[55].position.y = 1910;
-    ctx->obstacles[55].width = 100;
-    ctx->obstacles[55].height = 100;
-    ctx->obstacles[56].position.x = 560;
-    ctx->obstacles[56].position.y = 1930;
-    ctx->obstacles[56].width = 70;
-    ctx->obstacles[56].height = 100;
-    ctx->obstacles[57].position.x = 480;
-    ctx->obstacles[57].position.y = 1930;
-    ctx->obstacles[57].width = 80;
-    ctx->obstacles[57].height = 100;
-    ctx->obstacles[58].position.x = 520;
-    ctx->obstacles[58].position.y = 2030;
-    ctx->obstacles[58].width = 100;
-    ctx->obstacles[58].height = 100;
-    ctx->obstacles[59].position.x = 540;
-    ctx->obstacles[59].position.y = 2130;
-    ctx->obstacles[59].width = 100;
-    ctx->obstacles[59].height = 150;
-    ctx->obstacles[60].position.x = 240;
-    ctx->obstacles[60].position.y = 2110;
-    ctx->obstacles[60].width = 100;
-    ctx->obstacles[60].height = 150;
-    ctx->obstacles[61].position.x = 240;
-    ctx->obstacles[61].position.y = 1930;
-    ctx->obstacles[61].width = 120;
-    ctx->obstacles[61].height = 150;
-    ctx->obstacles[62].position.x = 190;
-    ctx->obstacles[62].position.y = 2080;
-    ctx->obstacles[62].width = 50;
-    ctx->obstacles[62].height = 30;
-    ctx->obstacles[63].position.x = 120;
-    ctx->obstacles[63].position.y = 1880;
-    ctx->obstacles[63].width = 200;
-    ctx->obstacles[63].height = 50;
-    ctx->obstacles[64].position.x = 190;
-    ctx->obstacles[64].position.y = 2170;
-    ctx->obstacles[64].width = 50;
-    ctx->obstacles[64].height = 30;
-    ctx->obstacles[65].position.x = 40;
-    ctx->obstacles[65].position.y = 1930;
-    ctx->obstacles[65].width = 80;
-    ctx->obstacles[65].height = 50;
-    ctx->obstacles[66].position.x = -20;
-    ctx->obstacles[66].position.y = 1960;
-    ctx->obstacles[66].width = 60;
-    ctx->obstacles[66].height = 30;
-    ctx->obstacles[67].position.x = -260;
-    ctx->obstacles[67].position.y = 1880;
-    ctx->obstacles[67].width = 240;
-    ctx->obstacles[67].height = 80;
-    ctx->obstacles[68].position.x = -360;
-    ctx->obstacles[68].position.y = 1960;
-    ctx->obstacles[68].width = 100;
-    ctx->obstacles[68].height = 50;
-    ctx->obstacles[69].position.x = -180;
-    ctx->obstacles[69].position.y = 1840;
-    ctx->obstacles[69].width = 100;
-    ctx->obstacles[69].height = 40;
+    set_obstacle(&ctx->obstacles[0], 1000, 1175, 100, 200);
+    set_obstacle(&ctx->obstacles[1], 1070, 1190, 100, 100);
+    set_obstacle(&ctx->obstacles[2], 1100, 1225, 125, 150);
+    set_obstacle(&ctx->obstacles[3], 1800, 1740, 200, 150);
+    set_obstacle(&ctx->obstacles[4], 1700, 1680, 100, 150);
+    set_obstacle(&ctx->obstacles[5], 1600, 1660, 100, 150);
+    set_obstacle(&ctx->obstacles[6], 1550, 1590, 100, 150);
+    set_obstacle(&ctx->obstacles[7], 1500, 1700, 100, 100);
+    set_obstacle(&ctx->obstacles[8], 1570, 1410, 70, 90);
+    set_obstacle(&ctx->obstacles[9], 1380, 1735, 100, 150);
+    set_obstacle(&ctx->obstacles[10], 1310, 1760, 70, 90);
+    set_obstacle(&ctx->obstacles[11], 1450, 1885, 100, 150);
+    set_obstacle(&ctx->obstacles[12], 1550, 2035, 100, 100);
+    set_obstacle(&ctx->obstacles[13], 1610, 2135, 100, 150);
+    set_obstacle(&ctx->obstacles[14], 1950, -100, 100, 130);
+    set_obstacle(&ctx->obstacles[15], 1870, -30, 80, 130);
+    set_obstacle(&ctx->obstacles[16], 1750, 100, 130, 130);
+    set_obstacle(&ctx->obstacles[17], 1610, -100, 100, 90);
+    set_obstacle(&ctx->obstacles[18], 1490, -50, 120, 90);
+    set_obstacle(&ctx->obstacles[19], 1390, 30, 100, 90);
+    set_obstacle(&ctx->obstacles[20], 1290, 90, 100, 80);
+    set_obstacle(&ctx->obstacles[21], 1220, -100, 70, 300);
+    set_obstacle(&ctx->obstacles[22], 1200, 245, 70, 90);
+    set_obstacle(&ctx->obstacles[23], 1660, 220, 90, 100);
+    set_obstacle(&ctx->obstacles[24], 1570, 245, 90, 100);
+    set_obstacle(&ctx->obstacles[25], 1370, 300, 200, 100);
+    set_obstacle(&ctx->obstacles[26], 1340, 340, 30, 120);
+    set_obstacle(&ctx->obstacles[27], 1370, 460, 60, 60);
+    set_obstacle(&ctx->obstacles[28], 1430, 520, 120, 200);
+    set_obstacle(&ctx->obstacles[29], 1530, 720, 500, 70);
+    set_obstacle(&ctx->obstacles[30], 1670, 790, 50, 30);
+    set_obstacle(&ctx->obstacles[31], 1890, 790, 200, 30);
+    set_obstacle(&ctx->obstacles[32], 1455, 810, 70, 90);
+    set_obstacle(&ctx->obstacles[33], 1950, 990, 70, 90);
+    set_obstacle(&ctx->obstacles[34], 1850, 970, 100, 90);
+    set_obstacle(&ctx->obstacles[35], 1800, 1000, 50, 60);
+    set_obstacle(&ctx->obstacles[36], 1700, 970, 100, 90);
+    set_obstacle(&ctx->obstacles[37], 1600, 970, 100, 150);
+    set_obstacle(&ctx->obstacles[38], 1600, 1170, 100, 100);
+    set_obstacle(&ctx->obstacles[39], 1670, 1120, 30, 50);
+    set_obstacle(&ctx->obstacles[40], 1640, 1270, 150, 170);
+    set_obstacle(&ctx->obstacles[41], 1790, 1440, 90, 70);
+    set_obstacle(&ctx->obstacles[42], 1880, 1510, 150, 70);
+    set_obstacle(&ctx->obstacles[43], 1190, 2170, 100, 100);
+    set_obstacle(&ctx->obstacles[44], 1240, 2070, 100, 100);
+    set_obstacle(&ctx->obstacles[45], 1190, 2000, 50, 100);
+    set_obstacle(&ctx->obstacles[46], 1140, 1950, 50, 50);
+    set_obstacle(&ctx->obstacles[47], 1090, 1900, 120, 50);
+    set_obstacle(&ctx->obstacles[48], 1100, 1830, 100, 70);
+    set_obstacle(&ctx->obstacles[49], 970, 1870, 80, 70);
+    set_obstacle(&ctx->obstacles[50], 1030, 1940, 60, 50);
+    set_obstacle(&ctx->obstacles[51], 880, 1890, 90, 70);
+    set_obstacle(&ctx->obstacles[52], 850, 1920, 30, 150);
+    set_obstacle(&ctx->obstacles[53], 800, 2070, 50, 50);
+    set_obstacle(&ctx->obstacles[54], 700, 2010, 100, 60);
+    set_obstacle(&ctx->obstacles[55], 630, 1910, 100, 100);
+    set_obstacle(&ctx->obstacles[56], 560, 1930, 70, 100);
+    set_obstacle(&ctx->obstacles[57], 480, 1930, 80, 100);
+    set_obstacle(&ctx->obstacles[58], 520, 2030, 100, 100);
+    set_obstacle(&ctx->obstacles[59], 540, 2130, 100, 150);
+    set_obstacle(&ctx->obstacles[60], 240, 2110, 100, 150);
+    set_obstacle(&ctx->obstacles[61], 240, 1930, 120, 150);
+    set_obstacle(&ctx->obstacles[62], 190, 2080, 50, 30);
+    set_obstacle(&ctx->obstacles[63], 120, 1880, 200, 50);
+    set_obstacle(&ctx->obstacles[64], 190, 2170, 50, 30);
+    set_obstacle(&ctx->obstacles[65], 40, 1930, 80, 50);
+    set_obstacle(&ctx->obstacles[66], -20, 1960, 60, 30);
+    set_obstacle(&ctx->obstacles[67], -260, 1880, 240, 80);
+    set_obstacle(&ctx->obstacles[68], -360, 1960, 100, 50);
+    set_obstacle(&ctx->obstacles[69], -180, 1840, 100, 40);
 
     ctx->shallow_water_areas[0].x1 = INITIAL_MAP_X;
     ctx->shallow_water_areas[0].x2 = INITIAL_MAP_X + 750;
@@ -677,6 +478,18 @@ void init_context(Context* ctx) {
     ctx->c5.selectable_objects[7].width = 120;
     ctx->c5.selectable_objects[7].height = 99;
     ctx->c5.selectable_objects[7].correct = false;
+
+    set_audio(&ctx->sounds.footstep[0], 0.7, 0.5, 1.5);
+    set_audio(&ctx->sounds.footstep[1], 0.7, -0.5, 1.5);
+    set_audio(&ctx->sounds.water_footstep[0], 0.7, 0.5, 1.1);
+    set_audio(&ctx->sounds.water_footstep[1], 0.7, -0.5, 1.1);
+    set_audio(&ctx->sounds.typing, 1, 0, 1);
+    set_audio(&ctx->sounds.hurting, 1, 0, 1);
+    set_audio(&ctx->sounds.panting, 2, 0, 1.1);
+    set_audio(&ctx->sounds.water_bubbles, 1, 0, 1);
+    for (int i = 0; i < 5; i++) {
+        set_audio(&ctx->sounds.challenges[i], 1, 0, 1);
+    }
 }
 
 void free_context(Context* ctx) {
@@ -700,8 +513,8 @@ void free_context(Context* ctx) {
     al_destroy_bitmap(ctx->imgs.char_with_basket);
     al_destroy_bitmap(ctx->imgs.snake_alert);
 
-    al_destroy_sample(ctx->sounds.typing);
-    al_destroy_sample(ctx->sounds.hurting);
+    al_destroy_sample(ctx->sounds.typing.sample);
+    al_destroy_sample(ctx->sounds.hurting.sample);
     al_destroy_sample(ctx->sounds.panting.sample);
     al_destroy_sample(ctx->sounds.water_bubbles.sample);
 
@@ -755,13 +568,13 @@ void free_context(Context* ctx) {
 
         if (i < 5) {
             al_destroy_bitmap(ctx->imgs.challenges[i]);
-            al_destroy_sample(ctx->sounds.challenges[i]);
+            al_destroy_sample(ctx->sounds.challenges[i].sample);
             done = false;
         }
 
         if (i < 2) {
-            al_destroy_sample(ctx->sounds.footstep[i]);
-            al_destroy_sample(ctx->sounds.water_footstep[i]);
+            al_destroy_sample(ctx->sounds.footstep[i].sample);
+            al_destroy_sample(ctx->sounds.water_footstep[i].sample);
             done = false;
         }
 
@@ -840,7 +653,6 @@ void draw_context(Context* ctx) {
             }
         }
 
-
         for (int i = 2; i >= 0; i--) {
             if (ctx->life_counter > i) {
                 al_draw_bitmap(ctx->imgs.heart_filled, 5 + i * HEART_WIDTH, 5, 0);
@@ -859,9 +671,7 @@ void draw_context(Context* ctx) {
             }
         }
 
-        if (ctx->is_snake_hunting) {
-            al_draw_bitmap(ctx->imgs.snake_alert, DISPLAY_WIDTH/2.0 - 25, 0, 0);
-        }
+        if (ctx->is_snake_hunting) al_draw_bitmap(ctx->imgs.snake_alert, DISPLAY_WIDTH/2.0 - 25, 0, 0);
         break;
     case CHALLENGE:
         al_draw_bitmap(ctx->imgs.challenges[ctx->challenge_index], 0, 0, 0);
@@ -889,9 +699,9 @@ void draw_context(Context* ctx) {
             for (int i = 0; i < PLACEABLE_OBJECTS_LENGTH; i++) {
                 int pos_i = ctx->c1.placeable_objects[i].position_index;
                 float x = ctx->c1.placeable_positions[pos_i].x,
-                      y = ctx->c1.placeable_positions[pos_i].y;
-                int w = ctx->c1.placeable_objects[i].width,
-                    h = ctx->c1.placeable_objects[i].height;
+                      y = ctx->c1.placeable_positions[pos_i].y,
+                      w = ctx->c1.placeable_objects[i].width,
+                      h = ctx->c1.placeable_objects[i].height;
 
                 al_draw_bitmap(ctx->c1.placeable_objects[i].img, x, y, 0); 
                 if (ctx->c1.selected_object_index == i) {
@@ -903,12 +713,14 @@ void draw_context(Context* ctx) {
         if (ctx->challenge_index == 1) {
             for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C2; i++) {
                 Selectable_Object* obj = &ctx->c2.selectable_objects[i];
-                int w = obj->width,
-                    h = obj->height;
+                float x = obj->position.x,
+                      y = obj->position.y,
+                      w = obj->width,
+                      h = obj->height;
 
-                al_draw_bitmap(ctx->imgs.c2_selectable_objects[i], obj->position.x, obj->position.y, 0);
+                al_draw_bitmap(ctx->imgs.c2_selectable_objects[i], x, y, 0);
                 if (obj->selected) {
-                    al_draw_rectangle(obj->position.x - 5, obj->position.y - 5, obj->position.x + w + 5, obj->position.y + h + 5, al_map_rgb(255, 0, 0), 1);
+                    al_draw_rounded_rectangle(x - 5, y - 5, x + w + 5, y + h + 5, 5, 5, al_map_rgb(255, 255, 255), 2);
                 }
             }
         }
@@ -936,45 +748,47 @@ void draw_context(Context* ctx) {
             for (int i = 0; i < WANTED_OBJECTS_LENGTH; i++) {
                 Wanted_Object* obj = &ctx->c4.wanted_objects[i];
                 Wanted_Object* fake_obj = &ctx->c4.fake_wanted_objects[i];
-                ALLEGRO_BITMAP* img = ctx->imgs.medicinal_plants[i];
-                int w = WANTED_OBJECT_WIDTH,
-                    h = WANTED_OBJECT_HEIGHT;
                 
                 if (ctx->is_user_hallucinated && !fake_obj->selected) {
                     obj = fake_obj;
                 }
+
+                float x = obj->position.x,
+                      y = obj->position.y,
+                      w = WANTED_OBJECT_WIDTH,
+                      h = WANTED_OBJECT_HEIGHT;
                     
                 if (obj->selected) {
-                    al_draw_rectangle(obj->position.x - 5, obj->position.y - 5, obj->position.x + w + 5, obj->position.y + h + 5, al_map_rgb(255, 0, 0), 1);
+                    al_draw_rounded_rectangle(x - 5, y - 5, x + w + 5, y + h + 5, 5, 5, al_map_rgb(255, 255, 255), 2);
                 }
 
+                ALLEGRO_BITMAP* img = ctx->imgs.medicinal_plants[i];
                 al_draw_bitmap(img, obj->position.x, obj->position.y, 0);
             }
 
-            time_t current_time = time(0);
-            int seconds_left = ctx->c4.duration_in_seconds - (current_time - ctx->c4.start_time);
-            al_draw_filled_rectangle(0, 0, 150, 50, al_map_rgb(0, 0, 0));
+            int seconds_left = calculate_seconds_left(ctx->c4.start_time, ctx->c4.duration_in_seconds);
             al_draw_textf(ctx->font, al_map_rgb(255, 255, 255), 0, 20, 0, "Tempo: %d segundos", seconds_left);
         }
 
         if (ctx->challenge_index == 4) {
-            if (!ctx->c5.bonfire_scene) {
-                for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C5; i++) {
-                    Selectable_Object* obj = &ctx->c5.selectable_objects[i];
-                    int w = obj->width,
-                        h = obj->height;
-
-                    al_draw_bitmap(ctx->imgs.c5_selectable_objects[i], obj->position.x, obj->position.y, 0);
-                    if (obj->selected) {
-                        al_draw_rectangle(obj->position.x - 5, obj->position.y - 5, obj->position.x + w + 5, obj->position.y + h + 5, al_map_rgb(255, 0, 0), 1);
-                    }
-                }
-            }
-
             if (ctx->c5.bonfire_scene) {
                 al_draw_bitmap(ctx->imgs.rub_sprites[ctx->c5.rub_sprite_index], 0, 0, 0);
                 al_draw_filled_rectangle(0, 0, ctx->c5.action_bar, 50, al_map_rgb(255, 255, 255));
-                al_draw_textf(ctx->font, al_map_rgb(0, 0, 0), 40, 20, 0, "Tempo restante: %d segundos", ctx->c5.duration_in_seconds - (time(0) - ctx->c5.start_time));
+                int seconds_left = calculate_seconds_left(ctx->c5.start_time, ctx->c5.duration_in_seconds);
+                al_draw_textf(ctx->font, al_map_rgb(0, 0, 0), 40, 20, 0, "Tempo restante: %d segundos", seconds_left);
+            } else {
+                for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C5; i++) {
+                    Selectable_Object* obj = &ctx->c5.selectable_objects[i];
+                    float x = obj->position.x,
+                          y = obj->position.y,
+                          w = obj->width,
+                          h = obj->height;
+
+                    al_draw_bitmap(ctx->imgs.c5_selectable_objects[i], x, y, 0);
+                    if (obj->selected) {
+                        al_draw_rounded_rectangle(x - 5, y - 5, x + w + 5, y + h + 5, 5, 5, al_map_rgb(255, 255, 255), 2);
+                    }
+                }
             }
         }
 
@@ -986,9 +800,8 @@ void draw_context(Context* ctx) {
         if (ctx->has_user_lost) {
             al_draw_bitmap(ctx->imgs.game_over, 0, 0, 0);
         } else {
-            ALLEGRO_VIDEO* video = ctx->videos.rescue;
-            if (al_is_video_playing(video)) {
-                ALLEGRO_BITMAP* frame = al_get_video_frame(video);
+            if (al_is_video_playing(ctx->videos.rescue)) {
+                ALLEGRO_BITMAP* frame = al_get_video_frame(ctx->videos.rescue);
                 if (frame) al_draw_bitmap(frame, 0, 0, 0);
                 return;
             }
@@ -1249,21 +1062,18 @@ void check_player_position(Context* ctx) {
         is_player_bottom_left_colliding || is_player_bottom_right_colliding) {
         ctx->state = CHALLENGE;
         al_start_video(ctx->videos.tutorials[ctx->tutorial_index], al_get_default_mixer());
-        play_sound(ctx->sounds_muted, ctx->sounds.typing, 1, 0, 1, false);
+        if (!ctx->sounds_muted) play_audio(&ctx->sounds.typing, false);
     }
 
     if (ctx->is_underwater) {
-        if (!ctx->sounds_muted && !ctx->sounds.water_bubbles.is_playing) {
-            al_play_sample(ctx->sounds.water_bubbles.sample, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, &ctx->sounds.water_bubbles.id);
-            ctx->sounds.water_bubbles.is_playing = true;
-        }
+        if (!ctx->sounds_muted) play_audio(&ctx->sounds.water_bubbles, true);
         if (ctx->oxygen_start_time == -1) ctx->oxygen_start_time = time(0);
         if (time(0) - ctx->oxygen_start_time >= OXYGEN_UNIT_DURATION) {
             ctx->oxygen_counter--;
             if (ctx->oxygen_counter <= 0) {
                 ctx->oxygen_counter = 0;
                 ctx->life_counter--;
-                play_sound(ctx->sounds_muted, ctx->sounds.hurting, 1, 0, 1, false);
+                if (!ctx->sounds_muted) play_audio(&ctx->sounds.hurting, false);
                 if (ctx->life_counter <= 0) {
                     ctx->has_user_lost = true;
                     ctx->state = GAME_OVER;
@@ -1274,10 +1084,7 @@ void check_player_position(Context* ctx) {
             ctx->oxygen_start_time = -1;
         }
     } else {
-        if (ctx->sounds.water_bubbles.is_playing) {
-            al_stop_sample(&ctx->sounds.water_bubbles.id);
-            ctx->sounds.water_bubbles.is_playing = false;
-        }
+        stop_audio(&ctx->sounds.water_bubbles);
         ctx->oxygen_start_time = -1;
         ctx->oxygen_counter = 3;
     }
@@ -1343,14 +1150,16 @@ void change_character_sprite(Context* ctx) {
     } 
     ctx->imgs.char_sprites.current = current;
 
+    if (ctx->sounds_muted) return;
+
     float cyclic_timer = al_get_timer_count(ctx->timer) % FPS;
     if (cyclic_timer == 10) {
-        if (ctx->is_half_water) play_sound(ctx->sounds_muted, ctx->sounds.water_footstep[0], 0.7, 0.5, 1.1, false);
-        else play_sound(ctx->sounds_muted, ctx->sounds.footstep[0], 0.7, 0.5, 1.5, false);
+        if (ctx->is_half_water) play_audio(&ctx->sounds.water_footstep[0], false);
+        else play_audio(&ctx->sounds.footstep[0], false);
     }
     if (cyclic_timer == 25) {
-        if (ctx->is_half_water) play_sound(ctx->sounds_muted, ctx->sounds.water_footstep[1], 0.7, -0.5, 1.1, false);
-        else play_sound(ctx->sounds_muted, ctx->sounds.footstep[1], 0.7, -0.5, 1.5, false);
+        if (ctx->is_half_water) play_audio(&ctx->sounds.water_footstep[1], false);
+        else play_audio(&ctx->sounds.footstep[1], false);
     }
 }
 
@@ -1391,12 +1200,8 @@ void change_animals_sprite(Context* ctx) {
                 a->destination.y = ctx->player.y;
                 a->is_moving = true;
                 if (!ctx->is_snake_hunting && !ctx->sounds_muted) {
-                    if (ctx->sounds.panting.is_playing) {
-                        al_stop_sample(&ctx->sounds.panting.id);
-                        ctx->sounds.panting.is_playing = false;
-                    }
-                    al_play_sample(ctx->sounds.panting.sample, 2, 0, 1.1, ALLEGRO_PLAYMODE_ONCE, &ctx->sounds.panting.id);
-                    ctx->sounds.panting.is_playing = true;
+                    stop_audio(&ctx->sounds.panting);
+                    play_audio(&ctx->sounds.panting, true);
                 }
                 ctx->is_snake_hunting = true;
             } else {
@@ -1405,8 +1210,7 @@ void change_animals_sprite(Context* ctx) {
 
             if (a->type == SNAKE && check_collision(&ctx->player, a->position.x, a->position.x + 10, a->position.y, a->position.y + 10)) {
                 ctx->life_counter--;
-                play_sound(ctx->sounds_muted, ctx->sounds.hurting, 1, 0, 1, false);
-                al_rest(1);
+                if (!ctx->sounds_muted) play_audio(&ctx->sounds.hurting, false);
                 ctx->is_snake_idle = true;
                 ctx->is_snake_hunting = false;
             }
@@ -1441,7 +1245,7 @@ void change_animals_sprite(Context* ctx) {
 void finish_challenge(bool success, Context* ctx) {
     if (!success || ctx->hunger_counter == 0) {
         ctx->life_counter--;
-        play_sound(ctx->sounds_muted, ctx->sounds.hurting, 1, 0, 1, false);
+        if (!ctx->sounds_muted) play_audio(&ctx->sounds.hurting, false);
         al_rest(1);
     }
 
@@ -1497,11 +1301,11 @@ void play_tutorial(Context* ctx) {
     if (!al_is_video_playing(current_video) && ctx->tutorial_index % 2 != 0) {
         if (ctx->tutorial_index == t->last_step_index) {
             t->is_completed = true;
-            ALLEGRO_SAMPLE* audio = ctx->sounds.challenges[ctx->challenge_index];
-            play_sound(ctx->sounds_muted, audio, 1, 0, 1, true);
+            Audio* audio = &ctx->sounds.challenges[ctx->challenge_index];
+            if (!ctx->sounds_muted) play_audio(audio, true);
         } else {
             al_start_video(next_video, al_get_default_mixer());
-            play_sound(ctx->sounds_muted, ctx->sounds.typing, 1, 0, 1, false);
+            if (!ctx->sounds_muted) play_audio(&ctx->sounds.typing, false);
         }
         ctx->tutorial_index++;
     }

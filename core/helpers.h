@@ -14,6 +14,10 @@ int get_event_index(ALLEGRO_EVENT_TYPE event_type);
 int get_quarter_from_timer(ALLEGRO_TIMER* timer);
 bool check_collision(Coordinate* c, float x1, float x2, float y1, float y2);
 void generate_random_falling_object(Falling_Object* obj);
-void play_sound(bool mute, ALLEGRO_SAMPLE* sample, float volume, float pan, float speed, bool loop);
+void play_audio(Audio* audio, bool loop);
+void stop_audio(Audio* audio);
+void set_audio(Audio* audio, float volume, float pan, float speed);
+int calculate_seconds_left(time_t start_time, int duration_in_seconds);
+void set_obstacle(Obstacle* obstacle, float x, float y, int width, int height);
 
 #endif

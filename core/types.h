@@ -81,16 +81,14 @@ typedef struct {
 typedef struct {
     ALLEGRO_SAMPLE* sample;
     ALLEGRO_SAMPLE_ID id;
+    float volume, pan, speed;
     bool is_playing;
 } Audio;
 
 typedef struct {
-    ALLEGRO_SAMPLE* footstep[2];
-    ALLEGRO_SAMPLE* water_footstep[2];
-    ALLEGRO_SAMPLE* typing;
-    ALLEGRO_SAMPLE* challenges[5];
-    ALLEGRO_SAMPLE* hurting;
-    Audio panting, water_bubbles;
+    Audio footstep[2], water_footstep[2];
+    Audio typing, challenges[5];
+    Audio hurting, panting, water_bubbles;
 } Sounds;
 
 typedef struct {

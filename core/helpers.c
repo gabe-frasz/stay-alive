@@ -336,28 +336,28 @@ void load_images(Images* imgs) {
 }
 
 void load_sounds(Sounds* sounds) {
-    sounds->footstep[0] = al_load_sample("sounds/footstep-1.wav");
-    must_init(sounds->footstep[0], "footstep 1 sound");
-    sounds->footstep[1] = al_load_sample("sounds/footstep-2.wav");
-    must_init(sounds->footstep[1], "footstep 2 sound");
-    sounds->water_footstep[0] = al_load_sample("sounds/water-footstep-1.wav");
-    must_init(sounds->water_footstep[0], "water footstep 1 sound");
-    sounds->water_footstep[1] = al_load_sample("sounds/water-footstep-2.wav");
-    must_init(sounds->water_footstep[1], "water footstep 2 sound");
-    sounds->typing = al_load_sample("sounds/typing.wav");
-    must_init(sounds->typing, "typing sound");
-    sounds->challenges[0] = al_load_sample("sounds/challenge-1.wav");
-    must_init(sounds->challenges[0], "challenge 1 sound");
-    sounds->challenges[1] = al_load_sample("sounds/challenge-2.wav");
-    must_init(sounds->challenges[1], "challenge 2 sound");
-    sounds->challenges[2] = al_load_sample("sounds/challenge-3.wav");
-    must_init(sounds->challenges[2], "challenge 3 sound");
-    sounds->challenges[3] = al_load_sample("sounds/challenge-4.wav");
-    must_init(sounds->challenges[3], "challenge 4 sound");
-    sounds->challenges[4] = al_load_sample("sounds/challenge-5.wav");
-    must_init(sounds->challenges[4], "challenge 5 sound");
-    sounds->hurting = al_load_sample("sounds/hurting.wav");
-    must_init(sounds->hurting, "hurting sound");
+    sounds->footstep[0].sample = al_load_sample("sounds/footstep-1.wav");
+    must_init(sounds->footstep[0].sample, "footstep 1 sound");
+    sounds->footstep[1].sample = al_load_sample("sounds/footstep-2.wav");
+    must_init(sounds->footstep[1].sample, "footstep 2 sound");
+    sounds->water_footstep[0].sample = al_load_sample("sounds/water-footstep-1.wav");
+    must_init(sounds->water_footstep[0].sample, "water footstep 1 sound");
+    sounds->water_footstep[1].sample = al_load_sample("sounds/water-footstep-2.wav");
+    must_init(sounds->water_footstep[1].sample, "water footstep 2 sound");
+    sounds->typing.sample = al_load_sample("sounds/typing.wav");
+    must_init(sounds->typing.sample, "typing sound");
+    sounds->challenges[0].sample = al_load_sample("sounds/challenge-1.wav");
+    must_init(sounds->challenges[0].sample, "challenge 1 sound");
+    sounds->challenges[1].sample = al_load_sample("sounds/challenge-2.wav");
+    must_init(sounds->challenges[1].sample, "challenge 2 sound");
+    sounds->challenges[2].sample = al_load_sample("sounds/challenge-3.wav");
+    must_init(sounds->challenges[2].sample, "challenge 3 sound");
+    sounds->challenges[3].sample = al_load_sample("sounds/challenge-4.wav");
+    must_init(sounds->challenges[3].sample, "challenge 4 sound");
+    sounds->challenges[4].sample = al_load_sample("sounds/challenge-5.wav");
+    must_init(sounds->challenges[4].sample, "challenge 5 sound");
+    sounds->hurting.sample = al_load_sample("sounds/hurting.wav");
+    must_init(sounds->hurting.sample, "hurting sound");
     sounds->panting.sample = al_load_sample("sounds/PRE-RI-GO.wav");
     must_init(sounds->panting.sample, "panting sound");
     sounds->water_bubbles.sample = al_load_sample("sounds/water-bubbles.wav");
@@ -496,9 +496,39 @@ int get_quarter_from_timer(ALLEGRO_TIMER* timer) {
     return -1;
 }
 
-void play_sound(bool mute, ALLEGRO_SAMPLE* sample, float volume, float pan, float speed, bool loop) {
-    if (mute) return;
-    
-    if (loop) al_play_sample(sample, volume, pan, speed, ALLEGRO_PLAYMODE_LOOP, NULL);
-    else al_play_sample(sample, volume, pan, speed, ALLEGRO_PLAYMODE_ONCE, NULL);
+void play_audio(Audio* audio, bool loop) {
+    if (audio->is_playing) return;
+
+    if (loop) {
+        al_play_sample(audio->sample, audio->volume, audio->pan, audio->speed, ALLEGRO_PLAYMODE_LOOP, &audio->id);
+        audio->is_playing = true;
+    } else {
+        al_play_sample(audio->sample, audio->volume, audio->pan, audio->speed, ALLEGRO_PLAYMODE_ONCE, &audio->id);
+    }
+}
+
+void stop_audio(Audio* audio) {
+    if (!audio->is_playing) return;
+
+    al_stop_sample(&audio->id);
+    audio->is_playing = false;
+}
+
+void set_audio(Audio* audio, float volume, float pan, float speed) {
+    audio->volume = volume;
+    audio->pan = pan;
+    audio->speed = speed;
+}
+
+int calculate_seconds_left(time_t start_time, int duration_in_seconds) {
+    time_t now = time(0);
+    int seconds_left = duration_in_seconds - (now - start_time);
+    return seconds_left;
+}
+
+void set_obstacle(Obstacle* obstacle, float x, float y, int width, int height) {
+    obstacle->position.x = x;
+    obstacle->position.y = y;
+    obstacle->width = width;
+    obstacle->height = height;
 }
