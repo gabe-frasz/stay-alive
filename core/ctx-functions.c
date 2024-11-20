@@ -559,20 +559,20 @@ void init_context(Context* ctx) {
     // Challenge 1
     ctx->c1.placeable_positions[0].x = 150;
     ctx->c1.placeable_positions[0].y = 0;
-    ctx->c1.placeable_positions[1].x = 70;
-    ctx->c1.placeable_positions[1].y = 530;
+    ctx->c1.placeable_positions[1].x = 100;
+    ctx->c1.placeable_positions[1].y = 490;
     ctx->c1.placeable_positions[2].x = 450;
     ctx->c1.placeable_positions[2].y = 0;
-    ctx->c1.placeable_positions[3].x = 470;
-    ctx->c1.placeable_positions[3].y = 420;
+    ctx->c1.placeable_positions[3].x = 380;
+    ctx->c1.placeable_positions[3].y = 370;
     ctx->c1.placeable_positions[4].x = 0;
     ctx->c1.placeable_positions[4].y = 0;
-    ctx->c1.placeable_positions[5].x = 720;
-    ctx->c1.placeable_positions[5].y = 260;
+    ctx->c1.placeable_positions[5].x = 650;
+    ctx->c1.placeable_positions[5].y = 250;
     ctx->c1.placeable_positions[6].x = 300;
     ctx->c1.placeable_positions[6].y = 0;
-    ctx->c1.placeable_positions[7].x = 1100;
-    ctx->c1.placeable_positions[7].y = 100;
+    ctx->c1.placeable_positions[7].x = 1050;
+    ctx->c1.placeable_positions[7].y = 390;
     ctx->c1.placeable_objects[0].width = 98;
     ctx->c1.placeable_objects[0].height = 100;
     ctx->c1.placeable_objects[1].width = 59;
@@ -637,56 +637,46 @@ void init_context(Context* ctx) {
 
     // Challenge 5
     ctx->c5.duration_in_seconds = 10;
-    ctx->c5.selectable_objects[0].position.x = 0;
-    ctx->c5.selectable_objects[0].position.y = 0;
+    ctx->c5.selectable_objects[0].position.x = 640;
+    ctx->c5.selectable_objects[0].position.y = 340;
     ctx->c5.selectable_objects[0].width = 101;
     ctx->c5.selectable_objects[0].height = 180;
     ctx->c5.selectable_objects[0].correct = true;
-    ctx->c5.selectable_objects[1].position.x = 200;
-    ctx->c5.selectable_objects[1].position.y = 0;
-    ctx->c5.selectable_objects[1].width = 102;
-    ctx->c5.selectable_objects[1].height = 80;
+    ctx->c5.selectable_objects[1].position.x = 475;
+    ctx->c5.selectable_objects[1].position.y = 350;
+    ctx->c5.selectable_objects[1].width = 118;
+    ctx->c5.selectable_objects[1].height = 99;
     ctx->c5.selectable_objects[1].correct = true;
-    ctx->c5.selectable_objects[2].position.x = 400;
-    ctx->c5.selectable_objects[2].position.y = 0;
-    ctx->c5.selectable_objects[2].width = 120;
-    ctx->c5.selectable_objects[2].height = 99;
-    ctx->c5.selectable_objects[2].correct = true;
-    ctx->c5.selectable_objects[3].position.x = 600;
-    ctx->c5.selectable_objects[3].position.y = 0;
-    ctx->c5.selectable_objects[3].width = 50;
-    ctx->c5.selectable_objects[3].height = 50;
-    ctx->c5.selectable_objects[3].correct = true;
-    ctx->c5.selectable_objects[4].position.x = 800;
-    ctx->c5.selectable_objects[4].position.y = 0;
-    ctx->c5.selectable_objects[4].width = 100;
-    ctx->c5.selectable_objects[4].height = 100;
-    ctx->c5.selectable_objects[4].correct = true;
-    ctx->c5.selectable_objects[5].position.x = 1000;
-    ctx->c5.selectable_objects[5].position.y = 600;
-    ctx->c5.selectable_objects[5].width = 50;
-    ctx->c5.selectable_objects[5].height = 50;
+    ctx->c5.selectable_objects[2].position.x = 690;
+    ctx->c5.selectable_objects[2].position.y = 570;
+    ctx->c5.selectable_objects[2].width = 100;
+    ctx->c5.selectable_objects[2].height = 144;
+    ctx->c5.selectable_objects[2].correct = false;
+    ctx->c5.selectable_objects[3].position.x = 745;
+    ctx->c5.selectable_objects[3].position.y = 380;
+    ctx->c5.selectable_objects[3].width = 101;
+    ctx->c5.selectable_objects[3].height = 180;
+    ctx->c5.selectable_objects[3].correct = false;
+    ctx->c5.selectable_objects[4].position.x = 890;
+    ctx->c5.selectable_objects[4].position.y = 400;
+    ctx->c5.selectable_objects[4].width = 145;
+    ctx->c5.selectable_objects[4].height = 99;
+    ctx->c5.selectable_objects[4].correct = false;
+    ctx->c5.selectable_objects[5].position.x = 550;
+    ctx->c5.selectable_objects[5].position.y = 570;
+    ctx->c5.selectable_objects[5].width = 120;
+    ctx->c5.selectable_objects[5].height = 99;
     ctx->c5.selectable_objects[5].correct = false;
-    ctx->c5.selectable_objects[6].position.x = 1160;
-    ctx->c5.selectable_objects[6].position.y = 600;
+    ctx->c5.selectable_objects[6].position.x = 300;
+    ctx->c5.selectable_objects[6].position.y = 540;
     ctx->c5.selectable_objects[6].width = 102;
     ctx->c5.selectable_objects[6].height = 80;
     ctx->c5.selectable_objects[6].correct = false;
-    ctx->c5.selectable_objects[7].position.x = 630;
+    ctx->c5.selectable_objects[7].position.x = 130;
     ctx->c5.selectable_objects[7].position.y = 330;
     ctx->c5.selectable_objects[7].width = 120;
     ctx->c5.selectable_objects[7].height = 99;
     ctx->c5.selectable_objects[7].correct = false;
-    ctx->c5.selectable_objects[8].position.x = 0;
-    ctx->c5.selectable_objects[8].position.y = 480;
-    ctx->c5.selectable_objects[8].width = 50;
-    ctx->c5.selectable_objects[8].height = 50;
-    ctx->c5.selectable_objects[8].correct = false;
-    ctx->c5.selectable_objects[9].position.x = 770;
-    ctx->c5.selectable_objects[9].position.y = 300;
-    ctx->c5.selectable_objects[9].width = 100;
-    ctx->c5.selectable_objects[9].height = 100;
-    ctx->c5.selectable_objects[9].correct = false;
 }
 
 void free_context(Context* ctx) {
@@ -737,6 +727,10 @@ void free_context(Context* ctx) {
 
     for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C2; i++) {
         al_destroy_bitmap(ctx->imgs.c2_selectable_objects[i]);
+    }
+
+    for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C5; i++) {
+        al_destroy_bitmap(ctx->imgs.c5_selectable_objects);
     }
 
     al_destroy_sample(ctx->sounds.footstep[0]);
@@ -954,8 +948,7 @@ void draw_context(Context* ctx) {
                     int w = obj->width,
                         h = obj->height;
 
-                    // al_draw_bitmap(ctx->imgs.c5_selectable_objects[i], obj->position.x, obj->position.y, 0);
-                    al_draw_filled_rectangle(obj->position.x, obj->position.y, obj->position.x + w, obj->position.y + h, al_map_rgb(255, 0, 0));
+                    al_draw_bitmap(ctx->imgs.c5_selectable_objects[i], obj->position.x, obj->position.y, 0);
                     if (obj->selected) {
                         al_draw_rectangle(obj->position.x - 5, obj->position.y - 5, obj->position.x + w + 5, obj->position.y + h + 5, al_map_rgb(255, 0, 0), 1);
                     }
