@@ -704,7 +704,7 @@ void draw_context(Context* ctx) {
             }
 
             int seconds_left = calculate_seconds_left(ctx->c4.start_time, ctx->c4.duration_in_seconds);
-            al_draw_textf(ctx->font, al_map_rgb(255, 255, 255), 0, 20, 0, "Tempo: %d segundos", seconds_left);
+            al_draw_textf(ctx->font, al_map_rgb(0, 0, 0), 0, 20, 0, "Tempo: %d segundos", seconds_left);
         }
 
         if (ctx->challenge_index == 4) {
