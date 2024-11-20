@@ -62,7 +62,6 @@ void set_context_to_default(Context* ctx) {
         obj->position.x = (DISPLAY_WIDTH - 80.0) / 8 * index + 40;
     }
 
-    ctx->c4.duration_in_seconds = 10;
     ctx->c4.start_time = -1;
 
     for (int i = 0; i < WANTED_OBJECTS_LENGTH; i++) {
@@ -358,20 +357,20 @@ void init_context(Context* ctx) {
     ctx->challenges_areas[4].y2 = DISPLAY_HEIGHT;
 
     // Challenge 1
-    ctx->c1.placeable_positions[0].x = 150;
-    ctx->c1.placeable_positions[0].y = 0;
+    ctx->c1.placeable_positions[0].x = 250;
+    ctx->c1.placeable_positions[0].y = 50;
     ctx->c1.placeable_positions[1].x = 100;
     ctx->c1.placeable_positions[1].y = 490;
-    ctx->c1.placeable_positions[2].x = 450;
-    ctx->c1.placeable_positions[2].y = 0;
+    ctx->c1.placeable_positions[2].x = 675;
+    ctx->c1.placeable_positions[2].y = 50;
     ctx->c1.placeable_positions[3].x = 380;
     ctx->c1.placeable_positions[3].y = 370;
-    ctx->c1.placeable_positions[4].x = 0;
-    ctx->c1.placeable_positions[4].y = 0;
+    ctx->c1.placeable_positions[4].x = 50;
+    ctx->c1.placeable_positions[4].y = 50;
     ctx->c1.placeable_positions[5].x = 650;
     ctx->c1.placeable_positions[5].y = 250;
-    ctx->c1.placeable_positions[6].x = 300;
-    ctx->c1.placeable_positions[6].y = 0;
+    ctx->c1.placeable_positions[6].x = 430;
+    ctx->c1.placeable_positions[6].y = 50;
     ctx->c1.placeable_positions[7].x = 1050;
     ctx->c1.placeable_positions[7].y = 390;
     ctx->c1.placeable_objects[0].width = 98;
@@ -385,99 +384,37 @@ void init_context(Context* ctx) {
     ctx->c1.selected_object_index = -1;
 
     // Challenge 2
-    ctx->c2.selectable_objects[0].position.x = 640;
-    ctx->c2.selectable_objects[0].position.y = 340;
-    ctx->c2.selectable_objects[0].width = 101;
-    ctx->c2.selectable_objects[0].height = 180;
-    ctx->c2.selectable_objects[1].position.x = 475;
-    ctx->c2.selectable_objects[1].position.y = 350;
-    ctx->c2.selectable_objects[1].width = 118;
-    ctx->c2.selectable_objects[1].height = 99;
-    ctx->c2.selectable_objects[2].position.x = 690;
-    ctx->c2.selectable_objects[2].position.y = 570;
-    ctx->c2.selectable_objects[2].width = 100;
-    ctx->c2.selectable_objects[2].height = 144;
-    ctx->c2.selectable_objects[3].position.x = 745;
-    ctx->c2.selectable_objects[3].position.y = 380;
-    ctx->c2.selectable_objects[3].width = 101;
-    ctx->c2.selectable_objects[3].height = 180;
-    ctx->c2.selectable_objects[4].position.x = 890;
-    ctx->c2.selectable_objects[4].position.y = 400;
-    ctx->c2.selectable_objects[4].width = 145;
-    ctx->c2.selectable_objects[4].height = 99;
-    ctx->c2.selectable_objects[5].position.x = 550;
-    ctx->c2.selectable_objects[5].position.y = 570;
-    ctx->c2.selectable_objects[5].width = 120;
-    ctx->c2.selectable_objects[5].height = 99;
-    ctx->c2.selectable_objects[6].position.x = 900;
-    ctx->c2.selectable_objects[6].position.y = 540;
-    ctx->c2.selectable_objects[6].width = 102;
-    ctx->c2.selectable_objects[6].height = 80;
+    set_selectable_object(&ctx->c2.selectable_objects[0], 640, 340, 101, 180, true);
+    set_selectable_object(&ctx->c2.selectable_objects[1], 475, 350, 118, 99, true);
+    set_selectable_object(&ctx->c2.selectable_objects[2], 690, 570, 100, 144, true);
+    set_selectable_object(&ctx->c2.selectable_objects[3], 745, 380, 101, 180, true);
+    set_selectable_object(&ctx->c2.selectable_objects[4], 890, 400, 145, 99, true);
+    set_selectable_object(&ctx->c2.selectable_objects[5], 550, 570, 120, 99, false);
+    set_selectable_object(&ctx->c2.selectable_objects[6], 900, 540, 102, 80, false);
     
     // Challenge 4
-    ctx->c4.wanted_objects[0].position.x = 100;
-    ctx->c4.wanted_objects[0].position.y = 100;
-    ctx->c4.wanted_objects[1].position.x = 410;
-    ctx->c4.wanted_objects[1].position.y = 300;
-    ctx->c4.wanted_objects[2].position.x = 590;
-    ctx->c4.wanted_objects[2].position.y = 490;
-    ctx->c4.wanted_objects[3].position.x = 900;
-    ctx->c4.wanted_objects[3].position.y = 270;
-    ctx->c4.wanted_objects[4].position.x = 1150;
-    ctx->c4.wanted_objects[4].position.y = 570;
-    ctx->c4.fake_wanted_objects[0].position.x = 260;
-    ctx->c4.fake_wanted_objects[0].position.y = 600;
-    ctx->c4.fake_wanted_objects[1].position.x = 1160;
-    ctx->c4.fake_wanted_objects[1].position.y = 0;
-    ctx->c4.fake_wanted_objects[2].position.x = 630;
-    ctx->c4.fake_wanted_objects[2].position.y = 330;
-    ctx->c4.fake_wanted_objects[3].position.x = 0;
-    ctx->c4.fake_wanted_objects[3].position.y = 480;
-    ctx->c4.fake_wanted_objects[4].position.x = 770;
-    ctx->c4.fake_wanted_objects[4].position.y = 30;
+    ctx->c4.duration_in_seconds = 15;
+    set_wanted_object(&ctx->c4.wanted_objects[0], 100, 100, 125, 100);
+    set_wanted_object(&ctx->c4.wanted_objects[1], 410, 300, 125, 145);
+    set_wanted_object(&ctx->c4.wanted_objects[2], 590, 490, 125, 145);
+    set_wanted_object(&ctx->c4.wanted_objects[3], 900, 270, 125, 100);
+    set_wanted_object(&ctx->c4.wanted_objects[4], 1150, 570, 125, 102);
+    set_wanted_object(&ctx->c4.fake_wanted_objects[0], 260, 600, 125, 100);
+    set_wanted_object(&ctx->c4.fake_wanted_objects[1], 1160, 100, 125, 145);
+    set_wanted_object(&ctx->c4.fake_wanted_objects[2], 630, 330, 125, 145);
+    set_wanted_object(&ctx->c4.fake_wanted_objects[3], 0, 480, 125, 100);
+    set_wanted_object(&ctx->c4.fake_wanted_objects[4], 770, 130, 125, 102);
 
     // Challenge 5
     ctx->c5.duration_in_seconds = 10;
-    ctx->c5.selectable_objects[0].position.x = 640;
-    ctx->c5.selectable_objects[0].position.y = 340;
-    ctx->c5.selectable_objects[0].width = 101;
-    ctx->c5.selectable_objects[0].height = 180;
-    ctx->c5.selectable_objects[0].correct = true;
-    ctx->c5.selectable_objects[1].position.x = 475;
-    ctx->c5.selectable_objects[1].position.y = 350;
-    ctx->c5.selectable_objects[1].width = 118;
-    ctx->c5.selectable_objects[1].height = 99;
-    ctx->c5.selectable_objects[1].correct = true;
-    ctx->c5.selectable_objects[2].position.x = 690;
-    ctx->c5.selectable_objects[2].position.y = 570;
-    ctx->c5.selectable_objects[2].width = 100;
-    ctx->c5.selectable_objects[2].height = 144;
-    ctx->c5.selectable_objects[2].correct = false;
-    ctx->c5.selectable_objects[3].position.x = 745;
-    ctx->c5.selectable_objects[3].position.y = 380;
-    ctx->c5.selectable_objects[3].width = 101;
-    ctx->c5.selectable_objects[3].height = 180;
-    ctx->c5.selectable_objects[3].correct = false;
-    ctx->c5.selectable_objects[4].position.x = 890;
-    ctx->c5.selectable_objects[4].position.y = 400;
-    ctx->c5.selectable_objects[4].width = 145;
-    ctx->c5.selectable_objects[4].height = 99;
-    ctx->c5.selectable_objects[4].correct = false;
-    ctx->c5.selectable_objects[5].position.x = 550;
-    ctx->c5.selectable_objects[5].position.y = 570;
-    ctx->c5.selectable_objects[5].width = 120;
-    ctx->c5.selectable_objects[5].height = 99;
-    ctx->c5.selectable_objects[5].correct = false;
-    ctx->c5.selectable_objects[6].position.x = 300;
-    ctx->c5.selectable_objects[6].position.y = 540;
-    ctx->c5.selectable_objects[6].width = 102;
-    ctx->c5.selectable_objects[6].height = 80;
-    ctx->c5.selectable_objects[6].correct = false;
-    ctx->c5.selectable_objects[7].position.x = 130;
-    ctx->c5.selectable_objects[7].position.y = 330;
-    ctx->c5.selectable_objects[7].width = 120;
-    ctx->c5.selectable_objects[7].height = 99;
-    ctx->c5.selectable_objects[7].correct = false;
+    set_selectable_object(&ctx->c5.selectable_objects[0], 670, 450, 100, 100, true);
+    set_selectable_object(&ctx->c5.selectable_objects[1], 420, 450, 100, 100, true);
+    set_selectable_object(&ctx->c5.selectable_objects[2], 690, 570, 100, 100, false);
+    set_selectable_object(&ctx->c5.selectable_objects[3], 550, 400, 100, 100, false);
+    set_selectable_object(&ctx->c5.selectable_objects[4], 850, 400, 100, 100, false);
+    set_selectable_object(&ctx->c5.selectable_objects[5], 550, 570, 100, 100, false);
+    set_selectable_object(&ctx->c5.selectable_objects[6], 300, 540, 100, 100, false);
+    set_selectable_object(&ctx->c5.selectable_objects[7], 190, 500, 100, 100, false);
 
     set_audio(&ctx->sounds.footstep[0], 0.7, 0.5, 1.5);
     set_audio(&ctx->sounds.footstep[1], 0.7, -0.5, 1.5);
@@ -755,15 +692,15 @@ void draw_context(Context* ctx) {
 
                 float x = obj->position.x,
                       y = obj->position.y,
-                      w = WANTED_OBJECT_WIDTH,
-                      h = WANTED_OBJECT_HEIGHT;
+                      w = obj->width,
+                      h = obj->height;
                     
                 if (obj->selected) {
                     al_draw_rounded_rectangle(x - 5, y - 5, x + w + 5, y + h + 5, 5, 5, al_map_rgb(255, 255, 255), 2);
                 }
 
                 ALLEGRO_BITMAP* img = ctx->imgs.medicinal_plants[i];
-                al_draw_bitmap(img, obj->position.x, obj->position.y, 0);
+                al_draw_bitmap(img, x, y, 0);
             }
 
             int seconds_left = calculate_seconds_left(ctx->c4.start_time, ctx->c4.duration_in_seconds);
@@ -1322,14 +1259,14 @@ void play_video(Context* ctx, ALLEGRO_VIDEO* video) {
 
 void handle_challenge_1(Context* ctx, Coordinate* mouse) {
     Challenge_1* c1 = &ctx->c1;
-    int w = PLACEABLE_OBJECT_WIDTH,
-        h = PLACEABLE_OBJECT_HEIGHT;
 
     // Seleciona o objeto clicado e retorna
     for (int i = 0; i < PLACEABLE_OBJECTS_LENGTH; i++) {
         int pos_i = c1->placeable_objects[i].position_index;
         float x = c1->placeable_positions[pos_i].x,
-              y = c1->placeable_positions[pos_i].y;
+              y = c1->placeable_positions[pos_i].y,
+              w = c1->placeable_objects[i].width,
+              h = c1->placeable_objects[i].height;
 
         if (check_collision(mouse, x, x + w, y, y + h)) {
             c1->selected_object_index = i;
@@ -1340,7 +1277,9 @@ void handle_challenge_1(Context* ctx, Coordinate* mouse) {
     // Move o objeto selecionado para a posição clicada
     for (int i = 0; i < PLACEABLE_POSITIONS_LENGTH; i++) {
         float x = c1->placeable_positions[i].x,
-              y = c1->placeable_positions[i].y;
+              y = c1->placeable_positions[i].y,
+              w = PLACEABLE_POSITION_WIDTH,
+              h = PLACEABLE_POSITION_HEIGHT;
 
         if (check_collision(mouse, x, x + w, y, y + h)) {
             c1->placeable_objects[c1->selected_object_index].position_index = i;
@@ -1356,6 +1295,7 @@ void handle_challenge_1(Context* ctx, Coordinate* mouse) {
           x2 = CHALLENGE_NEXT_BTN_X + BUTTON_WIDTH,
           y1 = CHALLENGE_NEXT_BTN_Y,
           y2 = CHALLENGE_NEXT_BTN_Y + BUTTON_HEIGHT;
+
     if (check_collision(mouse, x1, x2, y1, y2)) {
         bool success = true;
         for (int i = 0; i < PLACEABLE_OBJECTS_LENGTH; i++) {
@@ -1456,8 +1396,7 @@ void handle_challenge_4(Context* ctx, Coordinate* mouse) {
     for (int i = 0; i < WANTED_OBJECTS_LENGTH; i++) {
         Wanted_Object* obj = &c4->wanted_objects[i];
         Wanted_Object* fake_obj = &c4->fake_wanted_objects[i];
-        int w = WANTED_OBJECT_WIDTH,
-            h = WANTED_OBJECT_HEIGHT;
+        int w = obj->width, h = obj->height;
 
         if (check_collision(mouse, obj->position.x, obj->position.x + w, obj->position.y, obj->position.y + h)) {
             obj->selected = true;

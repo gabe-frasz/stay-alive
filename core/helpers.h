@@ -19,5 +19,7 @@ void stop_audio(Audio* audio);
 void set_audio(Audio* audio, float volume, float pan, float speed);
 int calculate_seconds_left(time_t start_time, int duration_in_seconds);
 void set_obstacle(Obstacle* obstacle, float x, float y, int width, int height);
+void set_selectable_object(Selectable_Object* obj, float x, float y, int width, int height, bool correct);
+void set_wanted_object(Wanted_Object* w, float x, float y, int width, int height);
 
 #endif

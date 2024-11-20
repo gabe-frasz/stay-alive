@@ -532,3 +532,18 @@ void set_obstacle(Obstacle* obstacle, float x, float y, int width, int height) {
     obstacle->width = width;
     obstacle->height = height;
 }
+
+void set_selectable_object(Selectable_Object* obj, float x, float y, int width, int height, bool correct) {
+    obj->position.x = x;
+    obj->position.y = y;
+    obj->width = width;
+    obj->height = height;
+    obj->correct = correct;
+}
+
+void set_wanted_object(Wanted_Object* w, float x, float y, int width, int height) {
+    w->position.x = x;
+    w->position.y = y;
+    w->width = width;
+    w->height = height;
+}

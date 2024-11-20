@@ -164,6 +164,7 @@ typedef struct {
 
 typedef struct {
     Coordinate position;
+    int width, height;
     bool selected;
 } Wanted_Object;
 
