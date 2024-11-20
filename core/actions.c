@@ -71,7 +71,11 @@ static void mouseup_challenge(Context* ctx) {
     if (!ctx->tutorials[ctx->challenge_index].is_completed) {
         ALLEGRO_VIDEO* current_video = ctx->videos.tutorials[ctx->tutorial_index];
         ALLEGRO_VIDEO* next_video = ctx->videos.tutorials[ctx->tutorial_index + 1];
-        if (!al_is_video_playing(current_video) && check_collision(&mouse, 1130, 1232, 630, 677)) {
+        float x1 = CHALLENGE_NEXT_BTN_X,
+              x2 = x1 + BUTTON_WIDTH,
+              y1 = CHALLENGE_NEXT_BTN_Y,
+              y2 = y1 + BUTTON_HEIGHT;
+        if (!al_is_video_playing(current_video) && check_collision(&mouse, x1, x2, y1, y2)) {
             ctx->tutorial_index++;
             if (ctx->tutorial_index <= ctx->tutorials[ctx->challenge_index].last_step_index) {
                 al_start_video(next_video, al_get_default_mixer());

@@ -18,6 +18,7 @@
 #define SHALLOW_WATER_AREAS_LENGTH 6
 #define ANIMALS_LENGTH 8 // 2 grupos de aves, 2 coelhos, 1 ovelha, bode, gato, cobra
 #define TUTORIALS_LENGTH 16
+#define RUB_SPRITES_LENGTH 4
 
 enum Animal_Type {
     BIRD,
@@ -52,9 +53,8 @@ typedef struct {
     ALLEGRO_BITMAP* challenges[5];
     ALLEGRO_BITMAP* c5_bonfire;
     ALLEGRO_BITMAP* play_btn;
+    ALLEGRO_BITMAP* next_btn;
     ALLEGRO_BITMAP* menu_btn;
-    ALLEGRO_BITMAP* small_play_btn;
-    ALLEGRO_BITMAP* small_next_btn;
     ALLEGRO_BITMAP* mute_btn;
     ALLEGRO_BITMAP* unmute_btn;
     Sprites char_sprites;
@@ -62,7 +62,7 @@ typedef struct {
     Sprites char_sprites_half_water;
     Simple_Sprites char_sprites_underwater;
     Sprites animals[ANIMAL_TYPE_LENGTH];
-    ALLEGRO_BITMAP* medicinal_plants[5];
+    ALLEGRO_BITMAP* medicinal_plants[WANTED_OBJECTS_LENGTH];
     ALLEGRO_BITMAP* heart_empty;
     ALLEGRO_BITMAP* heart_filled;
     ALLEGRO_BITMAP* hunger_empty;
@@ -74,7 +74,7 @@ typedef struct {
     ALLEGRO_BITMAP* c5_selectable_objects[SELECTABLE_OBJECTS_LENGTH_C5];
     ALLEGRO_BITMAP* apple;
     ALLEGRO_BITMAP* mushroom;
-    ALLEGRO_BITMAP* rub_sprites[4];
+    ALLEGRO_BITMAP* rub_sprites[RUB_SPRITES_LENGTH];
     ALLEGRO_BITMAP* current_video_frame;
 } Images;
 

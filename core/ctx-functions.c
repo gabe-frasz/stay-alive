@@ -72,7 +72,7 @@ void set_context_to_default(Context* ctx) {
 
     ctx->c5.bonfire_scene = false;
     ctx->c5.correct_objects = false;
-    ctx->c5.action_bar = 1200;
+    ctx->c5.action_bar = 1280;
     ctx->c5.rub_sprite_index = 0;
     ctx->c5.start_time = -1;
 
@@ -684,21 +684,10 @@ void free_context(Context* ctx) {
     al_destroy_bitmap(ctx->imgs.menu);
     al_destroy_bitmap(ctx->imgs.end_game);
     al_destroy_bitmap(ctx->imgs.game_over);
-
-    for (int i = 0; i < 5; i++) {
-        al_destroy_bitmap(ctx->imgs.challenges[i]);
-        al_destroy_bitmap(ctx->imgs.medicinal_plants[i]);
-
-        if (i < 4) {
-            al_destroy_bitmap(ctx->imgs.rub_sprites[i]);
-        }
-    }
-
     al_destroy_bitmap(ctx->imgs.c5_bonfire);
     al_destroy_bitmap(ctx->imgs.play_btn);
     al_destroy_bitmap(ctx->imgs.menu_btn);
-    al_destroy_bitmap(ctx->imgs.small_next_btn);
-    al_destroy_bitmap(ctx->imgs.small_play_btn);
+    al_destroy_bitmap(ctx->imgs.next_btn);
     al_destroy_bitmap(ctx->imgs.mute_btn);
     al_destroy_bitmap(ctx->imgs.unmute_btn);
     al_destroy_bitmap(ctx->imgs.heart_empty);
@@ -711,47 +700,74 @@ void free_context(Context* ctx) {
     al_destroy_bitmap(ctx->imgs.char_with_basket);
     al_destroy_bitmap(ctx->imgs.snake_alert);
 
-    for (int i = 0; i < SPRITES_LENGTH; i++) {
-        al_destroy_bitmap(ctx->imgs.char_sprites.front[i]);
-        al_destroy_bitmap(ctx->imgs.char_sprites.back[i]);
-        al_destroy_bitmap(ctx->imgs.char_sprites.left[i]);
-        al_destroy_bitmap(ctx->imgs.char_sprites.right[i]);
-
-        for (int j = 0; j < ANIMAL_TYPE_LENGTH; j++) {
-            al_destroy_bitmap(ctx->imgs.animals[j].front[i]);
-            al_destroy_bitmap(ctx->imgs.animals[j].back[i]);
-            al_destroy_bitmap(ctx->imgs.animals[j].left[i]);
-            al_destroy_bitmap(ctx->imgs.animals[j].right[i]);
-        }
-    }
-
-    for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C2; i++) {
-        al_destroy_bitmap(ctx->imgs.c2_selectable_objects[i]);
-    }
-
-    for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C5; i++) {
-        al_destroy_bitmap(ctx->imgs.c5_selectable_objects);
-    }
-
-    al_destroy_sample(ctx->sounds.footstep[0]);
-    al_destroy_sample(ctx->sounds.footstep[1]);
-    al_destroy_sample(ctx->sounds.water_footstep[0]);
-    al_destroy_sample(ctx->sounds.water_footstep[1]);
     al_destroy_sample(ctx->sounds.typing);
     al_destroy_sample(ctx->sounds.hurting);
     al_destroy_sample(ctx->sounds.panting.sample);
     al_destroy_sample(ctx->sounds.water_bubbles.sample);
 
-    for (int i = 0; i < 5; i++) {
-        al_destroy_sample(ctx->sounds.challenges[i]);
-    }
-
-    for (int i = 0; i < TUTORIALS_LENGTH; i++) {
-        al_close_video(ctx->videos.tutorials[i]);
-    }
-
     al_close_video(ctx->videos.c2_distillation);
     al_close_video(ctx->videos.rescue);
+
+    int i = 0;
+    while (true) {
+        bool done = true;
+
+        if (i < SPRITES_LENGTH) {
+            al_destroy_bitmap(ctx->imgs.char_sprites.front[i]);
+            al_destroy_bitmap(ctx->imgs.char_sprites.back[i]);
+            al_destroy_bitmap(ctx->imgs.char_sprites.left[i]);
+            al_destroy_bitmap(ctx->imgs.char_sprites.right[i]);
+            
+            for (int j = 0; j < ANIMAL_TYPE_LENGTH; j++) {
+                al_destroy_bitmap(ctx->imgs.animals[j].front[i]);
+                al_destroy_bitmap(ctx->imgs.animals[j].back[i]);
+                al_destroy_bitmap(ctx->imgs.animals[j].left[i]);
+                al_destroy_bitmap(ctx->imgs.animals[j].right[i]);
+            }
+
+            done = false;
+        }
+
+        if (i < SELECTABLE_OBJECTS_LENGTH_C2) {
+            al_destroy_bitmap(ctx->imgs.c2_selectable_objects[i]);
+            done = false;
+        }
+
+        if (i < SELECTABLE_OBJECTS_LENGTH_C5) {
+            al_destroy_bitmap(ctx->imgs.c5_selectable_objects[i]);
+            done = false;
+        }
+
+        if (i < WANTED_OBJECTS_LENGTH) {
+            al_destroy_bitmap(ctx->imgs.medicinal_plants[i]);
+            done = false;
+        }
+
+        if (i < RUB_SPRITES_LENGTH) {
+            al_destroy_bitmap(ctx->imgs.rub_sprites[i]);
+            done = false;
+        }
+
+        if (i < TUTORIALS_LENGTH) {
+            al_close_video(ctx->videos.tutorials[i]);
+            done = false;
+        }
+
+        if (i < 5) {
+            al_destroy_bitmap(ctx->imgs.challenges[i]);
+            al_destroy_sample(ctx->sounds.challenges[i]);
+            done = false;
+        }
+
+        if (i < 2) {
+            al_destroy_sample(ctx->sounds.footstep[i]);
+            al_destroy_sample(ctx->sounds.water_footstep[i]);
+            done = false;
+        }
+
+        if (done) break;
+        i++;
+    }
 
     al_destroy_font(ctx->font);
     al_destroy_display(ctx->disp);
@@ -856,9 +872,9 @@ void draw_context(Context* ctx) {
             if (frame) al_draw_bitmap(frame, 0, 0, 0);
             if (!al_is_video_playing(video) && ctx->tutorial_index % 2 == 0) {
                 if (ctx->tutorial_index == ctx->tutorials[ctx->challenge_index].last_step_index - 1) {
-                    al_draw_bitmap(ctx->imgs.small_play_btn, 1130, 630, 0);
+                    al_draw_bitmap(ctx->imgs.play_btn, TUTORIAL_BTN_X, TUTORIAL_BTN_Y, 0);
                 } else {
-                    al_draw_bitmap(ctx->imgs.small_next_btn, 1130, 630, 0);
+                    al_draw_bitmap(ctx->imgs.next_btn, TUTORIAL_BTN_X, TUTORIAL_BTN_Y, 0);
                 }
             }
             break;
@@ -879,7 +895,7 @@ void draw_context(Context* ctx) {
 
                 al_draw_bitmap(ctx->c1.placeable_objects[i].img, x, y, 0); 
                 if (ctx->c1.selected_object_index == i) {
-                    al_draw_rectangle(x - 5, y - 5, x + w + 5, y + h + 5, al_map_rgb(255, 255, 255), 1);
+                    al_draw_rounded_rectangle(x - 5, y - 5, x + w + 5, y + h + 5, 5, 5, al_map_rgb(255, 255, 255), 2);
                 }
             }  
         }
@@ -957,13 +973,13 @@ void draw_context(Context* ctx) {
 
             if (ctx->c5.bonfire_scene) {
                 al_draw_bitmap(ctx->imgs.rub_sprites[ctx->c5.rub_sprite_index], 0, 0, 0);
-                al_draw_filled_rectangle(40, 0, ctx->c5.action_bar, 50, al_map_rgb(255, 255, 255));
+                al_draw_filled_rectangle(0, 0, ctx->c5.action_bar, 50, al_map_rgb(255, 255, 255));
                 al_draw_textf(ctx->font, al_map_rgb(0, 0, 0), 40, 20, 0, "Tempo restante: %d segundos", ctx->c5.duration_in_seconds - (time(0) - ctx->c5.start_time));
             }
         }
 
         if (ctx->challenge_index == 0 || ctx->challenge_index == 1 || (ctx->challenge_index == 4 && !ctx->c5.bonfire_scene)) {
-            al_draw_bitmap(ctx->imgs.small_next_btn, 1130, 630, 0);
+            al_draw_bitmap(ctx->imgs.next_btn, CHALLENGE_NEXT_BTN_X, CHALLENGE_NEXT_BTN_Y, 0);
         }
         break;
     case GAME_OVER:
@@ -1532,7 +1548,11 @@ void handle_challenge_1(Context* ctx, Coordinate* mouse) {
     if (c1->selected_object_index != -1) c1->selected_object_index = -1;
 
     // Verifica se o jogador conseguiu completar o desafio
-    if (check_collision(mouse, 1130, 1232, 630, 677)) {
+    float x1 = CHALLENGE_NEXT_BTN_X,
+          x2 = CHALLENGE_NEXT_BTN_X + BUTTON_WIDTH,
+          y1 = CHALLENGE_NEXT_BTN_Y,
+          y2 = CHALLENGE_NEXT_BTN_Y + BUTTON_HEIGHT;
+    if (check_collision(mouse, x1, x2, y1, y2)) {
         bool success = true;
         for (int i = 0; i < PLACEABLE_OBJECTS_LENGTH; i++) {
             Placeable_Object* obj = &c1->placeable_objects[i];
@@ -1557,7 +1577,11 @@ void handle_challenge_2(Context* ctx, Coordinate* mouse) {
     }
 
     // Verifica se o jogador conseguiu completar o desafio
-    if (check_collision(mouse, 1130, 1232, 630, 677)) {
+    float x1 = CHALLENGE_NEXT_BTN_X,
+          x2 = CHALLENGE_NEXT_BTN_X + BUTTON_WIDTH,
+          y1 = CHALLENGE_NEXT_BTN_Y,
+          y2 = CHALLENGE_NEXT_BTN_Y + BUTTON_HEIGHT;
+    if (check_collision(mouse, x1, x2, y1, y2)) {
         for (int i = 0; i < 7; i++) {
             Selectable_Object* obj = &c2->selectable_objects[i];
             if ((obj->selected && !obj->correct) || (!obj->selected && obj->correct)) {
@@ -1672,7 +1696,11 @@ void handle_challenge_5(Context* ctx, Coordinate* mouse) {
     }
     
     // Verifica se o jogador conseguiu completar o desafio
-    if (check_collision(mouse, 1130, 1232, 630, 677)) {
+    float x1 = CHALLENGE_NEXT_BTN_X,
+          x2 = CHALLENGE_NEXT_BTN_X + BUTTON_WIDTH,
+          y1 = CHALLENGE_NEXT_BTN_Y,
+          y2 = CHALLENGE_NEXT_BTN_Y + BUTTON_HEIGHT;
+    if (check_collision(mouse, x1, x2, y1, y2)) {
         ctx->c5.correct_objects = true;
         for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C5; i++) {
             Selectable_Object* obj = &c5->selectable_objects[i];
