@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -8,16 +9,20 @@
 
 static void mouseup_menu(Context* ctx) {
     Coordinate mouse = { ctx->event.mouse.x, ctx->event.mouse.y };
-    float x = PLAY_BTN_X,
-          y = PLAY_BTN_Y,
-          w = BUTTON_WIDTH,
-          h = BUTTON_HEIGHT;
-    bool play = check_collision(&mouse, x, x + w, y, y + h);
+    bool play = check_collision(&mouse, PLAY_BTN_X, PLAY_BTN_X + BUTTON_WIDTH, PLAY_BTN_Y, PLAY_BTN_Y + BUTTON_HEIGHT);
     bool mute = check_collision(&mouse, VOLUME_BTN_X, VOLUME_BTN_X + 50, VOLUME_BTN_Y, VOLUME_BTN_Y + 47);
     if (play) ctx->state = OPEN_MAP;
     if (mute) ctx->sounds_muted = !ctx->sounds_muted;
 }
 static void timer_map(Context* ctx) {
+    if (ctx->is_user_hallucinated) {
+        ctx->hallucination_angle += 0.1;
+        if (ctx->hallucination_angle >= 360) ctx->hallucination_angle = 0;
+        ctx->hallucination_map_x = (float)sin((double)ctx->hallucination_angle) * 20;
+        ctx->hallucination_map_y = (float)cos((double)ctx->hallucination_angle) * 20;
+        ctx->hallucination_char_x = (float)sin((double)ctx->hallucination_angle * -1) * 10;
+        ctx->hallucination_char_y = (float)cos((double)ctx->hallucination_angle * -1) * 10;
+    }
     check_player_position(ctx);
     change_animals_sprite(ctx);
 }

@@ -526,11 +526,31 @@ int calculate_seconds_left(time_t start_time, int duration_in_seconds) {
     return seconds_left;
 }
 
+void set_rectangle(Rectangle* r, float x1, float x2, float y1, float y2) {
+    r->x1 = x1;
+    r->x2 = x2;
+    r->y1 = y1;
+    r->y2 = y2;
+}
+
 void set_obstacle(Obstacle* obstacle, float x, float y, int width, int height) {
     obstacle->position.x = x;
     obstacle->position.y = y;
     obstacle->width = width;
     obstacle->height = height;
+}
+
+void set_animal(Animal* a, float initial_x, float initial_y, int width, int height, int speed, Rectangle bounds) {
+    a->position.x = initial_x;
+    a->position.y = initial_y;
+    a->width = width;
+    a->height = height;
+    a->speed = speed;
+    a->bounds = bounds;
+    a->is_moving = false;
+    a->birds_count = 0;
+    a->move = &move_animal;
+    a->sort_destination = &sort_destination;
 }
 
 void set_selectable_object(Selectable_Object* obj, float x, float y, int width, int height, bool correct) {

@@ -76,6 +76,7 @@ typedef struct {
     ALLEGRO_BITMAP* mushroom;
     ALLEGRO_BITMAP* rub_sprites[RUB_SPRITES_LENGTH];
     ALLEGRO_BITMAP* current_video_frame;
+    ALLEGRO_BITMAP* previous_video_frame;
 } Images;
 
 typedef struct {
@@ -213,6 +214,8 @@ typedef struct {
     enum Game_State state;
     bool has_user_lost, is_user_hallucinated, is_snake_idle, is_snake_hunting, is_half_water, is_underwater; 
     bool redraw, done, sounds_muted;
+    float hallucination_map_x, hallucination_map_y, hallucination_char_x, hallucination_char_y;
+    double hallucination_angle;
 } Context;
 
 #endif

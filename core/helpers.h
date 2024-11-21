@@ -18,7 +18,9 @@ void play_audio(Audio* audio, bool loop);
 void stop_audio(Audio* audio);
 void set_audio(Audio* audio, float volume, float pan, float speed);
 int calculate_seconds_left(time_t start_time, int duration_in_seconds);
+void set_rectangle(Rectangle* r, float x1, float x2, float y1, float y2);
 void set_obstacle(Obstacle* obstacle, float x, float y, int width, int height);
+void set_animal(Animal* a, float initial_x, float initial_y, int width, int height, int speed, Rectangle bounds);
 void set_selectable_object(Selectable_Object* obj, float x, float y, int width, int height, bool correct);
 void set_wanted_object(Wanted_Object* w, float x, float y, int width, int height);
 

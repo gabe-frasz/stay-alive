@@ -5,6 +5,7 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_video.h>
+#include <allegro5/bitmap_draw.h>
 #include <allegro5/keycodes.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -20,13 +21,15 @@ void set_context_to_default(Context* ctx) {
     ctx->player.y = DISPLAY_HEIGHT/2.0 - PLAYER_HEIGHT/2;
     ctx->map.x = INITIAL_MAP_X;
     ctx->map.y = INITIAL_MAP_Y;
+    ctx->hallucination_angle = 0;
+
+    ctx->imgs.current_video_frame = ctx->imgs.challenges[0];
 
     ctx->tutorials[0].last_step_index = 1;
     ctx->tutorials[1].last_step_index = 5;
     ctx->tutorials[2].last_step_index = 7;
     ctx->tutorials[3].last_step_index = 13;
     ctx->tutorials[4].last_step_index = 15;
-
     for (int i = 0; i < 5; i++) {
         ctx->tutorials[i].is_completed = false;
     }
@@ -38,10 +41,8 @@ void set_context_to_default(Context* ctx) {
     }
 
     ctx->c2.is_distillation_playing = false;
-
     for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C2; i++) {
         ctx->c2.selectable_objects[i].selected = false;
-      
         ctx->c2.selectable_objects[i].correct = false;
         if (i < 5) ctx->c2.selectable_objects[i].correct = true;
     }
@@ -50,7 +51,6 @@ void set_context_to_default(Context* ctx) {
     ctx->c3.player_position.y = 600;
     ctx->c3.apples_counter = 0;
     ctx->c3.mushrooms_counter = 0;
-
     for (int i = 0; i < FALLING_OBJECTS_LENGTH; i++) {
         Falling_Object* obj = &ctx->c3.falling_objects[i];
         generate_random_falling_object(obj);
@@ -63,7 +63,6 @@ void set_context_to_default(Context* ctx) {
     }
 
     ctx->c4.start_time = -1;
-
     for (int i = 0; i < WANTED_OBJECTS_LENGTH; i++) {
         ctx->c4.wanted_objects[i].selected = false;
         ctx->c4.fake_wanted_objects[i].selected = false;
@@ -71,10 +70,9 @@ void set_context_to_default(Context* ctx) {
 
     ctx->c5.bonfire_scene = false;
     ctx->c5.correct_objects = false;
-    ctx->c5.action_bar = 1280;
+    ctx->c5.action_bar = DISPLAY_WIDTH;
     ctx->c5.rub_sprite_index = 0;
     ctx->c5.start_time = -1;
-
     for (int i = 0; i < SELECTABLE_OBJECTS_LENGTH_C5; i++) {
         ctx->c5.selectable_objects[i].selected = false;
     }
@@ -86,17 +84,16 @@ void set_context_to_default(Context* ctx) {
     ctx->is_half_water = false;
     ctx->is_underwater = false;
     ctx->sounds_muted = false;
-    ctx->challenge_index = 0; // 0 até 4
+    ctx->challenge_index = 0;
     ctx->tutorial_index = 0; 
-    ctx->life_counter = 3; // 3 até 0
-    ctx->hunger_counter = 3; // 3 até 0
-    ctx->oxygen_counter = 3; // 3 até 0
+    ctx->life_counter = 3;
+    ctx->hunger_counter = 3;
+    ctx->oxygen_counter = 3;
     ctx->oxygen_start_time = -1;
     ctx->state = MENU;
     ctx->redraw = true;
     ctx->done = false;
 
-    // Animais
     ctx->animals[0].type = BIRD;
     ctx->animals[1].type = BIRD;
     ctx->animals[2].type = RABBIT;
@@ -105,79 +102,34 @@ void set_context_to_default(Context* ctx) {
     ctx->animals[5].type = SHEEP;
     ctx->animals[6].type = CAT;
     ctx->animals[7].type = SNAKE;
-
     for (int i = 0; i < ANIMALS_LENGTH; i++) {
-        ctx->animals[i].is_moving = false;
-        ctx->animals[i].move = &move_animal;
-        ctx->animals[i].sort_destination = &sort_destination;
-        ctx->animals[i].birds_count = 0;
-        ctx->animals[i].bounds.x1 = 0;
-        ctx->animals[i].bounds.x2 = DISPLAY_WIDTH;
-        ctx->animals[i].bounds.y1 = 0;
-        ctx->animals[i].bounds.y2 = DISPLAY_HEIGHT;
-        
-        switch (ctx->animals[i].type) {
+        Animal* a = &ctx->animals[i];
+        Rectangle bounds;
+
+        switch (a->type) {
         case BIRD:
-            ctx->animals[i].position.x = -MAP_SIZE;
-            ctx->animals[i].position.y = rand() % MAP_SIZE;
-            ctx->animals[i].speed = 20;
-            ctx->animals[i].width = 25;
-            ctx->animals[i].height = 25;
+            set_rectangle(&bounds, -MAP_SIZE, MAP_SIZE, -MAP_SIZE, MAP_SIZE);
+            set_animal(a, -MAP_SIZE, rand() % MAP_SIZE, 25, 25, 20, bounds);
             break;
         case RABBIT:
-            ctx->animals[i].position.x = 1100;
-            ctx->animals[i].position.y = 1300;
-            ctx->animals[i].speed = 6;
-            ctx->animals[i].width = 25;
-            ctx->animals[i].height = 25;
-            ctx->animals[i].bounds.x1 = 800;
-            ctx->animals[i].bounds.x2 = 1400;
-            ctx->animals[i].bounds.y1 = 1000;
-            ctx->animals[i].bounds.y2 = 1600;
+            set_rectangle(&bounds, 800, 1400, 1000, 1600);
+            set_animal(a, 1100, 1300, 25, 25, 6, bounds);
             break;
         case GOAT:
-            ctx->animals[i].position.x = 1000;
-            ctx->animals[i].position.y = -150;
-            ctx->animals[i].speed = 7;
-            ctx->animals[i].width = 50;
-            ctx->animals[i].height = 50;
-            ctx->animals[i].bounds.x1 = 1000;
-            ctx->animals[i].bounds.x2 = 1100;
-            ctx->animals[i].bounds.y1 = -200;
-            ctx->animals[i].bounds.y2 = 300;
+            set_rectangle(&bounds, 1000, 1100, -200, 300);
+            set_animal(a, 1000, -150, 50, 50, 7, bounds);
             break;
         case SHEEP:
-            ctx->animals[i].position.x = 1000;
-            ctx->animals[i].position.y = -200;
-            ctx->animals[i].speed = 3;
-            ctx->animals[i].width = 50;
-            ctx->animals[i].height = 50;
-            ctx->animals[i].bounds.x1 = 1000;
-            ctx->animals[i].bounds.x2 = 1100;
-            ctx->animals[i].bounds.y1 = -200;
-            ctx->animals[i].bounds.y2 = 300;
+            set_rectangle(&bounds, 1000, 1100, -200, 300);
+            set_animal(a, 1000, -200, 50, 50, 3, bounds);
             break;
         case CAT:
-            ctx->animals[i].position.x = 1100;
-            ctx->animals[i].position.y = 1300;
-            ctx->animals[i].speed = 3;
-            ctx->animals[i].width = 25;
-            ctx->animals[i].height = 25;
-            ctx->animals[i].bounds.x1 = 800;
-            ctx->animals[i].bounds.x2 = 1400;
-            ctx->animals[i].bounds.y1 = 1000;
-            ctx->animals[i].bounds.y2 = 1600;
+            set_rectangle(&bounds, 800, 1400, 1000, 1600);
+            set_animal(a, 1100, 1300, 25, 25, 3, bounds);
             break;
         case SNAKE:
-            ctx->animals[i].position.x = 0;
-            ctx->animals[i].position.y = 1600;
-            ctx->animals[i].speed = 3;
-            ctx->animals[i].width = 25;
-            ctx->animals[i].height = 25;
-            ctx->animals[i].bounds.x1 = -500;
-            ctx->animals[i].bounds.x2 = 500;
-            ctx->animals[i].bounds.y1 = 1500;
-            ctx->animals[i].bounds.y2 = 2400;
+            set_rectangle(&bounds, -500, 500, 1500, 2400);
+            set_animal(a, 0, 1600, 50, 30, 3, bounds);
             break;
         default:
             break;
@@ -198,7 +150,13 @@ void set_context_to_default(Context* ctx) {
     ctx->sounds.panting.is_playing = false;
     ctx->sounds.water_bubbles.is_playing = false;
 
-    // Obstaculos
+    al_close_video(ctx->videos.c2_distillation);
+    al_close_video(ctx->videos.rescue);
+    for (int i = 0; i < 5; i++) {
+        al_close_video(ctx->videos.tutorials[i]);
+    }
+    load_videos(&ctx->videos);
+
     set_obstacle(&ctx->obstacles[0], 1000, 1175, 100, 200);
     set_obstacle(&ctx->obstacles[1], 1070, 1190, 100, 100);
     set_obstacle(&ctx->obstacles[2], 1100, 1225, 125, 150);
@@ -270,35 +228,14 @@ void set_context_to_default(Context* ctx) {
     set_obstacle(&ctx->obstacles[68], -360, 1960, 100, 50);
     set_obstacle(&ctx->obstacles[69], -180, 1840, 100, 40);
 
-    ctx->shallow_water_areas[0].x1 = INITIAL_MAP_X;
-    ctx->shallow_water_areas[0].x2 = INITIAL_MAP_X + 750;
-    ctx->shallow_water_areas[0].y1 = INITIAL_MAP_Y;
-    ctx->shallow_water_areas[0].y2 = INITIAL_MAP_Y + 500;
-    ctx->shallow_water_areas[1].x1 = INITIAL_MAP_X + 750;
-    ctx->shallow_water_areas[1].x2 = INITIAL_MAP_X + 1125;
-    ctx->shallow_water_areas[1].y1 = INITIAL_MAP_Y;
-    ctx->shallow_water_areas[1].y2 = INITIAL_MAP_Y + 180;
-    ctx->shallow_water_areas[2].x1 = INITIAL_MAP_X;
-    ctx->shallow_water_areas[2].x2 = INITIAL_MAP_X + 100;
-    ctx->shallow_water_areas[2].y1 = INITIAL_MAP_Y + 500;
-    ctx->shallow_water_areas[2].y2 = INITIAL_MAP_Y + 1270;
-    ctx->shallow_water_areas[3].x1 = INITIAL_MAP_X + 750;
-    ctx->shallow_water_areas[3].x2 = INITIAL_MAP_X + 900;
-    ctx->shallow_water_areas[3].y1 = INITIAL_MAP_Y + 180;
-    ctx->shallow_water_areas[3].y2 = INITIAL_MAP_Y + 330;
-    ctx->shallow_water_areas[4].x1 = INITIAL_MAP_X + 100;
-    ctx->shallow_water_areas[4].x2 = INITIAL_MAP_X + 500;
-    ctx->shallow_water_areas[4].y1 = INITIAL_MAP_Y + 500;
-    ctx->shallow_water_areas[4].y2 = INITIAL_MAP_Y + 600;
-    ctx->shallow_water_areas[5].x1 = INITIAL_MAP_X + 100;
-    ctx->shallow_water_areas[5].x2 = INITIAL_MAP_X + 270;
-    ctx->shallow_water_areas[5].y1 = INITIAL_MAP_Y + 1150;
-    ctx->shallow_water_areas[5].y2 = INITIAL_MAP_Y + 1270;
+    set_rectangle(&ctx->shallow_water_areas[0], INITIAL_MAP_X, INITIAL_MAP_X + 750, INITIAL_MAP_Y, INITIAL_MAP_Y + 500);
+    set_rectangle(&ctx->shallow_water_areas[1], INITIAL_MAP_X + 750, INITIAL_MAP_X + 1125, INITIAL_MAP_Y, INITIAL_MAP_Y + 180);
+    set_rectangle(&ctx->shallow_water_areas[2], INITIAL_MAP_X, INITIAL_MAP_X + 100, INITIAL_MAP_Y + 500, INITIAL_MAP_Y + 1270);
+    set_rectangle(&ctx->shallow_water_areas[3], INITIAL_MAP_X + 750, INITIAL_MAP_X + 900, INITIAL_MAP_Y + 180, INITIAL_MAP_Y + 330);
+    set_rectangle(&ctx->shallow_water_areas[4], INITIAL_MAP_X + 100, INITIAL_MAP_X + 500, INITIAL_MAP_Y + 500, INITIAL_MAP_Y + 600);
+    set_rectangle(&ctx->shallow_water_areas[5], INITIAL_MAP_X + 100, INITIAL_MAP_X + 270, INITIAL_MAP_Y + 1150, INITIAL_MAP_Y + 1270);
 
-    ctx->deep_water_area.x1 = INITIAL_MAP_X;
-    ctx->deep_water_area.x2 = INITIAL_MAP_X + 550;
-    ctx->deep_water_area.y1 = INITIAL_MAP_Y;
-    ctx->deep_water_area.y2 = INITIAL_MAP_Y + 300;
+    set_rectangle(&ctx->deep_water_area, INITIAL_MAP_X, INITIAL_MAP_X + 550, INITIAL_MAP_Y, INITIAL_MAP_Y + 300);
 }
 
 void init_context(Context* ctx) {
@@ -335,28 +272,12 @@ void init_context(Context* ctx) {
     load_videos(&ctx->videos);
     set_context_to_default(ctx);
 
-    ctx->challenges_areas[0].x1 = DISPLAY_WIDTH - 280;
-    ctx->challenges_areas[0].x2 = DISPLAY_WIDTH - 80;
-    ctx->challenges_areas[0].y1 = 0;
-    ctx->challenges_areas[0].y2 = 15;
-    ctx->challenges_areas[1].x1 = DISPLAY_WIDTH - 15;
-    ctx->challenges_areas[1].x2 = DISPLAY_WIDTH;
-    ctx->challenges_areas[1].y1 = DISPLAY_HEIGHT/2.0 - 100;
-    ctx->challenges_areas[1].y2 = DISPLAY_HEIGHT/2.0 + 100;
-    ctx->challenges_areas[2].x1 = DISPLAY_WIDTH - 15;
-    ctx->challenges_areas[2].x2 = DISPLAY_WIDTH;
-    ctx->challenges_areas[2].y1 = DISPLAY_HEIGHT/2.0 - 100;
-    ctx->challenges_areas[2].y2 = DISPLAY_HEIGHT/2.0 + 100;
-    ctx->challenges_areas[3].x1 = DISPLAY_WIDTH - 680;
-    ctx->challenges_areas[3].x2 = DISPLAY_WIDTH - 410;
-    ctx->challenges_areas[3].y1 = DISPLAY_HEIGHT - 15;
-    ctx->challenges_areas[3].y2 = DISPLAY_HEIGHT;
-    ctx->challenges_areas[4].x1 = DISPLAY_WIDTH - 680;
-    ctx->challenges_areas[4].x2 = DISPLAY_WIDTH - 410;
-    ctx->challenges_areas[4].y1 = DISPLAY_HEIGHT - 15;
-    ctx->challenges_areas[4].y2 = DISPLAY_HEIGHT;
+    set_rectangle(&ctx->challenges_areas[0], DISPLAY_WIDTH - 280, DISPLAY_WIDTH - 80, 0, 15);
+    set_rectangle(&ctx->challenges_areas[1], DISPLAY_WIDTH - 15, DISPLAY_WIDTH, DISPLAY_HEIGHT/2.0 - 100, DISPLAY_HEIGHT/2.0 + 100);
+    set_rectangle(&ctx->challenges_areas[2], DISPLAY_WIDTH - 15, DISPLAY_WIDTH, DISPLAY_HEIGHT/2.0 - 100, DISPLAY_HEIGHT/2.0 + 100);
+    set_rectangle(&ctx->challenges_areas[3], DISPLAY_WIDTH - 680, DISPLAY_WIDTH - 410, DISPLAY_HEIGHT - 15, DISPLAY_HEIGHT);
+    set_rectangle(&ctx->challenges_areas[4], DISPLAY_WIDTH - 680, DISPLAY_WIDTH - 410, DISPLAY_HEIGHT - 15, DISPLAY_HEIGHT);
 
-    // Challenge 1
     ctx->c1.placeable_positions[0].x = 250;
     ctx->c1.placeable_positions[0].y = 50;
     ctx->c1.placeable_positions[1].x = 100;
@@ -383,7 +304,6 @@ void init_context(Context* ctx) {
     ctx->c1.placeable_objects[3].height = 100;
     ctx->c1.selected_object_index = -1;
 
-    // Challenge 2
     set_selectable_object(&ctx->c2.selectable_objects[0], 640, 340, 101, 180, true);
     set_selectable_object(&ctx->c2.selectable_objects[1], 475, 350, 118, 99, true);
     set_selectable_object(&ctx->c2.selectable_objects[2], 690, 570, 100, 144, true);
@@ -392,7 +312,6 @@ void init_context(Context* ctx) {
     set_selectable_object(&ctx->c2.selectable_objects[5], 550, 570, 120, 99, false);
     set_selectable_object(&ctx->c2.selectable_objects[6], 900, 540, 102, 80, false);
     
-    // Challenge 4
     ctx->c4.duration_in_seconds = 15;
     set_wanted_object(&ctx->c4.wanted_objects[0], 100, 100, 125, 100);
     set_wanted_object(&ctx->c4.wanted_objects[1], 410, 300, 125, 145);
@@ -405,7 +324,6 @@ void init_context(Context* ctx) {
     set_wanted_object(&ctx->c4.fake_wanted_objects[3], 0, 480, 125, 100);
     set_wanted_object(&ctx->c4.fake_wanted_objects[4], 770, 130, 125, 102);
 
-    // Challenge 5
     ctx->c5.duration_in_seconds = 10;
     set_selectable_object(&ctx->c5.selectable_objects[0], 670, 450, 100, 100, true);
     set_selectable_object(&ctx->c5.selectable_objects[1], 420, 450, 100, 100, true);
@@ -543,6 +461,11 @@ void draw_context(Context* ctx) {
         break;
     case OPEN_MAP:
         al_draw_bitmap(ctx->imgs.map, ctx->map.x, ctx->map.y, 0);
+        if (ctx->is_user_hallucinated) {
+            float x = ctx->map.x + ctx->hallucination_map_x,
+                  y = ctx->map.y + ctx->hallucination_map_y;
+            al_draw_tinted_bitmap(ctx->imgs.map, al_map_rgba_f(0.8, 0.8, 0.8, 0.5), x, y, 0);
+        }
 
         for (int i = 2; i < ANIMALS_LENGTH; i++) {
             Animal* a = &ctx->animals[i];
@@ -565,9 +488,19 @@ void draw_context(Context* ctx) {
             }
 
             if (!hide) al_draw_bitmap(a->current_sprite, a->position.x, a->position.y, 0);
+            if (ctx->is_user_hallucinated && !hide) {
+                float x = a->position.x + ctx->hallucination_char_x,
+                      y = a->position.y + ctx->hallucination_char_y;
+                al_draw_tinted_bitmap(a->current_sprite, al_map_rgba_f(0.5, 0.5, 0.5, 0.5), x, y, 0);
+            }
         }
 
         al_draw_bitmap(ctx->imgs.char_sprites.current, ctx->player.x, ctx->player.y, 0);
+        if (ctx->is_user_hallucinated) {
+            float x = ctx->player.x - ctx->hallucination_char_x,
+                  y = ctx->player.y - ctx->hallucination_char_y;
+            al_draw_tinted_bitmap(ctx->imgs.char_sprites.current, al_map_rgba_f(0.5, 0.5, 0.5, 0.5), x, y, 0);
+        }
 
         for (int i = 0; i < 2; i++) {
             Animal* a = &ctx->animals[i];
@@ -587,6 +520,11 @@ void draw_context(Context* ctx) {
                   y += a->position.y;
 
                   al_draw_bitmap(a->current_sprite, x, y, 0);
+                  if (ctx->is_user_hallucinated) {
+                      x += ctx->hallucination_char_x;
+                      y += ctx->hallucination_char_y;
+                      al_draw_tinted_bitmap(a->current_sprite,al_map_rgba_f(0.5, 0.5, 0.5, 0.5), x, y, 0);
+                  }
             }
         }
 
@@ -614,9 +552,9 @@ void draw_context(Context* ctx) {
         al_draw_bitmap(ctx->imgs.challenges[ctx->challenge_index], 0, 0, 0);
 
         if (!ctx->tutorials[ctx->challenge_index].is_completed) {
+            al_draw_bitmap(ctx->imgs.current_video_frame, 0, 0, 0);
+
             ALLEGRO_VIDEO* video = ctx->videos.tutorials[ctx->tutorial_index];
-            ALLEGRO_BITMAP* frame = al_get_video_frame(video);
-            if (frame) al_draw_bitmap(frame, 0, 0, 0);
             if (!al_is_video_playing(video) && ctx->tutorial_index % 2 == 0) {
                 if (ctx->tutorial_index == ctx->tutorials[ctx->challenge_index].last_step_index - 1) {
                     al_draw_bitmap(ctx->imgs.play_btn, TUTORIAL_BTN_X, TUTORIAL_BTN_Y, 0);
@@ -704,7 +642,7 @@ void draw_context(Context* ctx) {
             }
 
             int seconds_left = calculate_seconds_left(ctx->c4.start_time, ctx->c4.duration_in_seconds);
-            al_draw_textf(ctx->font, al_map_rgb(0, 0, 0), 0, 20, 0, "Tempo: %d segundos", seconds_left);
+            al_draw_textf(ctx->font, al_map_rgb(255, 255, 255), 20, 20, 0, "Tempo: %d segundos", seconds_left);
         }
 
         if (ctx->challenge_index == 4) {
@@ -1197,11 +1135,11 @@ void finish_challenge(bool success, Context* ctx) {
 
     if (ctx->challenge_index == 4) {
         if (success) {
-            al_stop_samples();
             al_draw_bitmap(ctx->imgs.c5_bonfire, 0, 0, 0);
             al_flip_display();
             al_rest(2);
             ctx->state = GAME_OVER;
+            al_stop_samples();
             al_start_video(ctx->videos.rescue, al_get_default_mixer());
         } else {
             ctx->c5.bonfire_scene = false;
@@ -1219,13 +1157,11 @@ void finish_challenge(bool success, Context* ctx) {
     }
 
     if (ctx->challenge_index == 2 && !success) ctx->is_user_hallucinated = true;
+    if (ctx->challenge_index == 3 && success) ctx->is_user_hallucinated = false;
 
-    if (ctx->challenge_index <= 3) {
-        ctx->challenge_index++;
-    }
-
+    stop_audio(&ctx->sounds.challenges[ctx->challenge_index]);
+    if (ctx->challenge_index <= 3) ctx->challenge_index++;
     ctx->state = OPEN_MAP;
-    al_stop_samples();
 }
 
 void play_tutorial(Context* ctx) {
@@ -1233,7 +1169,8 @@ void play_tutorial(Context* ctx) {
     ALLEGRO_VIDEO* current_video = ctx->videos.tutorials[ctx->tutorial_index];
     ALLEGRO_VIDEO* next_video = ctx->videos.tutorials[ctx->tutorial_index + 1];
 
-    ctx->imgs.current_video_frame = al_get_video_frame(current_video);
+    ALLEGRO_BITMAP* frame = al_get_video_frame(current_video);
+    if (frame) ctx->imgs.current_video_frame = frame;
     
     if (!al_is_video_playing(current_video) && ctx->tutorial_index % 2 != 0) {
         if (ctx->tutorial_index == t->last_step_index) {
