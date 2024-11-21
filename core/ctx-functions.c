@@ -35,6 +35,7 @@ void set_context_to_default(Context* ctx) {
         ctx->tutorials[i].is_completed = false;
     }
 
+    ctx->c1.selected_object_index = -1;
     for (int i = 0; i < PLACEABLE_OBJECTS_LENGTH; i++) {
         ctx->c1.placeable_objects[i].position_index = i * 2;
         ctx->c1.placeable_objects[i].correct_position_index = i * 2 + 1;
@@ -304,7 +305,6 @@ void init_context(Context* ctx) {
     ctx->c1.placeable_objects[2].height = 100;
     ctx->c1.placeable_objects[3].width = 130;
     ctx->c1.placeable_objects[3].height = 100;
-    ctx->c1.selected_object_index = -1;
 
     set_selectable_object(&ctx->c2.selectable_objects[0], 640, 340, 101, 180, true);
     set_selectable_object(&ctx->c2.selectable_objects[1], 475, 350, 118, 99, true);
@@ -1125,20 +1125,10 @@ void change_animals_sprite(Context* ctx) {
 }
 
 void finish_challenge(bool success, Context* ctx) {
-    if (!success || ctx->hunger_counter == 0) {
-        ctx->life_counter--;
-        if (!ctx->sounds_muted) play_audio(&ctx->sounds.hurting, false);
-        al_rest(1);
-    }
-
-    if (ctx->life_counter <= 0) {
-        ctx->state = GAME_OVER;
-        ctx->has_user_lost = true;
-        al_stop_samples();
-        return;
-    }
-
     if (ctx->challenge_index == 1 && success && ctx->life_counter < 3) ctx->life_counter++;
+
+    if (ctx->challenge_index == 2 && !success) ctx->is_user_hallucinated = true;
+    if (ctx->challenge_index == 3 && success) ctx->is_user_hallucinated = false;
 
     if (ctx->challenge_index == 4) {
         if (success) {
@@ -1156,15 +1146,25 @@ void finish_challenge(bool success, Context* ctx) {
         return;
     }
 
+    if (!success || ctx->hunger_counter == 0) {
+        ctx->life_counter--;
+        if (!ctx->sounds_muted) play_audio(&ctx->sounds.hurting, false);
+        al_rest(1);
+    }
+
+    if (ctx->life_counter <= 0) {
+        ctx->state = GAME_OVER;
+        ctx->has_user_lost = true;
+        al_stop_samples();
+        return;
+    }
+
     bool player_got_food = success && (ctx->challenge_index == 0 || ctx->challenge_index == 2);
     if (player_got_food) {
       ctx->hunger_counter = 3;
     } else if (ctx->hunger_counter > 0) {
         ctx->hunger_counter--;
     }
-
-    if (ctx->challenge_index == 2 && !success) ctx->is_user_hallucinated = true;
-    if (ctx->challenge_index == 3 && success) ctx->is_user_hallucinated = false;
 
     stop_audio(&ctx->sounds.challenges[ctx->challenge_index]);
     if (ctx->challenge_index <= 3) ctx->challenge_index++;
@@ -1189,15 +1189,6 @@ void play_tutorial(Context* ctx) {
             if (!ctx->sounds_muted) play_audio(&ctx->sounds.typing, false);
         }
         ctx->tutorial_index++;
-    }
-}
-
-void play_video(Context* ctx, ALLEGRO_VIDEO* video) {
-    ctx->imgs.current_video_frame = al_get_video_frame(video);
-    if (!al_is_video_playing(video)) {
-        ctx->c2.is_distillation_playing = false;
-        al_rest(2);
-        return finish_challenge(true, ctx);
     }
 }
 
@@ -1322,7 +1313,7 @@ void handle_challenge_3(Context* ctx) {
     if (c3->mushrooms_counter >= 10) {
         return finish_challenge(false, ctx);
     }
-    if (c3->apples_counter >= 10) {
+    if (c3->apples_counter >= 20) {
         return finish_challenge(true, ctx);
     }
 }

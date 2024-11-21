@@ -32,8 +32,12 @@ static void timer_challenge(Context* ctx) {
     }
 
     if (ctx->challenge_index == 1 && ctx->c2.is_distillation_playing) {
-        play_video(ctx, ctx->videos.c2_distillation);
-        return;
+        ctx->imgs.current_video_frame = al_get_video_frame(ctx->videos.c2_distillation);
+        if (!al_is_video_playing(ctx->videos.c2_distillation)) {
+            ctx->c2.is_distillation_playing = false;
+            al_rest(2);
+            return finish_challenge(true, ctx);
+        }
     }
 
     switch (ctx->challenge_index) {
