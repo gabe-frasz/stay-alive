@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #include "types.h"
 #include "consts.h"
 #include "helpers.h"
@@ -1198,6 +1199,15 @@ void play_video(Context* ctx, ALLEGRO_VIDEO* video) {
         al_rest(2);
         return finish_challenge(true, ctx);
     }
+}
+
+void change_hallucination_angle(Context* ctx) {
+    ctx->hallucination_angle += 0.1;
+    if (ctx->hallucination_angle >= 360) ctx->hallucination_angle = 0;
+    ctx->hallucination_map_x = (float)sin((double)ctx->hallucination_angle) * 20;
+    ctx->hallucination_map_y = (float)cos((double)ctx->hallucination_angle) * 20;
+    ctx->hallucination_char_x = (float)sin((double)ctx->hallucination_angle * -1) * 10;
+    ctx->hallucination_char_y = (float)cos((double)ctx->hallucination_angle * -1) * 10;
 }
 
 void handle_challenge_1(Context* ctx, Coordinate* mouse) {

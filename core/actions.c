@@ -1,4 +1,3 @@
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -15,14 +14,7 @@ static void mouseup_menu(Context* ctx) {
     if (mute) ctx->sounds_muted = !ctx->sounds_muted;
 }
 static void timer_map(Context* ctx) {
-    if (ctx->is_user_hallucinated) {
-        ctx->hallucination_angle += 0.1;
-        if (ctx->hallucination_angle >= 360) ctx->hallucination_angle = 0;
-        ctx->hallucination_map_x = (float)sin((double)ctx->hallucination_angle) * 20;
-        ctx->hallucination_map_y = (float)cos((double)ctx->hallucination_angle) * 20;
-        ctx->hallucination_char_x = (float)sin((double)ctx->hallucination_angle * -1) * 10;
-        ctx->hallucination_char_y = (float)cos((double)ctx->hallucination_angle * -1) * 10;
-    }
+    if (ctx->is_user_hallucinated) change_hallucination_angle(ctx);
     check_player_position(ctx);
     change_animals_sprite(ctx);
 }
