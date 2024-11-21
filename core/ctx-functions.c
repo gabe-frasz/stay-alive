@@ -227,6 +227,7 @@ void set_context_to_default(Context* ctx) {
     set_obstacle(&ctx->obstacles[67], -260, 1880, 240, 80);
     set_obstacle(&ctx->obstacles[68], -360, 1960, 100, 50);
     set_obstacle(&ctx->obstacles[69], -180, 1840, 100, 40);
+    set_obstacle(&ctx->obstacles[70], 20, 1700, 90, 110);
 
     set_rectangle(&ctx->shallow_water_areas[0], INITIAL_MAP_X, INITIAL_MAP_X + 750, INITIAL_MAP_Y, INITIAL_MAP_Y + 500);
     set_rectangle(&ctx->shallow_water_areas[1], INITIAL_MAP_X + 750, INITIAL_MAP_X + 1125, INITIAL_MAP_Y, INITIAL_MAP_Y + 180);
@@ -478,7 +479,12 @@ void draw_context(Context* ctx) {
                        a->position.y <= a->bounds.y2 - 250;
                 break;
             case SNAKE:
-                hide = a->position.x <= a->bounds.x2 - 150 && a->position.y >= a->bounds.y1 + 300;
+                float cx1 = ctx->obstacles[70].position.x - 20,
+                      cx2 = ctx->obstacles[70].position.x + ctx->obstacles[70].width - 20,
+                      cy1 = ctx->obstacles[70].position.y - 20,
+                      cy2 = ctx->obstacles[70].position.y + ctx->obstacles[70].height - 20;
+                hide = (a->position.x <= a->bounds.x2 - 150 && a->position.y >= a->bounds.y1 + 300) ||
+                       (a->position.x >= cx1 && a->position.x <= cx2 && a->position.y >= cy1 && a->position.y <= cy2);
                 break;
             case GOAT:
             case SHEEP:
