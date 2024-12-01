@@ -441,6 +441,8 @@ void load_videos(Videos* videos) {
     must_init(videos->c2_distillation, "c2 distilation video");
     videos->rescue = al_open_video("videos/rescue.ogv");
     must_init(videos->rescue, "rescue video");
+    videos->island = al_open_video("videos/island-bg.ogv");
+    must_init(videos->island, "island video");
 }
 
 void move_animal(Animal* self) {

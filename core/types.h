@@ -85,6 +85,7 @@ typedef struct {
     ALLEGRO_VIDEO* tutorials[TUTORIALS_LENGTH];
     ALLEGRO_VIDEO* c2_distillation;
     ALLEGRO_VIDEO* rescue;
+    ALLEGRO_VIDEO* island; // somente som, usado como vídeo para poder pausar ao entrar no desafio
 } Videos;
 
 enum Game_State {

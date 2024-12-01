@@ -160,6 +160,7 @@ void set_context_to_default(Context* ctx) {
 
     al_close_video(ctx->videos.c2_distillation);
     al_close_video(ctx->videos.rescue);
+    al_close_video(ctx->videos.island);
     for (int i = 0; i < 5; i++) {
         al_close_video(ctx->videos.tutorials[i]);
     }
@@ -388,6 +389,7 @@ void free_context(Context* ctx) {
 
     al_close_video(ctx->videos.c2_distillation);
     al_close_video(ctx->videos.rescue);
+    al_close_video(ctx->videos.island);
 
     int i = 0;
     while (true) {
@@ -961,6 +963,7 @@ void check_player_position(Context* ctx) {
     if (is_player_top_left_colliding || is_player_top_right_colliding ||
         is_player_bottom_left_colliding || is_player_bottom_right_colliding) {
         ctx->state = CHALLENGE;
+        if (!ctx->sounds_muted) al_set_video_playing(ctx->videos.island, false);
         al_start_video(ctx->videos.tutorials[ctx->tutorial_index], al_get_default_mixer());
         if (!ctx->sounds_muted) play_audio(&ctx->sounds.typing, false);
     }
@@ -1144,6 +1147,8 @@ void change_animals_sprite(Context* ctx) {
 }
 
 void play_animal_sounds(Context* ctx) {
+    if (ctx->sounds_muted) return;
+
     int frame = al_get_timer_count(ctx->timer) % (FPS * ctx->animal_sound_interval);
     if (frame != 0) return;
 
@@ -1223,6 +1228,7 @@ void finish_challenge(bool success, Context* ctx) {
     }
 
     stop_audio(&ctx->sounds.challenges[ctx->challenge_index]);
+    if (!ctx->sounds_muted) al_set_video_playing(ctx->videos.island, true);
     if (ctx->challenge_index <= 3) ctx->challenge_index++;
     ctx->state = OPEN_MAP;
 }

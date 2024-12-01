@@ -10,10 +10,17 @@ static void mouseup_menu(Context* ctx) {
     Coordinate mouse = { ctx->event.mouse.x, ctx->event.mouse.y };
     bool play = check_collision(&mouse, PLAY_BTN_X, PLAY_BTN_X + BUTTON_WIDTH, PLAY_BTN_Y, PLAY_BTN_Y + BUTTON_HEIGHT);
     bool mute = check_collision(&mouse, VOLUME_BTN_X, VOLUME_BTN_X + 50, VOLUME_BTN_Y, VOLUME_BTN_Y + 47);
-    if (play) ctx->state = OPEN_MAP;
+    if (play) {
+        ctx->state = OPEN_MAP;
+        if (!ctx->sounds_muted) al_start_video(ctx->videos.island, al_get_default_mixer());
+    }
     if (mute) ctx->sounds_muted = !ctx->sounds_muted;
 }
 static void timer_map(Context* ctx) {
+    if (!ctx->sounds_muted && !al_is_video_playing(ctx->videos.island)) {
+        al_start_video(ctx->videos.island, al_get_default_mixer());
+    }
+
     if (ctx->is_user_hallucinated) change_hallucination_angle(ctx);
     check_player_position(ctx);
     change_animals_sprite(ctx);
