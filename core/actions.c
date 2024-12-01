@@ -17,6 +17,7 @@ static void timer_map(Context* ctx) {
     if (ctx->is_user_hallucinated) change_hallucination_angle(ctx);
     check_player_position(ctx);
     change_animals_sprite(ctx);
+    play_animal_sounds(ctx);
 }
 static void keychar_map(Context* ctx) {
     move_camera(ctx);

@@ -362,6 +362,46 @@ void load_sounds(Sounds* sounds) {
     must_init(sounds->panting.sample, "panting sound");
     sounds->water_bubbles.sample = al_load_sample("sounds/water-bubbles.wav");
     must_init(sounds->water_bubbles.sample, "water bubbles sound");
+    sounds->animals[BIRD][0].sample = al_load_sample("sounds/seagulls-1.wav");
+    must_init(sounds->animals[BIRD][0].sample, "bird 1 sound");
+    sounds->animals[BIRD][1].sample = al_load_sample("sounds/seagulls-2.wav");
+    must_init(sounds->animals[BIRD][1].sample, "bird 2 sound");
+    sounds->animals[BIRD][2].sample = al_load_sample("sounds/seagulls-3.wav");
+    must_init(sounds->animals[BIRD][2].sample, "bird 3 sound");
+    sounds->animals[BIRD][3].sample = al_load_sample("sounds/seagulls-4.wav");
+    must_init(sounds->animals[BIRD][3].sample, "bird 4 sound");
+    sounds->animals[CAT][0].sample = al_load_sample("sounds/cat-1.wav");
+    must_init(sounds->animals[CAT][0].sample, "cat 1 sound");
+    sounds->animals[CAT][1].sample = al_load_sample("sounds/cat-2.wav");
+    must_init(sounds->animals[CAT][1].sample, "cat 2 sound");
+    sounds->animals[CAT][2].sample = al_load_sample("sounds/cat-3.wav");
+    must_init(sounds->animals[CAT][2].sample, "cat 3 sound");
+    sounds->animals[CAT][3].sample = al_load_sample("sounds/cat-4.wav");
+    must_init(sounds->animals[CAT][3].sample, "cat 4 sound");
+    sounds->animals[SHEEP][0].sample = al_load_sample("sounds/sheep-1.wav");
+    must_init(sounds->animals[SHEEP][0].sample, "sheep 1 sound");
+    sounds->animals[SHEEP][1].sample = al_load_sample("sounds/sheep-2.wav");
+    must_init(sounds->animals[SHEEP][1].sample, "sheep 2 sound");
+    sounds->animals[SHEEP][2].sample = al_load_sample("sounds/sheep-3.wav");
+    must_init(sounds->animals[SHEEP][2].sample, "sheep 3 sound");
+    sounds->animals[SHEEP][3].sample = al_load_sample("sounds/sheep-4.wav");
+    must_init(sounds->animals[SHEEP][3].sample, "sheep 4 sound");
+    sounds->animals[SNAKE][0].sample = al_load_sample("sounds/snake-1.wav");
+    must_init(sounds->animals[SNAKE][0].sample, "snake 1 sound");
+    sounds->animals[SNAKE][1].sample = al_load_sample("sounds/snake-2.wav");
+    must_init(sounds->animals[SNAKE][1].sample, "snake 2 sound");
+    sounds->animals[SNAKE][2].sample = al_load_sample("sounds/snake-3.wav");
+    must_init(sounds->animals[SNAKE][2].sample, "snake 3 sound");
+    sounds->animals[SNAKE][3].sample = al_load_sample("sounds/snake-4.wav");
+    must_init(sounds->animals[SNAKE][3].sample, "snake 4 sound");
+    sounds->animals[GOAT][0].sample = al_load_sample("sounds/goat-1.wav");
+    must_init(sounds->animals[GOAT][0].sample, "goat 1 sound");
+    sounds->animals[GOAT][1].sample = al_load_sample("sounds/goat-2.wav");
+    must_init(sounds->animals[GOAT][1].sample, "goat 2 sound");
+    sounds->animals[GOAT][2].sample = al_load_sample("sounds/goat-3.wav");
+    must_init(sounds->animals[GOAT][2].sample, "goat 3 sound");
+    sounds->animals[GOAT][3].sample = al_load_sample("sounds/goat-4.wav");
+    must_init(sounds->animals[GOAT][3].sample, "goat 4 sound");
 }
 
 void load_videos(Videos* videos) {

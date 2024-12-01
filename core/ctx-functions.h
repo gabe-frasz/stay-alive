@@ -14,6 +14,7 @@ void move_camera(Context* ctx);
 void check_player_position(Context* ctx);
 void change_character_sprite(Context* ctx);
 void change_animals_sprite(Context* ctx);
+void play_animal_sounds(Context* ctx);
 void finish_challenge(bool success, Context* ctx);
 void play_tutorial(Context* ctx);
 void change_hallucination_angle(Context* ctx);

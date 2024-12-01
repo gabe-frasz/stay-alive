@@ -6,19 +6,7 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_video.h>
 #include <stdbool.h>
-
-#define SPRITES_LENGTH 3
-#define PLACEABLE_OBJECTS_LENGTH 4
-#define PLACEABLE_POSITIONS_LENGTH 8
-#define SELECTABLE_OBJECTS_LENGTH_C2 7
-#define SELECTABLE_OBJECTS_LENGTH_C5 8
-#define FALLING_OBJECTS_LENGTH 16
-#define WANTED_OBJECTS_LENGTH 5
-#define OBSTACLES_LENGTH 71
-#define SHALLOW_WATER_AREAS_LENGTH 6
-#define ANIMALS_LENGTH 8 // 2 grupos de aves, 2 coelhos, 1 ovelha, bode, gato, cobra
-#define TUTORIALS_LENGTH 16
-#define RUB_SPRITES_LENGTH 4
+#include "consts.h"
 
 enum Animal_Type {
     BIRD,
@@ -90,6 +78,7 @@ typedef struct {
     Audio footstep[2], water_footstep[2];
     Audio typing, challenges[5];
     Audio hurting, panting, water_bubbles;
+    Audio animals[ANIMAL_TYPE_LENGTH][ANIMAL_SOUNDS_LENGTH];
 } Sounds;
 
 typedef struct {
@@ -209,7 +198,7 @@ typedef struct {
     Rectangle shallow_water_areas[SHALLOW_WATER_AREAS_LENGTH];
     Rectangle deep_water_area;
     Animal animals[ANIMALS_LENGTH];
-    int challenge_index, tutorial_index, life_counter, hunger_counter, oxygen_counter;
+    int challenge_index, tutorial_index, life_counter, hunger_counter, oxygen_counter, animal_sound_interval;
     time_t oxygen_start_time;
     enum Game_State state;
     bool has_user_lost, is_user_hallucinated, is_snake_idle, is_snake_hunting, is_half_water, is_underwater; 

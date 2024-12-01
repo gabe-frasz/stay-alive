@@ -23,6 +23,7 @@ void set_context_to_default(Context* ctx) {
     ctx->map.x = INITIAL_MAP_X;
     ctx->map.y = INITIAL_MAP_Y;
     ctx->hallucination_angle = 0;
+    ctx->animal_sound_interval = 7;
 
     ctx->imgs.current_video_frame = ctx->imgs.challenges[0];
 
@@ -151,6 +152,11 @@ void set_context_to_default(Context* ctx) {
     ctx->sounds.challenges[4].is_playing = false;
     ctx->sounds.panting.is_playing = false;
     ctx->sounds.water_bubbles.is_playing = false;
+    for (int i = 0; i < ANIMAL_TYPE_LENGTH; i++) {
+        for (int j = 0; j < ANIMAL_SOUNDS_LENGTH; j++) {
+            ctx->sounds.animals[i][j].is_playing = false;
+        }
+    }
 
     al_close_video(ctx->videos.c2_distillation);
     al_close_video(ctx->videos.rescue);
@@ -249,7 +255,7 @@ void init_context(Context* ctx) {
     must_init(al_init_image_addon(), "image");
     must_init(al_install_audio(), "audio");
     must_init(al_init_acodec_addon(), "acodec");
-    must_init(al_reserve_samples(5), "samples");
+    must_init(al_reserve_samples(13), "samples");
     must_init(al_init_video_addon(), "video");
 
     srand(time(NULL));
@@ -347,6 +353,11 @@ void init_context(Context* ctx) {
     for (int i = 0; i < 5; i++) {
         set_audio(&ctx->sounds.challenges[i], 1, 0, 1);
     }
+    for (int i = 0; i < ANIMAL_TYPE_LENGTH; i++) {
+        for (int j = 0; j < ANIMAL_SOUNDS_LENGTH; j++) {
+            set_audio(&ctx->sounds.animals[i][j], 1, 0, 1);
+        }
+    }
 }
 
 void free_context(Context* ctx) {
@@ -420,6 +431,13 @@ void free_context(Context* ctx) {
 
         if (i < TUTORIALS_LENGTH) {
             al_close_video(ctx->videos.tutorials[i]);
+            done = false;
+        }
+
+        if (i < ANIMAL_TYPE_LENGTH && i != RABBIT) {
+            for (int j = 0; j < ANIMAL_SOUNDS_LENGTH; j++) {
+                al_destroy_sample(ctx->sounds.animals[i][j].sample);
+            }
             done = false;
         }
 
@@ -1055,10 +1073,11 @@ void change_animals_sprite(Context* ctx) {
         int random = rand() % 150;
 
         if (a->is_moving) {
-            a->move(a);
+            a->move(a); 
         } else if (random == 0) {
             a->sort_destination(a);
             a->is_moving = true;
+            if (a->type == SNAKE) stop_audio(&ctx->sounds.panting);
         }
 
         if (a->type == SNAKE && !ctx->is_snake_idle) {
@@ -1122,6 +1141,43 @@ void change_animals_sprite(Context* ctx) {
             if (!a->is_moving) a->current_sprite = ctx->imgs.animals[a->type].front[0];
         }
     }
+}
+
+void play_animal_sounds(Context* ctx) {
+    int frame = al_get_timer_count(ctx->timer) % (FPS * ctx->animal_sound_interval);
+    if (frame != 0) return;
+
+    ctx->animal_sound_interval = rand() % 7 + 4;
+    int animal = rand() % ANIMAL_TYPE_LENGTH;
+    int sound = rand() % ANIMAL_SOUNDS_LENGTH; 
+    float volume, pan;
+    int max_distance;
+
+    if (animal == RABBIT) return;
+
+    int player_x = (ctx->map.x * -1) + ctx->player.x;
+    int player_y = (ctx->map.y * -1) + ctx->player.y;
+    int distance_from_player_x = player_x - ctx->animals[animal].position.x;
+    int distance_from_player_y = player_y - ctx->animals[animal].position.y;
+    if (distance_from_player_x < 0) distance_from_player_x *= -1;
+    if (distance_from_player_y < 0) distance_from_player_y *= -1;
+    if (distance_from_player_x > distance_from_player_y) {
+        max_distance = distance_from_player_x;
+    } else {
+        max_distance = distance_from_player_y;
+    }
+
+    if (max_distance == 0) max_distance = 1;
+    volume = 1.0 / (max_distance / 200.0);
+
+    if (player_x > ctx->animals[animal].position.x) {
+        pan = 0.5;
+    } else {
+        pan = -0.5;
+    }
+
+    set_audio(&ctx->sounds.animals[animal][sound], volume, pan, 1);
+    play_audio(&ctx->sounds.animals[animal][sound], false);
 }
 
 void finish_challenge(bool success, Context* ctx) {
