@@ -27,11 +27,11 @@ void set_context_to_default(Context* ctx) {
 
     ctx->imgs.current_video_frame = ctx->imgs.challenges[0];
 
-    ctx->tutorials[0].last_step_index = 1;
-    ctx->tutorials[1].last_step_index = 5;
-    ctx->tutorials[2].last_step_index = 7;
-    ctx->tutorials[3].last_step_index = 13;
-    ctx->tutorials[4].last_step_index = 15;
+    ctx->tutorials[0].last_step_index = 3;
+    ctx->tutorials[1].last_step_index = 7;
+    ctx->tutorials[2].last_step_index = 9;
+    ctx->tutorials[3].last_step_index = 15;
+    ctx->tutorials[4].last_step_index = 17;
     for (int i = 0; i < 5; i++) {
         ctx->tutorials[i].is_completed = false;
     }

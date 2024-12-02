@@ -45,7 +45,7 @@
 #define OBSTACLES_LENGTH 71
 #define SHALLOW_WATER_AREAS_LENGTH 6
 #define ANIMALS_LENGTH 8 // 2 grupos de aves, 2 coelhos, 1 ovelha, bode, gato, cobra
-#define TUTORIALS_LENGTH 16
+#define TUTORIALS_LENGTH 18
 #define RUB_SPRITES_LENGTH 4
 #define ANIMAL_SOUNDS_LENGTH 4
 
