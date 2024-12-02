@@ -288,38 +288,38 @@ void init_context(Context* ctx) {
     set_rectangle(&ctx->challenges_areas[3], DISPLAY_WIDTH - 680, DISPLAY_WIDTH - 410, DISPLAY_HEIGHT - 15, DISPLAY_HEIGHT);
     set_rectangle(&ctx->challenges_areas[4], DISPLAY_WIDTH - 680, DISPLAY_WIDTH - 410, DISPLAY_HEIGHT - 15, DISPLAY_HEIGHT);
 
-    ctx->c1.placeable_positions[0].x = 250;
-    ctx->c1.placeable_positions[0].y = 50;
-    ctx->c1.placeable_positions[1].x = 100;
-    ctx->c1.placeable_positions[1].y = 490;
-    ctx->c1.placeable_positions[2].x = 675;
-    ctx->c1.placeable_positions[2].y = 50;
-    ctx->c1.placeable_positions[3].x = 380;
-    ctx->c1.placeable_positions[3].y = 370;
-    ctx->c1.placeable_positions[4].x = 50;
-    ctx->c1.placeable_positions[4].y = 50;
-    ctx->c1.placeable_positions[5].x = 650;
-    ctx->c1.placeable_positions[5].y = 250;
-    ctx->c1.placeable_positions[6].x = 430;
-    ctx->c1.placeable_positions[6].y = 50;
-    ctx->c1.placeable_positions[7].x = 1050;
-    ctx->c1.placeable_positions[7].y = 390;
-    ctx->c1.placeable_objects[0].width = 98;
-    ctx->c1.placeable_objects[0].height = 100;
-    ctx->c1.placeable_objects[1].width = 59;
-    ctx->c1.placeable_objects[1].height = 100;
-    ctx->c1.placeable_objects[2].width = 101;
-    ctx->c1.placeable_objects[2].height = 100;
+    ctx->c1.placeable_positions[0].x = 230;
+    ctx->c1.placeable_positions[0].y = 30;
+    ctx->c1.placeable_positions[1].x = 70;
+    ctx->c1.placeable_positions[1].y = 460;
+    ctx->c1.placeable_positions[2].x = 655;
+    ctx->c1.placeable_positions[2].y = 30;
+    ctx->c1.placeable_positions[3].x = 350;
+    ctx->c1.placeable_positions[3].y = 340;
+    ctx->c1.placeable_positions[4].x = 30;
+    ctx->c1.placeable_positions[4].y = 30;
+    ctx->c1.placeable_positions[5].x = 620;
+    ctx->c1.placeable_positions[5].y = 220;
+    ctx->c1.placeable_positions[6].x = 435;
+    ctx->c1.placeable_positions[6].y = 30;
+    ctx->c1.placeable_positions[7].x = 1015;
+    ctx->c1.placeable_positions[7].y = 360;
+    ctx->c1.placeable_objects[0].width = 130;
+    ctx->c1.placeable_objects[0].height = 130;
+    ctx->c1.placeable_objects[1].width = 130;
+    ctx->c1.placeable_objects[1].height = 130;
+    ctx->c1.placeable_objects[2].width = 130;
+    ctx->c1.placeable_objects[2].height = 130;
     ctx->c1.placeable_objects[3].width = 130;
-    ctx->c1.placeable_objects[3].height = 100;
+    ctx->c1.placeable_objects[3].height = 130;
 
-    set_selectable_object(&ctx->c2.selectable_objects[0], 640, 340, 101, 180, true);
-    set_selectable_object(&ctx->c2.selectable_objects[1], 475, 350, 118, 99, true);
-    set_selectable_object(&ctx->c2.selectable_objects[2], 690, 570, 100, 144, true);
-    set_selectable_object(&ctx->c2.selectable_objects[3], 745, 380, 101, 180, true);
-    set_selectable_object(&ctx->c2.selectable_objects[4], 890, 400, 145, 99, true);
-    set_selectable_object(&ctx->c2.selectable_objects[5], 550, 570, 120, 99, false);
-    set_selectable_object(&ctx->c2.selectable_objects[6], 900, 540, 102, 80, false);
+    set_selectable_object(&ctx->c2.selectable_objects[0], 640, 340, 130, 130, true);
+    set_selectable_object(&ctx->c2.selectable_objects[1], 475, 350, 130, 130, true);
+    set_selectable_object(&ctx->c2.selectable_objects[2], 690, 570, 130, 130, true);
+    set_selectable_object(&ctx->c2.selectable_objects[3], 745, 380, 130, 130, true);
+    set_selectable_object(&ctx->c2.selectable_objects[4], 890, 400, 130, 130, true);
+    set_selectable_object(&ctx->c2.selectable_objects[5], 550, 570, 130, 130, false);
+    set_selectable_object(&ctx->c2.selectable_objects[6], 900, 540, 130, 130, false);
     
     ctx->c4.duration_in_seconds = 15;
     set_wanted_object(&ctx->c4.wanted_objects[0], 100, 100, 125, 100);
@@ -334,14 +334,14 @@ void init_context(Context* ctx) {
     set_wanted_object(&ctx->c4.fake_wanted_objects[4], 770, 130, 125, 102);
 
     ctx->c5.duration_in_seconds = 10;
-    set_selectable_object(&ctx->c5.selectable_objects[0], 670, 450, 100, 100, true);
-    set_selectable_object(&ctx->c5.selectable_objects[1], 420, 450, 100, 100, true);
-    set_selectable_object(&ctx->c5.selectable_objects[2], 690, 570, 100, 100, false);
-    set_selectable_object(&ctx->c5.selectable_objects[3], 550, 400, 100, 100, false);
-    set_selectable_object(&ctx->c5.selectable_objects[4], 850, 400, 100, 100, false);
-    set_selectable_object(&ctx->c5.selectable_objects[5], 550, 570, 100, 100, false);
-    set_selectable_object(&ctx->c5.selectable_objects[6], 300, 540, 100, 100, false);
-    set_selectable_object(&ctx->c5.selectable_objects[7], 190, 500, 100, 100, false);
+    set_selectable_object(&ctx->c5.selectable_objects[0], 670, 450, 130, 130, true);
+    set_selectable_object(&ctx->c5.selectable_objects[1], 420, 450, 130, 130, true);
+    set_selectable_object(&ctx->c5.selectable_objects[2], 690, 570, 130, 130, false);
+    set_selectable_object(&ctx->c5.selectable_objects[3], 550, 400, 130, 130, false);
+    set_selectable_object(&ctx->c5.selectable_objects[4], 850, 400, 130, 130, false);
+    set_selectable_object(&ctx->c5.selectable_objects[5], 550, 570, 130, 130, false);
+    set_selectable_object(&ctx->c5.selectable_objects[6], 300, 540, 130, 130, false);
+    set_selectable_object(&ctx->c5.selectable_objects[7], 190, 500, 130, 130, false);
 
     set_audio(&ctx->sounds.footstep[0], 0.7, 0.5, 1.5);
     set_audio(&ctx->sounds.footstep[1], 0.7, -0.5, 1.5);
@@ -1199,12 +1199,12 @@ void finish_challenge(bool success, Context* ctx) {
             ctx->state = GAME_OVER;
             al_stop_samples();
             al_start_video(ctx->videos.rescue, al_get_default_mixer());
+            return;
         } else {
             ctx->c5.bonfire_scene = false;
             ctx->c5.start_time = time(0);
             ctx->c5.action_bar = 1200;
         }
-        return;
     }
 
     if (!success || ctx->hunger_counter == 0) {
