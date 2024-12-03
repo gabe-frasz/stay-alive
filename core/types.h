@@ -77,7 +77,7 @@ typedef struct {
 typedef struct {
     Audio footstep[2], water_footstep[2];
     Audio typing, challenges[5];
-    Audio hurting, panting, water_bubbles;
+    Audio hurting, panting, water_bubbles, success;
     Audio animals[ANIMAL_TYPE_LENGTH][ANIMAL_SOUNDS_LENGTH];
 } Sounds;
 

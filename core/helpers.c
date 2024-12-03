@@ -402,6 +402,8 @@ void load_sounds(Sounds* sounds) {
     must_init(sounds->animals[GOAT][2].sample, "goat 3 sound");
     sounds->animals[GOAT][3].sample = al_load_sample("sounds/goat-4.wav");
     must_init(sounds->animals[GOAT][3].sample, "goat 4 sound");
+    sounds->success.sample = al_load_sample("sounds/success.wav");
+    must_init(sounds->success.sample, "success sound");
 }
 
 void load_videos(Videos* videos) {

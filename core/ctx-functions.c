@@ -145,6 +145,7 @@ void set_context_to_default(Context* ctx) {
     ctx->sounds.water_footstep[1].is_playing = false;
     ctx->sounds.typing.is_playing = false;
     ctx->sounds.hurting.is_playing = false;
+    ctx->sounds.success.is_playing = false;
     ctx->sounds.challenges[0].is_playing = false;
     ctx->sounds.challenges[1].is_playing = false;
     ctx->sounds.challenges[2].is_playing = false;
@@ -351,6 +352,7 @@ void init_context(Context* ctx) {
     set_audio(&ctx->sounds.hurting, 1, 0, 1);
     set_audio(&ctx->sounds.panting, 2, 0, 1.1);
     set_audio(&ctx->sounds.water_bubbles, 1, 0, 1);
+    set_audio(&ctx->sounds.success, 1, 0, 1);
     for (int i = 0; i < 5; i++) {
         set_audio(&ctx->sounds.challenges[i], 1, 0, 1);
     }
@@ -386,6 +388,7 @@ void free_context(Context* ctx) {
     al_destroy_sample(ctx->sounds.hurting.sample);
     al_destroy_sample(ctx->sounds.panting.sample);
     al_destroy_sample(ctx->sounds.water_bubbles.sample);
+    al_destroy_sample(ctx->sounds.success.sample);
 
     al_close_video(ctx->videos.c2_distillation);
     al_close_video(ctx->videos.rescue);
@@ -1193,6 +1196,7 @@ void finish_challenge(bool success, Context* ctx) {
 
     if (ctx->challenge_index == 4) {
         if (success) {
+            play_audio(&ctx->sounds.success, false);
             al_draw_bitmap(ctx->imgs.c5_bonfire, 0, 0, 0);
             al_flip_display();
             al_rest(2);
@@ -1228,6 +1232,7 @@ void finish_challenge(bool success, Context* ctx) {
     }
 
     stop_audio(&ctx->sounds.challenges[ctx->challenge_index]);
+    if (success) play_audio(&ctx->sounds.success, false);
     if (!ctx->sounds_muted) al_set_video_playing(ctx->videos.island, true);
     if (ctx->challenge_index <= 3) ctx->challenge_index++;
     ctx->state = OPEN_MAP;
