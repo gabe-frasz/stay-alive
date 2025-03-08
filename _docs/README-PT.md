@@ -9,7 +9,7 @@ Os assuntos abordados incluem cadeia alimentar, destilação, reinos Fungi e Pla
 A narrativa acompanha Linus, um estudante do ensino médio que, durante suas férias em um cruzeiro, acaba naufragando e ficando preso em uma ilha. Para sobreviver aos próximos cinco dias até o resgate, ele precisa aplicar seus conhecimentos de biologia e ciências naturais, enfrentando desafios baseados em situações reais.
 
 - [🖥️ Como rodar](#%EF%B8%8F-como-rodar)
-  - [Fazer o build e rodar você mesmo](#fazer-o-build-e-rodar-voce-mesmo)
+  - [Fazer o build e rodar você mesmo](#fazer-o-build-e-rodar-você-mesmo)
 - [🕹️ Como jogar](#%EF%B8%8F-como-jogar)
 - [📹 Capturas do jogo](#-capturas-do-jogo)
   - [Menu e telas finais](#menu-e-telas-finais)
@@ -18,7 +18,7 @@ A narrativa acompanha Linus, um estudante do ensino médio que, durante suas fé
 - [✨ Funcionalidades extra](#-funcionalidades-extra)
 - [👥 Contribuidores](#-contribuidores)
 - [🤝 Agradecimentos](#-agradecimentos)
-- [📝 Licença](#-licenca)
+- [📝 Licença](#-licença)
 
 # 🖥️ Como rodar
 
