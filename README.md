@@ -8,6 +8,10 @@ The subjects covered include food chain, distillation, Fungi and Plantae kingdom
 
 The narrative follows Linus, a high school student who, during his vacation on a cruise, ends up shipwrecked and stranded on an island. To survive the next five days until rescue, he needs to apply his knowledge of biology and natural sciences, facing challenges based on real situations.
 
+[One sheet paper](https://github.com/gabe-frasz/stay-alive/blob/main/_docs/one-sheet-paper.pdf) with the concepts and the main ideas behind the game.
+
+[Poster](https://github.com/gabe-frasz/stay-alive/blob/main/_docs/poster.pdf) for the final presentation.
+
 - [🖥️ How to run](#%EF%B8%8F-how-to-run)
   - [Build and run it yourself](#build-and-run-it-yourself)
 - [🕹️ How to play](#%EF%B8%8F-how-to-play)
