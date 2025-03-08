@@ -113,7 +113,7 @@ Follow the signs on the map to find out which challenge to take on. At the begin
 # 🤝 Acknowledgements
 
 - [Beatriz Paiva](https://github.com/beeepaiva) for the significant collaboration and excellent ideas that enriched the game.
-- [Deepnight Games](https://deepnight.net/about/) for the incredible game studio used to build the game map.
+- [Deepnight Games](https://deepnight.net/about/) for the incredible tool used to build the game map.
 - [Pixabay community](https://pixabay.com/users/) for the audio library that provided sound ambiance, including ambient and animal sounds.
 
 # 📝 License
