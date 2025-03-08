@@ -26,7 +26,7 @@ The narrative follows Linus, a high school student who, during his vacation on a
 
 # 🖥️ How to run
 
-~~Download zip file from [Releases](https://github.com/gabe-frasz/stay-alive/releases) page or...~~ (soon)
+Download zip file from [Releases](https://github.com/gabe-frasz/stay-alive/releases) page or... _(Windows zip soon)_
 
 ## Build and run it yourself
 
