@@ -8,17 +8,17 @@ The subjects covered include food chain, distillation, Fungi and Plantae kingdom
 
 The narrative follows Linus, a high school student who, during his vacation on a cruise, ends up shipwrecked and stranded on an island. To survive the next five days until rescue, he needs to apply his knowledge of biology and natural sciences, facing challenges based on real situations.
 
-- [🖥️ How to run](#desktop_computer-how-to-run)
+- [🖥️ How to run](#%EF%B8%8F-how-to-run)
   - [Build and run it yourself](#build-and-run-it-yourself)
-- [🕹️ How to play](#joystick-how-to-play)
-- [📹 In-game captures](#video_camera-in-game-captures)
+- [🕹️ How to play](#%EF%B8%8F-how-to-play)
+- [📹 In-game captures](#-in-game-captures)
   - [Menu and final screens](#menu-and-final-screens)
   - [Map](#map)
   - [Challenges](#challenges)
-- [✨ Extra features](#sparkles-extra-features)
-- [👥 Contributors](#busts_in_silhouette-contributors)
-- [🤝 Acknowledgements](#handshake-acknowledgements)
-- [📝 License](#memo-license)
+- [✨ Extra features](#-extra-features)
+- [👥 Contributors](#-contributors)
+- [🤝 Acknowledgements](#-acknowledgements)
+- [📝 License](#-license)
 
 # 🖥️ How to run
 
