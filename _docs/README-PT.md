@@ -26,7 +26,7 @@ A narrativa acompanha Linus, um estudante do ensino médio que, durante suas fé
 
 # 🖥️ Como rodar
 
-~~Faça o download do arquivo zip na página [Releases](https://github.com/gabe-frasz/stay-alive/releases) ou...~~ (em breve)
+Faça o download do arquivo zip na página [Releases](https://github.com/gabe-frasz/stay-alive/releases) ou... _(zip do Windows em breve)_
 
 ## Fazer o build e rodar você mesmo
 
