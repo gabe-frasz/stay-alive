@@ -8,6 +8,10 @@ Os assuntos abordados incluem cadeia alimentar, destilação, reinos Fungi e Pla
 
 A narrativa acompanha Linus, um estudante do ensino médio que, durante suas férias em um cruzeiro, acaba naufragando e ficando preso em uma ilha. Para sobreviver aos próximos cinco dias até o resgate, ele precisa aplicar seus conhecimentos de biologia e ciências naturais, enfrentando desafios baseados em situações reais.
 
+[One sheet paper](https://github.com/gabe-frasz/stay-alive/blob/main/_docs/one-sheet-paper.pdf) com os conceitos e as ideias principais por trás do jogo.
+
+[Pôster](https://github.com/gabe-frasz/stay-alive/blob/main/_docs/poster.pdf) para a apresentação final.
+
 - [🖥️ Como rodar](#%EF%B8%8F-como-rodar)
   - [Fazer o build e rodar você mesmo](#fazer-o-build-e-rodar-você-mesmo)
 - [🕹️ Como jogar](#%EF%B8%8F-como-jogar)
