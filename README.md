@@ -2,6 +2,8 @@
 
 [🇺🇸 EN | [🇧🇷 PT](https://github.com/gabe-frasz/stay-alive/blob/main/_docs/README-PT.md)]
 
+🏆 <mark>***One of the most liked games at Senac***</mark> 🏆
+
 This repo contains the Senac's second integrative project and consists of an educational 2D game aimed at teaching high school subjects. The goal is to convey scientific concepts through the theme "forces of nature", integrating them into the game mechanics in an interactive and contextualized way.
 
 The subjects covered include food chain, distillation, Fungi and Plantae kingdoms, ethnobotany, friction and combustion. The game adopts a survival style and is structured in phases, in which each challenge is directly related to one of these contents.
@@ -26,7 +28,9 @@ The narrative follows Linus, a high school student who, during his vacation on a
 
 # 🖥️ How to run
 
-Download zip file from [Releases](https://github.com/gabe-frasz/stay-alive/releases) page or... _(Windows zip soon)_
+**Windows**: Download installer from [BCC's Senac page at itch.io](https://bccsenac.itch.io/stay-alive)
+
+**Linux:** Download zip file from [Releases page](https://github.com/gabe-frasz/stay-alive/releases)
 
 ## Build and run it yourself
 
@@ -119,6 +123,7 @@ Follow the signs on the map to find out which challenge to take on. At the begin
 - [Beatriz Paiva](https://github.com/beeepaiva) for the significant collaboration and excellent ideas that enriched the game.
 - [Deepnight Games](https://deepnight.net/about/) for the incredible tool used to build the game map.
 - [Pixabay community](https://pixabay.com/users/) for the audio library that provided sound ambiance, including ambient and animal sounds.
+- [BCC Senac and Thiago Claro](https://bccsenac.itch.io/) for recognizing the effort and highlighting the game.
 
 # 📝 License
 
