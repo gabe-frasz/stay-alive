@@ -2,6 +2,8 @@
 
 [[🇺🇸 EN](https://github.com/gabe-frasz/stay-alive#stay-alive) | 🇧🇷 PT]
 
+🏆 <mark>***Um dos jogos mais curtidos no Senac***</mark> 🏆
+
 Este repositório contém o segundo projeto integrador do Senac e consiste em um jogo 2D educacional voltado ao ensino de disciplinas do ensino médio. O objetivo é transmitir conceitos científicos por meio do tema "forças da natureza", integrando-os à mecânica do jogo de forma interativa e contextualizada.
 
 Os assuntos abordados incluem cadeia alimentar, destilação, reinos Fungi e Plantae, etnobotânica, atrito e combustão. O jogo adota um estilo de sobrevivência e é estruturado em fases, em que cada desafio está diretamente relacionado a um desses conteúdos.
@@ -26,7 +28,9 @@ A narrativa acompanha Linus, um estudante do ensino médio que, durante suas fé
 
 # 🖥️ Como rodar
 
-Faça o download do arquivo zip na página [Releases](https://github.com/gabe-frasz/stay-alive/releases) ou... _(zip do Windows em breve)_
+**Windows:** Faça o download do instalador na [página do Senac BCC na itch.io](https://bccsenac.itch.io/stay-alive)
+
+**Linux:** Faça o download do arquivo zip na [página Releases](https://github.com/gabe-frasz/stay-alive/releases)
 
 ## Fazer o build e rodar você mesmo
 
@@ -119,6 +123,7 @@ Siga as placas no mapa para saber qual desafio você deve ir. No começo de cada
 - [Beatriz Paiva](https://github.com/beeepaiva) pela colaboração significativa e ideias excelentes que enriqueceram o jogo.
 - [Deepnight Games](https://deepnight.net/about/) pela ferramenta incrível utilizada para montar o mapa do jogo.
 - [Comunidade Pixabay](https://pixabay.com/users/) pela biblioteca de áudios que forneceram os sons ambientes.
+- [Senac BCC e Thiago Claro](https://bccsenac.itch.io/) por reconhecerem o esforço e colocarem o jogo em destaque.
 
 # 📝 Licença
 
